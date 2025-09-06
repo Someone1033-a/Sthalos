@@ -1,0 +1,45 @@
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sthalos</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #0a0a0a;
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+      flex-direction: column;
+      text-align: center;
+    }
+    h1 {
+      font-size: 4rem;
+      color: #00ffcc; /* neon accent */
+    }
+    p {
+      font-size: 1.2rem;
+      color: #aaa;
+    }
+    .btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: #00ffcc;
+      color: #0a0a0a;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sthalos</h1>
+  <p>Strength meets challenge. Coming soon.</p>
+  <button class="btn">Join the Journey</button>
+</body>
+</html>
