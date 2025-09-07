@@ -11,38 +11,25 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to bottom, #003300, #001a33); /* dark green top → dark blue bottom */
   font-family: Arial, sans-serif;
+
+  /* Gradient background */
+  background: linear-gradient(-45deg, #001a33, #8b0000, #0d001a, #800080);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
 }
 
-h1 {
-  color: #ff3b3b; /* strong red */
-  text-shadow: 0 0 15px rgba(255, 59, 59, 0.8);
-  font-size: 3rem;
-}
-
-p {
-  color: #cccccc;
-  margin-top: 10px;
-  font-size: 1.2rem;
-}
-
-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background: #ff3b3b; /* red button */
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: 0.3s ease;
-  box-shadow: 0 0 10px rgba(255, 59, 59, 0.8);
-}
-
-button:hover {
-  background: #cc0000; /* darker red on hover */
-  box-shadow: 0 0 20px rgba(255, 59, 59, 1);
+/* Animation keyframes */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
   </style>
