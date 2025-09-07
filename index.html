@@ -4,32 +4,57 @@
   <meta charset="UTF-8">
   <title>Sthalos</title>
   <style>
-body {
+/* Title */
+h1 {
+  font-size: 4rem;
   margin: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-family: Arial, sans-serif;
-
-  /* Gradient background */
-  background: linear-gradient(-45deg, #001a33, #8b0000, #0d001a, #800080);
+  background: linear-gradient(90deg, lime, yellow, orange, pink, white);
   background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShift 10s ease infinite;
+  text-shadow: 0 0 20px rgba(255,255,255,0.3);
 }
 
-/* Animation keyframes */
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+/* Subtext */
+p {
+  margin-top: 15px;
+  font-size: 1.5rem;
+  background: linear-gradient(90deg, lime, yellow, orange, pink, white);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShift 12s ease infinite;
+  text-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
+/* Button */
+button {
+  margin-top: 30px;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.3rem;
+  cursor: pointer;
+
+  background: linear-gradient(90deg, lime, yellow, orange, pink, white);
+  background-size: 400% 400%;
+  color: black;
+  font-weight: bold;
+  animation: textShift 8s ease infinite;
+  box-shadow: 0 0 15px rgba(255,255,255,0.5);
+  transition: 0.3s ease;
+}
+
+button:hover {
+  box-shadow: 0 0 25px rgba(255,255,255,0.8);
+}
+
+/* Text animation keyframes */
+@keyframes textShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
   </style>
