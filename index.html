@@ -1,124 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sthalos</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sthalos</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+@font-face {
+  font-family: 'Brevia';
+  src: url('brevis.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
-  <!-- Add Brevia font -->
-  <style>
-    @font-face {
-      font-family: 'brevis';
-      src: url('brevis.ttf') format('truetype'); /* <- put your .ttf file in same folder */
-      font-weight: normal;
-      font-style: normal;
-    }
+/* Body & gradient background */
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+  transition: all 0.5s ease;
+}
 
-    /* Background animation */
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+/* Top right icon bar */
+.top-right {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  display: flex;
+  gap: 15px;
+  z-index: 10;
+}
 
-    /* Top right icon bar */
-    .top-right {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      display: flex;
-      gap: 15px;
-    }
+.circle-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+}
 
-    .circle-btn {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      text-decoration: none;
-    }
+.circle-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
 
-    .circle-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 10px rgba(255,255,255,0.6);
-    }
+.insta { background: #e1306c; }
+.google { background: #fff; color: #4285F4; font-weight: bold; font-size: 22px; }
+.settings { background: #555; }
 
-    .insta { background: #e1306c; }
-    .google { background: #fff; color: #4285F4; font-weight: bold; font-size: 22px;}
-    .settings { background: #555; }
+/* Landing page content */
+#landing {
+  text-align: center;
+  z-index: 5;
+}
 
-    /* Text */
-    h1 {
-      font-size: 60px;
-      color: #ff1a1a;
-      margin: 10px 0;
-      font-family: 'Brevia', sans-serif; /* <- NEW */
-    }
+h1 {
+  font-size: 8vw;
+  color: #ff1a1a;
+  margin: 10px 0;
+  font-family: 'Brevia', sans-serif;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
 
-    p {
-      font-size: 22px;
-      color: #ff1a1a;
-      margin: 10px 0 30px;
-    }
+p {
+  font-size: 4vw;
+  color: #ff1a1a;
+  margin: 10px 0 30px;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.08);
+}
 
-    /* Main Button */
-    .btn {
-      background: #ff1a1a;
-      color: black;
-      padding: 15px 40px;
-      border: none;
-      border-radius: 10px;
-      font-size: 20px;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
-    }
-    .btn:hover {
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
-    }
-  </style>
+.btn {
+  background: #ff1a1a;
+  color: black;
+  padding: 3vw 6vw;
+  border: none;
+  border-radius: 10px;
+  font-size: 4vw;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255,0,0,0.6);
+  transition: transform 0.3s, opacity 0.3s, box-shadow 0.3s;
+}
+
+.btn:hover {
+  box-shadow: 0 0 20px rgba(255,0,0,0.8);
+  transform: scale(1.05);
+}
+
+/* Menu page (hidden by default) */
+#menu {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 5;
+}
+
+.menu-btn {
+  background: #ff1a1a;
+  color: black;
+  padding: 15px 40px;
+  border-radius: 10px;
+  font-size: 5vw;
+  margin: 15px 0;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255,0,0,0.6);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.menu-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255,0,0,0.8);
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .top-right { gap: 10px; }
+  .circle-btn { width: 35px; height: 35px; font-size: 16px; }
+  h1 { font-size: 10vw; }
+  p { font-size: 5vw; }
+  .btn { padding: 4vw 8vw; font-size: 6vw; }
+  .menu-btn { font-size: 6vw; padding: 4vw 8vw; }
+}
+</style>
 </head>
 <body>
 
-  <!-- Icon bar -->
-  <div class="top-right">
-    <a href="https://instagram.com/train.with.harsh" target="_blank" class="circle-btn insta">
-      <i class="fab fa-instagram"></i>
-    </a>
-    <a href="#" class="circle-btn google">
-      <i class="fab fa-google"></i>
-    </a>
-    <a href="#" class="circle-btn settings">
-      <i class="fas fa-cog"></i>
-    </a>
-  </div>
+<!-- Top right icons -->
+<div class="top-right">
+  <a href="https://instagram.com/train.with.harsh" target="_blank" class="circle-btn insta">
+    <i class="fab fa-instagram"></i>
+  </a>
+  <a href="#" class="circle-btn google">
+    <i class="fab fa-google"></i>
+  </a>
+  <a href="#" class="circle-btn settings">
+    <i class="fas fa-cog"></i>
+  </a>
+</div>
 
-  <!-- Main content -->
+<!-- Landing page -->
+<div id="landing">
   <h1>Sthalos</h1>
   <p>Strength meets challenge. Coming soon.</p>
-  <button class="btn">Join the Journey</button>
+  <button class="btn" id="enterBtn">Enter</button>
+</div>
+
+<!-- Menu page -->
+<div id="menu">
+  <h1>Menu</h1>
+  <button class="menu-btn">Cali-Challenge Generator</button>
+</div>
+
+<script>
+const enterBtn = document.getElementById('enterBtn');
+const landing = document.getElementById('landing');
+const menu = document.getElementById('menu');
+
+enterBtn.addEventListener('click', () => {
+  // Button zoom effect
+  enterBtn.style.transform = 'scale(20)';
+  enterBtn.style.opacity = '0';
+  
+  // Wait a fraction, then show menu
+  setTimeout(() => {
+    landing.style.display = 'none';
+    menu.style.display = 'flex';
+    menu.style.opacity = '0';
+    menu.style.transform = 'scale(0.8)';
+    
+    setTimeout(() => {
+      menu.style.transition = 'all 0.3s ease';
+      menu.style.opacity = '1';
+      menu.style.transform = 'scale(1)';
+    }, 50);
+  }, 300);
+});
+</script>
 
 </body>
 </html>
