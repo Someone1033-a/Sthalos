@@ -10,23 +10,20 @@
 @font-face {
   font-family: 'Brevia';
   src: url('brevis.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
 }
 
 /* Body & gradient background */
 body {
   margin: 0;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
   background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
   background-size: 400% 400%;
   animation: gradientShift 12s ease infinite;
-  font-family: Arial, sans-serif;
-  overflow-x: hidden;
-  transition: all 0.5s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @keyframes gradientShift {
@@ -68,14 +65,18 @@ body {
 .google { background: #fff; color: #4285F4; font-weight: bold; font-size: 22px; }
 .settings { background: #555; }
 
-/* Landing page content */
+/* Landing page */
 #landing {
   text-align: center;
   z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.5s ease;
 }
 
 h1 {
-  font-size: 8vw;
+  font-size: clamp(40px, 8vw, 80px);
   color: #ff1a1a;
   margin: 10px 0;
   font-family: 'Brevia', sans-serif;
@@ -83,19 +84,29 @@ h1 {
 }
 
 p {
-  font-size: 4vw;
+  font-size: clamp(18px, 4vw, 32px);
   color: #ff1a1a;
   margin: 10px 0 30px;
   text-shadow: 0 0 3px rgba(255, 255, 255, 0.08);
 }
 
+/* Quote */
+#quote {
+  font-size: clamp(14px, 3vw, 20px);
+  color: #ffb3b3;
+  margin-top: 50px;
+  text-align: center;
+  max-width: 80%;
+}
+
+/* Enter Button */
 .btn {
   background: #ff1a1a;
   color: black;
-  padding: 3vw 6vw;
+  padding: clamp(10px,3vw,20px) clamp(20px,6vw,40px);
   border: none;
   border-radius: 10px;
-  font-size: 4vw;
+  font-size: clamp(18px,4vw,28px);
   cursor: pointer;
   box-shadow: 0 0 10px rgba(255,0,0,0.6);
   transition: transform 0.3s, opacity 0.3s, box-shadow 0.3s;
@@ -106,21 +117,42 @@ p {
   transform: scale(1.05);
 }
 
-/* Menu page (hidden by default) */
-#menu {
+/* Menu overlay */
+#menuOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(3px);
+  background: rgba(0,0,0,0.5);
   display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+#menu {
+  background: rgba(30,0,50,0.95);
+  border-radius: 15px;
+  padding: 30px;
+  width: 60%;
+  max-height: 70%;
+  overflow-y: auto;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  z-index: 5;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: all 0.4s ease;
 }
 
 .menu-btn {
   background: #ff1a1a;
   color: black;
-  padding: 15px 40px;
+  padding: clamp(10px,3vw,20px) clamp(20px,6vw,40px);
   border-radius: 10px;
-  font-size: 5vw;
+  font-size: clamp(18px,4vw,28px);
   margin: 15px 0;
   cursor: pointer;
   box-shadow: 0 0 10px rgba(255,0,0,0.6);
@@ -132,14 +164,27 @@ p {
   box-shadow: 0 0 20px rgba(255,0,0,0.8);
 }
 
-/* Responsive tweaks */
+/* Split top & bottom bars */
+#topSplit, #bottomSplit {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
+  z-index: 15;
+  transition: all 0.5s ease;
+}
+
+#topSplit { top: 0; }
+#bottomSplit { bottom: 0; }
+
+/* Responsive */
 @media (max-width: 600px) {
-  .top-right { gap: 10px; }
-  .circle-btn { width: 35px; height: 35px; font-size: 16px; }
-  h1 { font-size: 10vw; }
-  p { font-size: 5vw; }
-  .btn { padding: 4vw 8vw; font-size: 6vw; }
-  .menu-btn { font-size: 6vw; padding: 4vw 8vw; }
+  #menu {
+    width: 90%;
+    max-height: 90%;
+    padding: 20px;
+  }
 }
 </style>
 </head>
@@ -158,42 +203,74 @@ p {
   </a>
 </div>
 
-<!-- Landing page -->
+<!-- Landing -->
 <div id="landing">
   <h1>Sthalos</h1>
   <p>Strength meets challenge. Coming soon.</p>
   <button class="btn" id="enterBtn">Enter</button>
+  <p id="quote"></p>
 </div>
 
-<!-- Menu page -->
-<div id="menu">
-  <h1>Menu</h1>
-  <button class="menu-btn">Cali-Challenge Generator</button>
+<!-- Split overlays -->
+<div id="topSplit"></div>
+<div id="bottomSplit"></div>
+
+<!-- Menu overlay -->
+<div id="menuOverlay">
+  <div id="menu">
+    <button class="menu-btn">Cali-Challenge Generator</button>
+    <button class="menu-btn">Feature 2</button>
+    <button class="menu-btn">Feature 3</button>
+    <button class="menu-btn">Feature 4</button>
+    <button class="menu-btn">Feature 5</button>
+    <button class="menu-btn">Feature 6</button>
+    <button class="menu-btn">Feature 7</button>
+    <button class="menu-btn">Feature 8</button>
+  </div>
 </div>
 
 <script>
+// Random quotes
+const quotes = [
+  "Push yourself because no one else is going to do it for you.",
+  "Strength does not come from what you can do, it comes from overcoming the things you once thought you couldn’t.",
+  "Discipline is the bridge between goals and accomplishment.",
+  "Your body can stand almost anything. It’s your mind you have to convince.",
+  "Success isn’t always about greatness. It’s about consistency.",
+  "Sweat is just fat crying.",
+  "The only bad workout is the one that didn’t happen.",
+  "Train insane or remain the same.",
+  "Greatness starts with a decision.",
+  "Pain is temporary, pride is forever."
+];
+const quoteEl = document.getElementById('quote');
+quoteEl.textContent = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
+
+// Enter button transition
 const enterBtn = document.getElementById('enterBtn');
 const landing = document.getElementById('landing');
+const topSplit = document.getElementById('topSplit');
+const bottomSplit = document.getElementById('bottomSplit');
+const menuOverlay = document.getElementById('menuOverlay');
 const menu = document.getElementById('menu');
 
 enterBtn.addEventListener('click', () => {
-  // Button zoom effect
-  enterBtn.style.transform = 'scale(20)';
-  enterBtn.style.opacity = '0';
-  
-  // Wait a fraction, then show menu
+  // Hide landing text slightly
+  landing.style.transition = 'opacity 0.3s';
+  landing.style.opacity = '0';
+
+  // Split animation
+  topSplit.style.transform = 'translateY(-100%)';
+  bottomSplit.style.transform = 'translateY(100%)';
+
   setTimeout(() => {
-    landing.style.display = 'none';
-    menu.style.display = 'flex';
-    menu.style.opacity = '0';
-    menu.style.transform = 'scale(0.8)';
-    
+    // Show menu overlay
+    menuOverlay.style.display = 'flex';
     setTimeout(() => {
-      menu.style.transition = 'all 0.3s ease';
       menu.style.opacity = '1';
       menu.style.transform = 'scale(1)';
     }, 50);
-  }, 300);
+  }, 500);
 });
 </script>
 
