@@ -8,7 +8,15 @@
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  <!-- Add Brevia font -->
   <style>
+    @font-face {
+      font-family: 'Brevia';
+      src: url('Brevia-Regular.ttf') format('truetype'); /* <- put your .ttf file in same folder */
+      font-weight: normal;
+      font-style: normal;
+    }
+
     /* Background animation */
     body {
       margin: 0;
@@ -58,15 +66,16 @@
       box-shadow: 0 0 10px rgba(255,255,255,0.6);
     }
 
-    .insta { background: #e1306c; }   /* Instagram */
-    .google { background: #fff; color: #4285F4; font-weight: bold; font-size: 22px;} /* Google */
-    .settings { background: #555; }  /* Settings */
+    .insta { background: #e1306c; }
+    .google { background: #fff; color: #4285F4; font-weight: bold; font-size: 22px;}
+    .settings { background: #555; }
 
     /* Text */
     h1 {
       font-size: 60px;
       color: #ff1a1a;
       margin: 10px 0;
+      font-family: 'Brevia', sans-serif; /* <- NEW */
     }
 
     p {
@@ -95,17 +104,12 @@
 
   <!-- Icon bar -->
   <div class="top-right">
-    <!-- Instagram -->
     <a href="https://instagram.com/train.with.harsh" target="_blank" class="circle-btn insta">
       <i class="fab fa-instagram"></i>
     </a>
-
-    <!-- Google Login -->
     <a href="#" class="circle-btn google">
       <i class="fab fa-google"></i>
     </a>
-
-    <!-- Settings -->
     <a href="#" class="circle-btn settings">
       <i class="fas fa-cog"></i>
     </a>
@@ -118,4 +122,3 @@
 
 </body>
 </html>
-
