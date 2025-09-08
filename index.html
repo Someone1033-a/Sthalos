@@ -16,7 +16,7 @@ body {
 
   background: linear-gradient(to bottom, #0b0033, #2a0066, #4a002a, #5c0033);
   background-size: 400% 400%;
-  animation: bgShift 10s ease infinite; /* faster than before */
+  animation: bgShift 10s ease infinite;
 }
 
 /* Title */
@@ -24,7 +24,7 @@ h1 {
   font-size: 4.8rem;
   margin: 0;
   color: #ff1a1a; /* blood red */
-  text-shadow: 0 0 25px rgba(255, 30, 30, 0.7);
+  text-shadow: 0 0 8px rgba(255, 30, 30, 0.4); /* softer glow */
 }
 
 /* Subtext */
@@ -32,7 +32,7 @@ p {
   margin-top: 15px;
   font-size: 2rem;
   color: #ff1a1a;
-  text-shadow: 0 0 15px rgba(255, 30, 30, 0.6);
+  text-shadow: 0 0 6px rgba(255, 30, 30, 0.3);
 }
 
 /* Button */
@@ -44,15 +44,15 @@ button {
   font-size: 1.6rem;
   cursor: pointer;
 
-  background: #ff1a1a; /* blood red */
+  background: #ff1a1a;
   color: black;
   font-weight: bold;
-  box-shadow: 0 0 25px rgba(255, 50, 50, 0.7);
+  box-shadow: 0 0 10px rgba(255, 50, 50, 0.4);
   transition: 0.3s ease;
 }
 
 button:hover {
-  box-shadow: 0 0 40px rgba(255, 70, 70, 1);
+  box-shadow: 0 0 20px rgba(255, 70, 70, 0.7);
   transform: scale(1.07);
 }
 
