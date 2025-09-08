@@ -100,6 +100,9 @@
       padding: 20px;
       transition: right 0.5s ease;
       z-index: 50;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     #settingsPanel.open {
       right: 0;
@@ -119,6 +122,12 @@
     }
     .setting-item:hover {
       background: #333;
+    }
+    #closeSettings {
+      font-size: 14px;
+      color: white;
+      cursor: pointer;
+      text-align: left;
     }
 
     /* Main content */
@@ -232,8 +241,11 @@
 
   <!-- Settings Panel -->
   <div id="settingsPanel">
-    <h3>Settings</h3>
-    <div class="setting-item" id="themeToggle">Change Theme</div>
+    <div>
+      <h3>Settings</h3>
+      <div class="setting-item" id="themeToggle">Change Theme</div>
+    </div>
+    <div id="closeSettings">CLOSE / ESC</div>
   </div>
 
   <!-- Main content -->
@@ -284,17 +296,12 @@
     setTimeout(() => menuOverlay.style.display = "none", 400);
   });
 
-  document.addEventListener("keydown", (e) => {
-    if(e.key === "Escape"){
-      menuOverlay.classList.remove("show");
-      setTimeout(() => menuOverlay.style.display = "none", 400);
-    }
-  });
-
   // SETTINGS
   const settingsBtn = document.getElementById('settingsBtn');
   const settingsPanel = document.getElementById('settingsPanel');
   const themeToggle = document.getElementById('themeToggle');
+  const closeSettings = document.getElementById('closeSettings');
+
   let themes = ['theme-default','theme-blueberry','theme-sunset','theme-candy'];
   let currentThemeIndex = 0;
 
@@ -312,6 +319,25 @@
     currentThemeIndex = (currentThemeIndex + 1) % themes.length;
     document.body.className = themes[currentThemeIndex];
     localStorage.setItem('themeIndex', currentThemeIndex);
+  });
+
+  closeSettings.addEventListener('click', () => {
+    settingsBtn.classList.remove('rotate');
+    settingsPanel.classList.remove('open');
+  });
+
+  // ESC closes both menu and settings
+  document.addEventListener("keydown", (e) => {
+    if(e.key === "Escape"){
+      if(settingsPanel.classList.contains("open")){
+        settingsBtn.classList.remove("rotate");
+        settingsPanel.classList.remove("open");
+      }
+      if(menuOverlay.classList.contains("show")){
+        menuOverlay.classList.remove("show");
+        setTimeout(() => menuOverlay.style.display = "none", 400);
+      }
+    }
   });
 </script>
 
