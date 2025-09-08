@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sthalos</title>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <style>
     /* Background animation */
     body {
@@ -32,19 +36,31 @@
       top: 20px;
       right: 20px;
       display: flex;
-      gap: 20px;
+      gap: 15px;
     }
 
-    .top-right a {
+    .circle-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       color: white;
-      font-size: 28px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
       text-decoration: none;
-      transition: transform 0.2s;
     }
 
-    .top-right a:hover {
-      transform: scale(1.2);
+    .circle-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(255,255,255,0.6);
     }
+
+    .insta { background: #e1306c; }   /* Instagram */
+    .google { background: #fff; color: #4285F4; font-weight: bold; font-size: 22px;} /* Google */
+    .settings { background: #555; }  /* Settings */
 
     /* Text */
     h1 {
@@ -59,7 +75,7 @@
       margin: 10px 0 30px;
     }
 
-    /* Button */
+    /* Main Button */
     .btn {
       background: #ff1a1a;
       color: black;
@@ -68,29 +84,38 @@
       border-radius: 10px;
       font-size: 20px;
       cursor: pointer;
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
     }
-
     .btn:hover {
-      transform: scale(1.1);
       box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
     }
   </style>
-  <!-- Font Awesome for icons -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <!-- Top right icons -->
+
+  <!-- Icon bar -->
   <div class="top-right">
-    <a href="https://instagram.com/train.with.harsh" target="_blank"><i class="fab fa-instagram"></i></a>
-    <a href="#"><i class="fab fa-google"></i></a>
-    <a href="#"><i class="fas fa-cog"></i></a>
+    <!-- Instagram -->
+    <a href="https://instagram.com/train.with.harsh" target="_blank" class="circle-btn insta">
+      <i class="fab fa-instagram"></i>
+    </a>
+
+    <!-- Google Login -->
+    <a href="#" class="circle-btn google">
+      <i class="fab fa-google"></i>
+    </a>
+
+    <!-- Settings -->
+    <a href="#" class="circle-btn settings">
+      <i class="fas fa-cog"></i>
+    </a>
   </div>
 
-  <!-- Center content -->
+  <!-- Main content -->
   <h1>Sthalos</h1>
   <p>Strength meets challenge. Coming soon.</p>
   <button class="btn">Join the Journey</button>
+
 </body>
 </html>
+
