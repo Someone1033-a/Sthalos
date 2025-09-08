@@ -1,301 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sthalos</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sthalos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<style>
-@font-face {
-  font-family: 'Brevia';
-  src: url('brevis.ttf') format('truetype');
-}
+  <style>
+    @font-face {
+      font-family: 'Brevia';
+      src: url('brevis.ttf') format('truetype');
+    }
 
-/* Body & gradient background */
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
-  overflow-x: hidden;
-  background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
-  background-size: 400% 400%;
-  animation: gradientShift 12s ease infinite;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 1s ease, color 0.5s ease;
+    }
 
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+    /* THEMES */
+    body.theme-default {
+      background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      color: #ff1a1a;
+    }
+    body.theme-blueberry {
+      background: linear-gradient(-45deg, #2e0854, #000033, #1a0033, #220044);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      color: #ff1a1a;
+    }
+    body.theme-sunset {
+      background: linear-gradient(-45deg, #ffcc00, #ff6600, #228B22, #996600);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      color: #0b0b77; /* dark blue */
+    }
+    body.theme-candy {
+      background: linear-gradient(-45deg, #ff66b2, #ffffff, #00ffff, #ff99cc);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      color: #0b0b77; /* dark blue */
+    }
 
-/* Top right icon bar */
-.top-right {
-  position: absolute;
-  top: 2%;
-  right: 2%;
-  display: flex;
-  gap: 15px;
-  z-index: 10;
-}
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-.circle-btn {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  text-decoration: none;
-}
+    /* Top right icons */
+    .top-right {
+      position: absolute;
+      top: 2%;
+      right: 2%;
+      display: flex;
+      gap: 15px;
+      z-index: 10;
+    }
 
-.circle-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 10px rgba(255,255,255,0.6);
-}
+    .circle-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.4s ease;
+      text-decoration: none;
+    }
 
-.insta { background: #e1306c; }
-.google { background: #fff; color: #4285F4; font-weight: bold; font-size: 22px; }
-.settings { background: #555; }
+    .circle-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(255,255,255,0.6);
+    }
 
-/* Landing page */
-#landing {
-  text-align: center;
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    .settings.rotate {
+      transform: rotate(180deg);
+    }
 
-h1 {
-  font-size: clamp(40px, 8vw, 80px);
-  color: #ff1a1a;
-  margin: 10px 0;
-  font-family: 'Brevia', sans-serif;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
-}
+    /* Settings panel */
+    #settingsPanel {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 250px;
+      height: 100%;
+      background: black;
+      color: white;
+      padding: 20px;
+      transition: right 0.5s ease;
+      z-index: 50;
+    }
+    #settingsPanel.open {
+      right: 0;
+    }
+    #settingsPanel h3 {
+      margin-top: 0;
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    .setting-item {
+      margin: 15px 0;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 5px;
+      background: #222;
+      text-align: center;
+    }
+    .setting-item:hover {
+      background: #333;
+    }
 
-p {
-  font-size: clamp(18px, 4vw, 32px);
-  color: #ff1a1a;
-  margin: 10px 0 30px;
-  text-shadow: 0 0 3px rgba(255, 255, 255, 0.08);
-}
+    /* Main content */
+    h1 {
+      font-size: 60px;
+      margin: 10px 0;
+      font-family: 'Brevia', sans-serif;
+    }
+    p {
+      font-size: 22px;
+      margin: 10px 0 30px;
+    }
+    #quote {
+      position: absolute;
+      bottom: 40px;
+      font-size: 18px;
+      text-align: center;
+      padding: 0 20px;
+      max-width: 90%;
+    }
 
-/* Quote */
-#quote {
-  font-size: clamp(14px, 3vw, 20px);
-  color: #ffb3b3;
-  margin-top: 50px;
-  text-align: center;
-  max-width: 80%;
-}
+    /* Button */
+    .btn {
+      background: #ff1a1a;
+      color: black;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+    }
+    .btn:hover {
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+    }
 
-/* Enter Button */
-.btn {
-  background: #ff1a1a;
-  color: black;
-  padding: clamp(10px,3vw,20px) clamp(20px,6vw,40px);
-  border: none;
-  border-radius: 10px;
-  font-size: clamp(18px,4vw,28px);
-  cursor: pointer;
-  box-shadow: 0 0 10px rgba(255,0,0,0.6);
-  transition: transform 0.3s, opacity 0.3s, box-shadow 0.3s;
-}
-
-.btn:hover {
-  box-shadow: 0 0 20px rgba(255,0,0,0.8);
-  transform: scale(1.05);
-}
-
-/* Menu overlay */
-#menuOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(3px);
-  background: rgba(0,0,0,0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 20;
-}
-
-#menu {
-  background: rgba(30,0,50,0.95);
-  border-radius: 15px;
-  padding: 30px;
-  width: 60%;
-  max-height: 70%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transform: scale(0.8);
-  opacity: 0;
-  transition: all 0.4s ease;
-}
-
-#menu h2 {
-  color: white;
-  font-weight: bold;
-  font-size: clamp(24px, 4vw, 36px);
-  margin-bottom: 25px;
-  text-align: center;
-}
-
-.menu-btn {
-  background: #ff1a1a;
-  color: black;
-  padding: clamp(10px,3vw,20px) clamp(20px,6vw,40px);
-  border-radius: 10px;
-  font-size: clamp(18px,4vw,28px);
-  margin: 15px 0;
-  cursor: pointer;
-  box-shadow: 0 0 10px rgba(255,0,0,0.6);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.menu-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255,0,0,0.8);
-}
-
-/* Close/Esc button at bottom-left */
-#closeBtn {
-  position: absolute;
-  bottom: 15px;
-  left: 15px;
-  padding: 5px 12px;
-  font-size: 14px;
-  border: none;
-  border-radius: 8px;
-  background: #555;
-  color: white;
-  cursor: pointer;
-  box-shadow: 0 0 5px rgba(255,255,255,0.3);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-#closeBtn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 10px rgba(255,255,255,0.6);
-}
-
-/* Mobile adjustments */
-@media (max-width: 600px) {
-  #menu {
-    width: 90%;
-    max-height: 90%;
-    padding: 20px;
-  }
-  #closeBtn {
-    bottom: 10px;
-    left: 10px;
-    font-size: 12px;
-    padding: 4px 10px;
-  }
-}
-</style>
+    /* Menu overlay */
+    #menuOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 40;
+    }
+    #menuBox {
+      background: rgba(20, 20, 20, 0.95);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+      max-height: 80%;
+      overflow-y: auto;
+      transform: scale(0.8);
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+    #menuOverlay.show #menuBox {
+      transform: scale(1);
+      opacity: 1;
+    }
+    #menuBox h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: white;
+    }
+    .menu-btn {
+      display: block;
+      background: #ff1a1a;
+      color: black;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      text-decoration: none;
+    }
+    .menu-btn:hover {
+      background: #ff4d4d;
+    }
+    #closeMenu {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 14px;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body>
+<body class="theme-default">
 
-<!-- Top right icons -->
-<div class="top-right">
-  <a href="https://instagram.com/train.with.harsh" target="_blank" class="circle-btn insta">
-    <i class="fab fa-instagram"></i>
-  </a>
-  <a href="#" class="circle-btn google">
-    <i class="fab fa-google"></i>
-  </a>
-  <a href="#" class="circle-btn settings">
-    <i class="fas fa-cog"></i>
-  </a>
-</div>
-
-<!-- Landing -->
-<div id="landing">
-  <h1>Sthalos</h1>
-  <p>Strength meets challenge. Coming soon.</p>
-  <button class="btn" id="enterBtn">Enter</button>
-  <p id="quote"></p>
-</div>
-
-<!-- Menu overlay -->
-<div id="menuOverlay">
-  <div id="menu">
-    <h2>PICK YOUR DESTINATION</h2>
-    <button class="menu-btn">CALI-CHALLENGE GENERATOR</button>
-    <button id="closeBtn">Close / Esc</button>
+  <!-- Top right icons -->
+  <div class="top-right">
+    <a href="https://instagram.com/train.with.harsh" target="_blank" class="circle-btn insta">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="#" class="circle-btn google">
+      <i class="fab fa-google"></i>
+    </a>
+    <div id="settingsBtn" class="circle-btn settings">
+      <i class="fas fa-cog"></i>
+    </div>
   </div>
-</div>
+
+  <!-- Settings Panel -->
+  <div id="settingsPanel">
+    <h3>Settings</h3>
+    <div class="setting-item" id="themeToggle">Change Theme</div>
+  </div>
+
+  <!-- Main content -->
+  <div id="landing">
+    <h1>Sthalos</h1>
+    <p>Strength meets challenge. Coming soon.</p>
+    <button id="enterBtn" class="btn">Enter</button>
+    <div id="quote"></div>
+  </div>
+
+  <!-- Menu overlay -->
+  <div id="menuOverlay">
+    <div id="menuBox">
+      <h2>PICK YOUR DESTINATION</h2>
+      <a href="#" class="menu-btn">CALI-CHALLENGE GENERATOR</a>
+      <div id="closeMenu">CLOSE / ESC</div>
+    </div>
+  </div>
 
 <script>
-// Random quotes
-const quotes = [
-  "Push yourself because no one else is going to do it for you.",
-  "Strength does not come from what you can do, it comes from overcoming the things you once thought you couldn’t.",
-  "Discipline is the bridge between goals and accomplishment.",
-  "Your body can stand almost anything. It’s your mind you have to convince.",
-  "Success isn’t always about greatness. It’s about consistency.",
-  "Sweat is just fat crying.",
-  "The only bad workout is the one that didn’t happen.",
-  "Train insane or remain the same.",
-  "Greatness starts with a decision.",
-  "Pain is temporary, pride is forever."
-];
-const quoteEl = document.getElementById('quote');
-quoteEl.textContent = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
+  // QUOTES
+  const quotes = [
+    `"Strength is built, not given."`,
+    `"Pain is temporary, pride is forever."`,
+    `"Every rep counts."`,
+    `"The body achieves what the mind believes."`,
+    `"Calisthenics is art in motion."`,
+    `"Small progress is still progress."`,
+    `"Push harder than yesterday."`,
+    `"Your only limit is you."`,
+    `"Discipline beats motivation."`,
+    `"Power through the struggle."`
+  ];
+  document.getElementById("quote").innerText = quotes[Math.floor(Math.random()*quotes.length)];
 
-// Elements
-const enterBtn = document.getElementById('enterBtn');
-const menuOverlay = document.getElementById('menuOverlay');
-const menu = document.getElementById('menu');
-const closeBtn = document.getElementById('closeBtn');
+  // MENU
+  const enterBtn = document.getElementById("enterBtn");
+  const menuOverlay = document.getElementById("menuOverlay");
+  const closeMenu = document.getElementById("closeMenu");
 
-// Function to close menu
-function closeMenu() {
-  menu.style.opacity = '0';
-  menu.style.transform = 'scale(0.8)';
-  setTimeout(() => {
-    menuOverlay.style.display = 'none';
-    document.getElementById('landing').style.opacity = '1';
-  }, 300);
-}
+  enterBtn.addEventListener("click", () => {
+    menuOverlay.style.display = "flex";
+    setTimeout(() => menuOverlay.classList.add("show"), 50);
+  });
 
-// Open menu
-enterBtn.addEventListener('click', () => {
-  document.getElementById('landing').style.transition = 'opacity 0.3s';
-  document.getElementById('landing').style.opacity = '0';
+  closeMenu.addEventListener("click", () => {
+    menuOverlay.classList.remove("show");
+    setTimeout(() => menuOverlay.style.display = "none", 400);
+  });
 
-  setTimeout(() => {
-    menuOverlay.style.display = 'flex';
-    setTimeout(() => {
-      menu.style.opacity = '1';
-      menu.style.transform = 'scale(1)';
-    }, 50);
-  }, 300);
-});
+  document.addEventListener("keydown", (e) => {
+    if(e.key === "Escape"){
+      menuOverlay.classList.remove("show");
+      setTimeout(() => menuOverlay.style.display = "none", 400);
+    }
+  });
 
-// Close button
-closeBtn.addEventListener('click', closeMenu);
+  // SETTINGS
+  const settingsBtn = document.getElementById('settingsBtn');
+  const settingsPanel = document.getElementById('settingsPanel');
+  const themeToggle = document.getElementById('themeToggle');
+  let themes = ['theme-default','theme-blueberry','theme-sunset','theme-candy'];
+  let currentThemeIndex = 0;
 
-// ESC key closes menu
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && menuOverlay.style.display === 'flex') {
-    closeMenu();
+  if(localStorage.getItem('themeIndex')){
+    currentThemeIndex = parseInt(localStorage.getItem('themeIndex'));
+    document.body.className = themes[currentThemeIndex];
   }
-});
+
+  settingsBtn.addEventListener('click', () => {
+    settingsBtn.classList.toggle('rotate');
+    settingsPanel.classList.toggle('open');
+  });
+
+  themeToggle.addEventListener('click', () => {
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    document.body.className = themes[currentThemeIndex];
+    localStorage.setItem('themeIndex', currentThemeIndex);
+  });
 </script>
 
 </body>
