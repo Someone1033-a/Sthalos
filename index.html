@@ -74,7 +74,6 @@ body {
   align-items: center;
 }
 
-/* Text scaling */
 h1 {
   font-size: clamp(40px, 8vw, 80px);
   color: #ff1a1a;
@@ -147,6 +146,14 @@ p {
   transition: all 0.4s ease;
 }
 
+#menu h2 {
+  color: white;
+  font-weight: bold;
+  font-size: clamp(24px, 4vw, 36px);
+  margin-bottom: 25px;
+  text-align: center;
+}
+
 .menu-btn {
   background: #ff1a1a;
   color: black;
@@ -164,12 +171,39 @@ p {
   box-shadow: 0 0 20px rgba(255,0,0,0.8);
 }
 
-/* Mobile menu adjustments */
+/* Close/Esc button at bottom-left */
+#closeBtn {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  padding: 5px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  background: #555;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(255,255,255,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#closeBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+
+/* Mobile adjustments */
 @media (max-width: 600px) {
   #menu {
     width: 90%;
     max-height: 90%;
     padding: 20px;
+  }
+  #closeBtn {
+    bottom: 10px;
+    left: 10px;
+    font-size: 12px;
+    padding: 4px 10px;
   }
 }
 </style>
@@ -200,14 +234,9 @@ p {
 <!-- Menu overlay -->
 <div id="menuOverlay">
   <div id="menu">
-    <button class="menu-btn">Cali-Challenge Generator</button>
-    <button class="menu-btn">Feature 2</button>
-    <button class="menu-btn">Feature 3</button>
-    <button class="menu-btn">Feature 4</button>
-    <button class="menu-btn">Feature 5</button>
-    <button class="menu-btn">Feature 6</button>
-    <button class="menu-btn">Feature 7</button>
-    <button class="menu-btn">Feature 8</button>
+    <h2>PICK YOUR DESTINATION</h2>
+    <button class="menu-btn">CALI-CHALLENGE GENERATOR</button>
+    <button id="closeBtn">Close / Esc</button>
   </div>
 </div>
 
@@ -228,17 +257,27 @@ const quotes = [
 const quoteEl = document.getElementById('quote');
 quoteEl.textContent = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
 
-// Enter button transition
+// Elements
 const enterBtn = document.getElementById('enterBtn');
 const menuOverlay = document.getElementById('menuOverlay');
 const menu = document.getElementById('menu');
+const closeBtn = document.getElementById('closeBtn');
 
+// Function to close menu
+function closeMenu() {
+  menu.style.opacity = '0';
+  menu.style.transform = 'scale(0.8)';
+  setTimeout(() => {
+    menuOverlay.style.display = 'none';
+    document.getElementById('landing').style.opacity = '1';
+  }, 300);
+}
+
+// Open menu
 enterBtn.addEventListener('click', () => {
-  // Fade landing
   document.getElementById('landing').style.transition = 'opacity 0.3s';
   document.getElementById('landing').style.opacity = '0';
 
-  // Show menu overlay
   setTimeout(() => {
     menuOverlay.style.display = 'flex';
     setTimeout(() => {
@@ -246,6 +285,16 @@ enterBtn.addEventListener('click', () => {
       menu.style.transform = 'scale(1)';
     }, 50);
   }, 300);
+});
+
+// Close button
+closeBtn.addEventListener('click', closeMenu);
+
+// ESC key closes menu
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && menuOverlay.style.display === 'flex') {
+    closeMenu();
+  }
 });
 </script>
 
