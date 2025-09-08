@@ -2,71 +2,93 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sthalos</title>
   <style>
-/* Background */
-body {
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+    /* Background animation */
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
 
-  background: linear-gradient(to bottom, #0b0033, #2a0066, #4a002a, #5c0033);
-  background-size: 400% 400%;
-  animation: bgShift 10s ease infinite;
-}
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-/* Title */
-h1 {
-  font-size: 4.8rem;
-  margin: 0;
-  color: #ff1a1a; /* blood red */
-  text-shadow: 0 0 8px rgba(255, 30, 30, 0.4); /* softer glow */
-}
+    /* Top right icon bar */
+    .top-right {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 20px;
+    }
 
-/* Subtext */
-p {
-  margin-top: 15px;
-  font-size: 2rem;
-  color: #ff1a1a;
-  text-shadow: 0 0 6px rgba(255, 30, 30, 0.3);
-}
+    .top-right a {
+      color: white;
+      font-size: 28px;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
 
-/* Button */
-button {
-  margin-top: 35px;
-  padding: 20px 55px;
-  border: none;
-  border-radius: 14px;
-  font-size: 1.6rem;
-  cursor: pointer;
+    .top-right a:hover {
+      transform: scale(1.2);
+    }
 
-  background: #ff1a1a;
-  color: black;
-  font-weight: bold;
-  box-shadow: 0 0 10px rgba(255, 50, 50, 0.4);
-  transition: 0.3s ease;
-}
+    /* Text */
+    h1 {
+      font-size: 60px;
+      color: #ff1a1a;
+      margin: 10px 0;
+    }
 
-button:hover {
-  box-shadow: 0 0 20px rgba(255, 70, 70, 0.7);
-  transform: scale(1.07);
-}
+    p {
+      font-size: 22px;
+      color: #ff1a1a;
+      margin: 10px 0 30px;
+    }
 
-/* Animations */
-@keyframes bgShift {
-  0% { background-position: 0% 30%; }
-  50% { background-position: 100% 70%; }
-  100% { background-position: 0% 30%; }
-}
+    /* Button */
+    .btn {
+      background: #ff1a1a;
+      color: black;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
 
-
+    .btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+    }
   </style>
+  <!-- Font Awesome for icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
+  <!-- Top right icons -->
+  <div class="top-right">
+    <a href="https://instagram.com/yourusername" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-google"></i></a>
+    <a href="#"><i class="fas fa-cog"></i></a>
+  </div>
+
+  <!-- Center content -->
   <h1>Sthalos</h1>
   <p>Strength meets challenge. Coming soon.</p>
   <button class="btn">Join the Journey</button>
