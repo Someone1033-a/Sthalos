@@ -72,9 +72,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: all 0.5s ease;
 }
 
+/* Text scaling */
 h1 {
   font-size: clamp(40px, 8vw, 80px);
   color: #ff1a1a;
@@ -164,21 +164,7 @@ p {
   box-shadow: 0 0 20px rgba(255,0,0,0.8);
 }
 
-/* Split top & bottom bars */
-#topSplit, #bottomSplit {
-  position: fixed;
-  left: 0;
-  width: 100%;
-  height: 50%;
-  background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
-  z-index: 15;
-  transition: all 0.5s ease;
-}
-
-#topSplit { top: 0; }
-#bottomSplit { bottom: 0; }
-
-/* Responsive */
+/* Mobile menu adjustments */
 @media (max-width: 600px) {
   #menu {
     width: 90%;
@@ -210,10 +196,6 @@ p {
   <button class="btn" id="enterBtn">Enter</button>
   <p id="quote"></p>
 </div>
-
-<!-- Split overlays -->
-<div id="topSplit"></div>
-<div id="bottomSplit"></div>
 
 <!-- Menu overlay -->
 <div id="menuOverlay">
@@ -248,29 +230,22 @@ quoteEl.textContent = '"' + quotes[Math.floor(Math.random() * quotes.length)] + 
 
 // Enter button transition
 const enterBtn = document.getElementById('enterBtn');
-const landing = document.getElementById('landing');
-const topSplit = document.getElementById('topSplit');
-const bottomSplit = document.getElementById('bottomSplit');
 const menuOverlay = document.getElementById('menuOverlay');
 const menu = document.getElementById('menu');
 
 enterBtn.addEventListener('click', () => {
-  // Hide landing text slightly
-  landing.style.transition = 'opacity 0.3s';
-  landing.style.opacity = '0';
+  // Fade landing
+  document.getElementById('landing').style.transition = 'opacity 0.3s';
+  document.getElementById('landing').style.opacity = '0';
 
-  // Split animation
-  topSplit.style.transform = 'translateY(-100%)';
-  bottomSplit.style.transform = 'translateY(100%)';
-
+  // Show menu overlay
   setTimeout(() => {
-    // Show menu overlay
     menuOverlay.style.display = 'flex';
     setTimeout(() => {
       menu.style.opacity = '1';
       menu.style.transform = 'scale(1)';
     }, 50);
-  }, 500);
+  }, 300);
 });
 </script>
 
