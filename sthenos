@@ -1,45 +1,294 @@
-index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Sthalos</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #0a0a0a;
-      color: #fff;
-      font-family: 'Arial', sans-serif;
-      flex-direction: column;
-      text-align: center;
-    }
-    h1 {
-      font-size: 4rem;
-      color: #00ffcc; /* neon accent */
-    }
-    p {
-      font-size: 1.2rem;
-      color: #aaa;
-    }
-    .btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 1rem;
-      background: #00ffcc;
-      color: #0a0a0a;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sthalos</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+@font-face {
+  font-family: 'Brevia';
+  src: url('brevis.ttf') format('truetype');
+}
+
+/* Body & gradient background */
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+  background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Top right icon bar */
+.top-right {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  display: flex;
+  gap: 15px;
+  z-index: 10;
+}
+
+.circle-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+}
+
+.circle-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+
+.insta { background: #e1306c; }
+.google { background: #fff; color: #4285F4; font-weight: bold; font-size: 22px; }
+.settings { background: #555; }
+
+/* Landing page */
+#landing {
+  text-align: center;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Text scaling */
+h1 {
+  font-size: clamp(40px, 8vw, 80px);
+  color: #ff1a1a;
+  margin: 10px 0;
+  font-family: 'Brevia', sans-serif;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+p {
+  font-size: clamp(18px, 4vw, 32px);
+  color: #ff1a1a;
+  margin: 10px 0 30px;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.08);
+}
+
+/* Quote */
+#quote {
+  font-size: clamp(14px, 3vw, 20px);
+  color: #ffb3b3;
+  margin-top: 50px;
+  text-align: center;
+  max-width: 80%;
+}
+
+/* Enter Button */
+.btn {
+  background: #ff1a1a;
+  color: black;
+  padding: clamp(10px,3vw,20px) clamp(20px,6vw,40px);
+  border: none;
+  border-radius: 10px;
+  font-size: clamp(18px,4vw,28px);
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255,0,0,0.6);
+  transition: transform 0.3s, opacity 0.3s, box-shadow 0.3s;
+}
+
+.btn:hover {
+  box-shadow: 0 0 20px rgba(255,0,0,0.8);
+  transform: scale(1.05);
+}
+
+/* Menu overlay */
+#menuOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(3px);
+  background: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+#menu {
+  background: rgba(30,0,50,0.95);
+  border-radius: 15px;
+  padding: 30px;
+  width: 60%;
+  max-height: 70%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+#menu h2 {
+  color: white;
+  font-weight: bold;
+  font-size: clamp(24px, 4vw, 36px);
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.menu-btn {
+  background: #ff1a1a;
+  color: black;
+  padding: clamp(10px,3vw,20px) clamp(20px,6vw,40px);
+  border-radius: 10px;
+  font-size: clamp(18px,4vw,28px);
+  margin: 15px 0;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255,0,0,0.6);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.menu-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255,0,0,0.8);
+}
+
+/* Back button at bottom-left */
+#backBtn {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  padding: 5px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  background: #555;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(255,255,255,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#backBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+
+/* Mobile menu adjustments */
+@media (max-width: 600px) {
+  #menu {
+    width: 90%;
+    max-height: 90%;
+    padding: 20px;
+  }
+  #backBtn {
+    bottom: 10px;
+    left: 10px;
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+}
+</style>
 </head>
 <body>
+
+<!-- Top right icons -->
+<div class="top-right">
+  <a href="https://instagram.com/train.with.harsh" target="_blank" class="circle-btn insta">
+    <i class="fab fa-instagram"></i>
+  </a>
+  <a href="#" class="circle-btn google">
+    <i class="fab fa-google"></i>
+  </a>
+  <a href="#" class="circle-btn settings">
+    <i class="fas fa-cog"></i>
+  </a>
+</div>
+
+<!-- Landing -->
+<div id="landing">
   <h1>Sthalos</h1>
   <p>Strength meets challenge. Coming soon.</p>
-  <button class="btn">Join the Journey</button>
+  <button class="btn" id="enterBtn">Enter</button>
+  <p id="quote"></p>
+</div>
+
+<!-- Menu overlay -->
+<div id="menuOverlay">
+  <div id="menu">
+    <h2>PICK YOUR DESTINATION</h2>
+    <button class="menu-btn">CALI-CHALLENGE GENERATOR</button>
+    <button id="backBtn">Back</button>
+  </div>
+</div>
+
+<script>
+// Random quotes
+const quotes = [
+  "Push yourself because no one else is going to do it for you.",
+  "Strength does not come from what you can do, it comes from overcoming the things you once thought you couldn’t.",
+  "Discipline is the bridge between goals and accomplishment.",
+  "Your body can stand almost anything. It’s your mind you have to convince.",
+  "Success isn’t always about greatness. It’s about consistency.",
+  "Sweat is just fat crying.",
+  "The only bad workout is the one that didn’t happen.",
+  "Train insane or remain the same.",
+  "Greatness starts with a decision.",
+  "Pain is temporary, pride is forever."
+];
+const quoteEl = document.getElementById('quote');
+quoteEl.textContent = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
+
+// Enter button transition
+const enterBtn = document.getElementById('enterBtn');
+const menuOverlay = document.getElementById('menuOverlay');
+const menu = document.getElementById('menu');
+const backBtn = document.getElementById('backBtn');
+
+enterBtn.addEventListener('click', () => {
+  // Fade landing
+  document.getElementById('landing').style.transition = 'opacity 0.3s';
+  document.getElementById('landing').style.opacity = '0';
+
+  // Show menu overlay
+  setTimeout(() => {
+    menuOverlay.style.display = 'flex';
+    setTimeout(() => {
+      menu.style.opacity = '1';
+      menu.style.transform = 'scale(1)';
+    }, 50);
+  }, 300);
+});
+
+// Back button to return to landing
+backBtn.addEventListener('click', () => {
+  menu.style.opacity = '0';
+  menu.style.transform = 'scale(0.8)';
+  setTimeout(() => {
+    menuOverlay.style.display = 'none';
+    document.getElementById('landing').style.opacity = '1';
+  }, 300);
+});
+</script>
+
 </body>
 </html>
