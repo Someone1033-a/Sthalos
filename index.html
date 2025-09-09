@@ -5,60 +5,209 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sthalos</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 <style>
+/*-------------------*/
 /* Fonts */
-@font-face { font-family:'brevis'; src:url('brevis.ttf') format('truetype'); }
+@font-face {
+    font-family:'brevis';
+    src:url('brevis.ttf') format('truetype');
+}
 
-/* Body & background */
+/*-------------------*/
+/* Body and background */
 body {
-    margin:0; height:100vh; font-family:Arial,sans-serif;
-    display:flex; flex-direction:column; justify-content:center; align-items:center;
-    overflow:hidden;
+    margin:0;
+    padding:0;
+    font-family: Arial, sans-serif;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
     background:linear-gradient(-45deg,#1a0033,#000033,#330000,#220033);
     background-size:400% 400%;
-    animation:gradientShift 12s ease infinite;
-    transition:background 0.5s ease;
+    animation: gradientShift 12s ease infinite;
+    overflow:hidden;
+    transition: background 0.5s ease;
 }
-@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes gradientShift {
+    0% { background-position:0% 50%; }
+    50% { background-position:100% 50%; }
+    100% { background-position:0% 50%; }
+}
 
+/*-------------------*/
 /* Top-right icons */
-.top-right {position:absolute; top:20px; right:20px; display:flex; gap:15px;}
-.circle-btn {width:45px;height:45px;border-radius:50%;display:flex;justify-content:center;align-items:center;color:white;font-size:20px;cursor:pointer;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;}
-.circle-btn:hover{transform:scale(1.1);box-shadow:0 0 10px rgba(255,255,255,0.6);}
-.insta{background:#e1306c;}
-.google{background:#fff;color:#4285F4;font-weight:bold;font-size:22px;}
-.settings{background:#555;}
+.top-right {
+    position:absolute;
+    top:20px;
+    right:20px;
+    display:flex;
+    gap:15px;
+}
+.circle-btn {
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+    text-decoration:none;
+    transition:transform 0.2s, box-shadow 0.2s;
+}
+.circle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+.insta { background:#e1306c; }
+.google { background:#fff; color:#4285F4; font-weight:bold; font-size:22px;}
+.settings { background:#555; }
 
-/* Text */
-h1{font-size:60px;color:#ff1a1a;font-family:'Brevis',sans-serif;margin:10px 0;text-align:center;}
-p{font-size:22px;color:#ff1a1a;margin:10px 0 30px;text-align:center;}
+/*-------------------*/
+/* Main Text */
+h1 {
+    font-size:60px;
+    color:#ff1a1a;
+    font-family:'Brevis', sans-serif;
+    margin:10px 0;
+    text-align:center;
+}
+p {
+    font-size:22px;
+    color:#ff1a1a;
+    margin:10px 0 30px;
+    text-align:center;
+}
 
-/* Enter button */
-.btn{background:#ff1a1a;color:black;padding:15px 40px;border:none;border-radius:10px;font-size:20px;cursor:pointer;box-shadow:0 0 10px rgba(255,0,0,0.6);transition:transform 0.2s, box-shadow 0.2s;}
-.btn:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(255,0,0,0.8);}
+/*-------------------*/
+/* Enter Button */
+.btn {
+    background:#ff1a1a;
+    color:black;
+    padding:15px 40px;
+    border:none;
+    border-radius:10px;
+    font-size:20px;
+    cursor:pointer;
+    box-shadow:0 0 10px rgba(255,0,0,0.6);
+    transition:transform 0.2s, box-shadow 0.2s;
+}
+.btn:hover {
+    transform:scale(1.05);
+    box-shadow:0 0 20px rgba(255,0,0,0.8);
+}
 
+/*-------------------*/
 /* Quote */
-.quote{position:absolute; bottom:30px; text-align:center; width:80%; font-size:20px; color:#ff1a1a;}
+.quote {
+    position:absolute;
+    bottom:30px;
+    width:80%;
+    text-align:center;
+    font-size:20px;
+    color:#ff1a1a;
+}
 
+/*-------------------*/
 /* Panels */
-.panel{position:fixed; top:0; right:0; width:300px; height:100%; background:rgba(0,0,0,0.95); color:white; display:none; flex-direction:column; padding:20px; overflow-y:auto; transition:transform 0.3s ease; z-index:10;}
-.panel.show{display:flex; transform:translateX(0);}
-.panel-header{font-size:20px;font-weight:bold;margin-bottom:20px;text-align:center;}
-.close-btn{position:absolute;bottom:20px;left:20px;background:#444;color:white;padding:5px 10px;cursor:pointer;font-size:14px;border-radius:5px;}
-.theme-list{display:flex; flex-direction:column; gap:10px; overflow-y:auto; max-height:60vh;}
-.theme-item{display:flex; align-items:center; justify-content:space-between; padding:10px; border-radius:5px; cursor:pointer; transition:background 0.2s;}
-.theme-item:hover{background:rgba(255,255,255,0.1);}
-.theme-colors{display:flex; gap:5px;}
-.theme-color{width:20px; height:20px; border-radius:50%;}
+.panel {
+    position:fixed;
+    top:0;
+    right:0;
+    width:300px;
+    height:100%;
+    background:rgba(0,0,0,0.95);
+    color:white;
+    display:none;
+    flex-direction:column;
+    padding:20px;
+    overflow-y:auto;
+    transition: transform 0.3s ease;
+    z-index:10;
+}
+.panel.show {
+    display:flex;
+    transform:translateX(0);
+}
+.panel-header {
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:20px;
+    text-align:center;
+}
+.close-btn {
+    position:absolute;
+    bottom:20px;
+    left:20px;
+    background:#444;
+    color:white;
+    padding:5px 10px;
+    cursor:pointer;
+    font-size:14px;
+    border-radius:5px;
+}
+.theme-list {
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    overflow-y:auto;
+    max-height:60vh;
+}
+.theme-item {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px;
+    border-radius:5px;
+    cursor:pointer;
+    transition:background 0.2s;
+}
+.theme-item:hover {
+    background:rgba(255,255,255,0.1);
+}
+.theme-colors {
+    display:flex;
+    gap:5px;
+}
+.theme-color {
+    width:20px;
+    height:20px;
+    border-radius:50%;
+}
 
-/* Create panel bigger */
-.create-theme-panel{width:350px; text-align:center;}
-.create-theme-panel input{padding:5px;width:80%;border-radius:5px;margin-top:15px;}
-.create-theme-panel .color-select{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid #fff; display:inline-block;}
-.create-theme-panel .selected{border:2px solid #ff1a1a;}
-.panel::-webkit-scrollbar{width:6px;}
-.panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.3);border-radius:3px;}
+/*-------------------*/
+/* Create Theme Panel */
+.create-theme-panel {
+    width:350px;
+    text-align:center;
+}
+.create-theme-panel input {
+    padding:5px;
+    width:80%;
+    border-radius:5px;
+    margin-top:15px;
+}
+.create-theme-panel .color-select {
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    cursor:pointer;
+    border:2px solid #fff;
+    display:inline-block;
+}
+.create-theme-panel .selected {
+    border:2px solid #ff1a1a;
+}
+.panel::-webkit-scrollbar {
+    width:6px;
+}
+.panel::-webkit-scrollbar-thumb {
+    background:rgba(255,255,255,0.3);
+    border-radius:3px;
+}
 </style>
 </head>
 <body>
@@ -102,7 +251,7 @@ p{font-size:22px;color:#ff1a1a;margin:10px 0 30px;text-align:center;}
 </div>
 
 <script>
-// Quotes
+//------------------- Quotes
 const quotes=[
 '"Push yourself, because no one else is going to do it for you."',
 '"Strength doesn’t come from what you can do, it comes from overcoming the things you once thought you couldn’t."',
@@ -116,7 +265,7 @@ const quotes=[
 '"Sweat is fat crying."'];
 document.getElementById('quote').textContent=quotes[Math.floor(Math.random()*quotes.length)];
 
-// Panels
+//------------------- Panels
 const settingsBtn=document.getElementById('settingsBtn');
 const settingsPanel=document.getElementById('settingsPanel');
 const settingsClose=document.getElementById('settingsClose');
@@ -143,7 +292,7 @@ document.addEventListener('keydown',e=>{
     }
 });
 
-// Themes
+//------------------- Themes
 const themeList=document.getElementById('themesList');
 const themeNames=[
 {name:"Dark Crimson",colors:["#330000","#660000","#990000"]},
@@ -159,6 +308,7 @@ const themeNames=[
 {name:"Sunflower Fields",colors:["#f6d743","#ffcc33","#ff9900"]},
 {name:"Candy Cane",colors:["#ff0000","#ffffff","#ffcccc"]}
 ];
+
 themeNames.forEach(theme=>{
     const div=document.createElement('div'); div.className='theme-item';
     const colorDivs=document.createElement('div'); colorDivs.className='theme-colors';
@@ -171,7 +321,7 @@ themeNames.forEach(theme=>{
     themeList.appendChild(div);
 });
 
-// Custom palette
+//------------------- Custom palette
 const colorPalette=document.getElementById('colorPalette');
 const customColors=["#000","#111","#222","#333","#444","#555","#666","#777","#888","#999","#aaa","#bbb","#ccc","#ddd","#eee","#fff","#f28e1c","#f6c555","#3e8e41"];
 let selectedColors=[];
