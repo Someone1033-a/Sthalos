@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sthalos</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -12,6 +12,7 @@
       src: url('brevis.ttf') format('truetype');
     }
 
+    /* Base body + transition vars */
     body {
       margin: 0;
       min-height: 100vh;
@@ -20,35 +21,102 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-direction: column; /* ✅ keeps everything centered */
+      flex-direction: column;
       transition: background 1s ease, color 0.5s ease;
-      text-align: center; /* ✅ ensures text stays centered */
+      text-align: center;
+      /* default accent variable (used by headings & paragraphs) */
+      --accent: #ff1a1a;
     }
 
-    /* THEMES */
-    body.theme-default {
+    /* =========================
+       THEMES (12 total)
+       each theme sets a background gradient and an --accent color
+       ========================= */
+
+    body.theme-default { /* Dark Crimson (original) */
       background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
       background-size: 400% 400%;
       animation: gradientShift 12s ease infinite;
-      color: #ff1a1a;
+      --accent: #ff1a1a;
     }
-    body.theme-blueberry {
-      background: linear-gradient(-45deg, #2e0854, #000033, #1a0033, #220044);
+
+    body.theme-blueberry { /* Blueberry Blues */
+      background: linear-gradient(-45deg, #2e0854, #1a1f6b, #001a3d, #081b3c);
       background-size: 400% 400%;
       animation: gradientShift 12s ease infinite;
-      color: #ff1a1a;
+      --accent: #ff1a1a;
     }
-    body.theme-sunset {
+
+    body.theme-sunset { /* Tropical / Sunset */
       background: linear-gradient(-45deg, #ffcc00, #ff6600, #228B22, #996600);
       background-size: 400% 400%;
       animation: gradientShift 12s ease infinite;
-      color: #0b0b77;
+      --accent: #07104b; /* darker blue accent for legibility */
     }
-    body.theme-candy {
+
+    body.theme-candy { /* Candy / Lagoon */
       background: linear-gradient(-45deg, #ff66b2, #ffffff, #00ffff, #ff99cc);
       background-size: 400% 400%;
       animation: gradientShift 12s ease infinite;
-      color: #0b0b77;
+      --accent: #07104b;
+    }
+
+    /* 8 NEW THEMES (added) */
+
+    body.theme-cosmic { /* Cosmic Night */
+      background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #4b2b7f);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      --accent: #ffb6c6;
+    }
+
+    body.theme-forest { /* Forest Whisper */
+      background: linear-gradient(-45deg, #0b3d20, #1f5f2a, #3b8d47, #0f2f1a);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      --accent: #ffdca3;
+    }
+
+    body.theme-inferno { /* Inferno Blaze */
+      background: linear-gradient(-45deg, #2b0000, #ff3b00, #ff8b00, #662200);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      --accent: #fff1e6;
+    }
+
+    body.theme-crystal { /* Crystal Sky */
+      background: linear-gradient(-45deg, #0066cc, #66ccff, #aaf0ff, #1a9cff);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      --accent: #001a3d;
+    }
+
+    body.theme-sakura { /* Sakura Dream */
+      background: linear-gradient(-45deg, #ffb3c6, #ffdfe6, #fff0f8, #ffb3d9);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      --accent: #07104b;
+    }
+
+    body.theme-neon { /* Neon Storm */
+      background: linear-gradient(-45deg, #00ffff, #ff00ff, #00ff88, #001a33);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      --accent: #ffffff;
+    }
+
+    body.theme-desert { /* Desert Mirage */
+      background: linear-gradient(-45deg, #ef9a3c, #f4d06f, #c67f33, #e9c46a);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      --accent: #07104b;
+    }
+
+    body.theme-glacier { /* Glacier Mist */
+      background: linear-gradient(-45deg, #eaf6ff, #bfe9ff, #8fd6ff, #cfeeff);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      --accent: #001a3d;
     }
 
     @keyframes gradientShift {
@@ -105,13 +173,8 @@
       transition: right 0.5s ease;
       z-index: 50;
     }
-    #settingsPanel.open {
-      right: 0;
-    }
-    #settingsPanel h3 {
-      margin: 20px;
-      font-size: 20px;
-    }
+    #settingsPanel.open { right: 0; }
+    #settingsPanel h3 { margin: 20px; font-size: 20px; }
     .setting-item {
       margin: 15px 20px;
       cursor: pointer;
@@ -120,11 +183,9 @@
       background: #222;
       text-align: center;
     }
-    .setting-item:hover {
-      background: #333;
-    }
+    .setting-item:hover { background: #333; }
 
-    /* ✅ Bottom bar with Close/Esc */
+    /* Bottom Close/Esc in settings */
     .settings-footer {
       background: #111;
       padding: 10px;
@@ -133,27 +194,33 @@
       cursor: pointer;
       border-top: 1px solid #333;
     }
-    .settings-footer:hover {
-      background: #222;
-    }
+    .settings-footer:hover { background: #222; }
 
-    /* Main content */
+    /* Heading / paragraph use accent variable so themes change text color */
     h1 {
       font-size: 60px;
       margin: 10px 0;
       font-family: 'Brevia', sans-serif;
+      color: var(--accent);
     }
     p {
       font-size: 22px;
       margin: 10px 0 30px;
+      color: var(--accent);
     }
+
+    /* Quote: centered horizontally using left:50% transform */
     #quote {
       position: absolute;
       bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 18px;
       text-align: center;
       padding: 0 20px;
-      max-width: 90%;
+      max-width: 900px; /* prevents it being too wide on big screens */
+      color: var(--accent); /* match theme accent */
+      z-index: 5;
     }
 
     /* Button */
@@ -171,7 +238,7 @@
       box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
     }
 
-    /* Menu overlay */
+    /* Menu overlay (center modal) */
     #menuOverlay {
       position: fixed;
       top: 0;
@@ -198,10 +265,8 @@
       opacity: 0;
       transition: all 0.4s ease;
     }
-    #menuOverlay.show #menuBox {
-      transform: scale(1);
-      opacity: 1;
-    }
+    #menuOverlay.show #menuBox { transform: scale(1); opacity: 1; }
+
     #menuBox h2 {
       font-size: 24px;
       margin-bottom: 20px;
@@ -218,9 +283,8 @@
       font-size: 18px;
       text-decoration: none;
     }
-    .menu-btn:hover {
-      background: #ff4d4d;
-    }
+    .menu-btn:hover { background: #ff4d4d; }
+
     #closeMenu {
       position: absolute;
       bottom: 20px;
@@ -228,6 +292,14 @@
       font-size: 14px;
       color: white;
       cursor: pointer;
+    }
+
+    /* small devices: scale text */
+    @media (max-width: 420px) {
+      h1 { font-size: 36px; }
+      p  { font-size: 16px; }
+      #quote { font-size: 14px; bottom: 30px; }
+      .btn { padding: 12px 28px; font-size: 18px; }
     }
   </style>
 </head>
@@ -247,7 +319,7 @@
   </div>
 
   <!-- Settings Panel -->
-  <div id="settingsPanel">
+  <div id="settingsPanel" aria-hidden="true">
     <div>
       <h3>Settings</h3>
       <div class="setting-item" id="themeToggle">Change Theme</div>
@@ -264,8 +336,8 @@
   </div>
 
   <!-- Menu overlay -->
-  <div id="menuOverlay">
-    <div id="menuBox">
+  <div id="menuOverlay" aria-hidden="true">
+    <div id="menuBox" role="dialog" aria-modal="true">
       <h2>PICK YOUR DESTINATION</h2>
       <a href="#" class="menu-btn">CALI-CHALLENGE GENERATOR</a>
       <div id="closeMenu">CLOSE / ESC</div>
@@ -288,32 +360,53 @@
   ];
   document.getElementById("quote").innerText = quotes[Math.floor(Math.random()*quotes.length)];
 
-  // MENU
+  // MENU behaviour (Enter)
   const enterBtn = document.getElementById("enterBtn");
   const menuOverlay = document.getElementById("menuOverlay");
   const closeMenu = document.getElementById("closeMenu");
 
   enterBtn.addEventListener("click", () => {
-    menuOverlay.style.display = "flex";
-    setTimeout(() => menuOverlay.classList.add("show"), 50);
+    // quick zoom animation for Enter (tiny, snappy)
+    enterBtn.style.transform = "scale(1.06)";
+    setTimeout(() => {
+      enterBtn.style.transform = "";
+      menuOverlay.style.display = "flex";
+      // small delay so CSS transition plays
+      setTimeout(() => menuOverlay.classList.add("show"), 30);
+    }, 120);
   });
 
   closeMenu.addEventListener("click", () => {
     menuOverlay.classList.remove("show");
-    setTimeout(() => menuOverlay.style.display = "none", 400);
+    setTimeout(() => menuOverlay.style.display = "none", 350);
   });
 
-  // SETTINGS
+  // SETTINGS panel
   const settingsBtn = document.getElementById('settingsBtn');
   const settingsPanel = document.getElementById('settingsPanel');
   const themeToggle = document.getElementById('themeToggle');
   const closeSettings = document.getElementById('closeSettings');
 
-  let themes = ['theme-default','theme-blueberry','theme-sunset','theme-candy'];
-  let currentThemeIndex = 0;
+  // 12 themes total (added 8 new ones)
+  const themes = [
+    'theme-default',    // Dark Crimson
+    'theme-blueberry',  // Blueberry Blues
+    'theme-sunset',     // Tropical / Sunset
+    'theme-candy',      // Candy / Lagoon
+    'theme-cosmic',     // Cosmic Night
+    'theme-forest',     // Forest Whisper
+    'theme-inferno',    // Inferno Blaze
+    'theme-crystal',    // Crystal Sky
+    'theme-sakura',     // Sakura Dream
+    'theme-neon',       // Neon Storm
+    'theme-desert',     // Desert Mirage
+    'theme-glacier'     // Glacier Mist
+  ];
 
-  if(localStorage.getItem('themeIndex')){
-    currentThemeIndex = parseInt(localStorage.getItem('themeIndex'));
+  let currentThemeIndex = 0;
+  if (localStorage.getItem('themeIndex')) {
+    currentThemeIndex = parseInt(localStorage.getItem('themeIndex'), 10) || 0;
+    if (currentThemeIndex < 0 || currentThemeIndex >= themes.length) currentThemeIndex = 0;
     document.body.className = themes[currentThemeIndex];
   }
 
@@ -333,16 +426,16 @@
     settingsPanel.classList.remove('open');
   });
 
-  // ESC closes both menu and settings
+  // ESC closes menu and settings
   document.addEventListener("keydown", (e) => {
-    if(e.key === "Escape"){
-      if(settingsPanel.classList.contains("open")){
-        settingsBtn.classList.remove("rotate");
-        settingsPanel.classList.remove("open");
+    if (e.key === "Escape") {
+      if (settingsPanel.classList.contains("open")) {
+        settingsBtn.classList.remove('rotate');
+        settingsPanel.classList.remove('open');
       }
-      if(menuOverlay.classList.contains("show")){
-        menuOverlay.classList.remove("show");
-        setTimeout(() => menuOverlay.style.display = "none", 400);
+      if (menuOverlay.classList.contains("show")) {
+        menuOverlay.classList.remove('show');
+        setTimeout(() => menuOverlay.style.display = "none", 350);
       }
     }
   });
