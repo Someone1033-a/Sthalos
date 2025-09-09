@@ -8,207 +8,65 @@
 
 <style>
 /* Fonts */
-@font-face {
-    font-family: 'brevis';
-    src: url('brevis.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
+@font-face { font-family:'brevis'; src:url('brevis.ttf') format('truetype'); }
 
-/* Body and background animation */
+/* Body & background */
 body {
-    margin: 0;
-    height: 100vh;
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
-    background-size: 400% 400%;
-    animation: gradientShift 12s ease infinite;
+    margin:0; height:100vh; font-family:Arial,sans-serif;
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    overflow:hidden;
+    background:linear-gradient(-45deg,#1a0033,#000033,#330000,#220033);
+    background-size:400% 400%;
+    animation:gradientShift 12s ease infinite;
+    transition:background 0.5s ease;
 }
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 
-@keyframes gradientShift {
-    0% {background-position:0% 50%;}
-    50% {background-position:100% 50%;}
-    100% {background-position:0% 50%;}
-}
+/* Top-right icons */
+.top-right {position:absolute; top:20px; right:20px; display:flex; gap:15px;}
+.circle-btn {width:45px;height:45px;border-radius:50%;display:flex;justify-content:center;align-items:center;color:white;font-size:20px;cursor:pointer;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;}
+.circle-btn:hover{transform:scale(1.1);box-shadow:0 0 10px rgba(255,255,255,0.6);}
+.insta{background:#e1306c;}
+.google{background:#fff;color:#4285F4;font-weight:bold;font-size:22px;}
+.settings{background:#555;}
 
-/* Top right icons */
-.top-right {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    gap: 15px;
-}
-
-.circle-btn {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.circle-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(255,255,255,0.6);
-}
-
-.insta { background: #e1306c; }
-.google { background: #fff; color: #4285F4; font-weight: bold; font-size:22px; }
-.settings { background: #555; }
-
-/* Centered text */
-h1 {
-    font-size: 60px;
-    color: #ff1a1a;
-    font-family: 'Brevis', sans-serif;
-    margin: 10px 0;
-    text-align: center;
-}
-
-p {
-    font-size: 22px;
-    color: #ff1a1a;
-    margin: 10px 0 30px;
-    text-align: center;
-}
+/* Text */
+h1{font-size:60px;color:#ff1a1a;font-family:'Brevis',sans-serif;margin:10px 0;text-align:center;}
+p{font-size:22px;color:#ff1a1a;margin:10px 0 30px;text-align:center;}
 
 /* Enter button */
-.btn {
-    background: #ff1a1a;
-    color: black;
-    padding: 15px 40px;
-    border: none;
-    border-radius: 10px;
-    font-size: 20px;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(255,0,0,0.6);
-    transition: transform 0.2s, box-shadow 0.2s;
-}
+.btn{background:#ff1a1a;color:black;padding:15px 40px;border:none;border-radius:10px;font-size:20px;cursor:pointer;box-shadow:0 0 10px rgba(255,0,0,0.6);transition:transform 0.2s, box-shadow 0.2s;}
+.btn:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(255,0,0,0.8);}
 
-.btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(255,0,0,0.8);
-}
-
-/* Quotes */
-.quote {
-    position: absolute;
-    bottom: 30px;
-    text-align: center;
-    width: 80%;
-    font-size: 20px;
-    color: #ff1a1a;
-}
+/* Quote */
+.quote{position:absolute; bottom:30px; text-align:center; width:80%; font-size:20px; color:#ff1a1a;}
 
 /* Panels */
-.panel {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 300px;
-    height: 100%;
-    background: rgba(0,0,0,0.95);
-    color: white;
-    display: none;
-    flex-direction: column;
-    padding: 20px;
-    overflow-y: auto;
-    transition: transform 0.3s ease;
-    z-index: 10;
-}
-
-.panel.show {
-    display: flex;
-    transform: translateX(0);
-}
-
-.panel-header {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.close-btn {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    background: #444;
-    color: white;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 14px;
-    border-radius: 5px;
-}
-
-/* Theme list */
-.theme-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    overflow-y: auto;
-}
-
-.theme-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.theme-item:hover {
-    background: rgba(255,255,255,0.1);
-}
-
-.theme-color {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
+.panel{position:fixed; top:0; right:0; width:300px; height:100%; background:rgba(0,0,0,0.95); color:white; display:none; flex-direction:column; padding:20px; overflow-y:auto; transition:transform 0.3s ease; z-index:10;}
+.panel.show{display:flex; transform:translateX(0);}
+.panel-header{font-size:20px;font-weight:bold;margin-bottom:20px;text-align:center;}
+.close-btn{position:absolute;bottom:20px;left:20px;background:#444;color:white;padding:5px 10px;cursor:pointer;font-size:14px;border-radius:5px;}
+.theme-list{display:flex; flex-direction:column; gap:10px; overflow-y:auto; max-height:60vh;}
+.theme-item{display:flex; align-items:center; justify-content:space-between; padding:10px; border-radius:5px; cursor:pointer; transition:background 0.2s;}
+.theme-item:hover{background:rgba(255,255,255,0.1);}
+.theme-colors{display:flex; gap:5px;}
+.theme-color{width:20px; height:20px; border-radius:50%;}
 
 /* Create panel bigger */
-.create-theme-panel {
-    width: 350px;
-    text-align: center;
-}
-
-.panel::-webkit-scrollbar {
-    width: 6px;
-}
-.panel::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.3);
-    border-radius: 3px;
-}
+.create-theme-panel{width:350px; text-align:center;}
+.create-theme-panel input{padding:5px;width:80%;border-radius:5px;margin-top:15px;}
+.create-theme-panel .color-select{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid #fff; display:inline-block;}
+.create-theme-panel .selected{border:2px solid #ff1a1a;}
+.panel::-webkit-scrollbar{width:6px;}
+.panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.3);border-radius:3px;}
 </style>
 </head>
 <body>
 
 <div class="top-right">
-    <a href="https://instagram.com/train.with.harsh" target="_blank" class="circle-btn insta">
-        <i class="fab fa-instagram"></i>
-    </a>
-    <a href="#" class="circle-btn google">
-        <i class="fab fa-google"></i>
-    </a>
-    <div class="circle-btn settings" id="settingsBtn">
-        <i class="fas fa-cog"></i>
-    </div>
+    <a href="https://instagram.com/train.with.harsh" target="_blank" class="circle-btn insta"><i class="fab fa-instagram"></i></a>
+    <a href="#" class="circle-btn google"><i class="fab fa-google"></i></a>
+    <div class="circle-btn settings" id="settingsBtn"><i class="fas fa-cog"></i></div>
 </div>
 
 <h1>Sthalos</h1>
@@ -238,87 +96,109 @@ p {
     <div class="panel-header">Craft Your Theme</div>
     <div style="margin-bottom:15px;">Pick 2-5 colors</div>
     <div id="colorPalette" style="display:flex; flex-wrap: wrap; gap:10px; justify-content:center;"></div>
-    <input type="text" id="themeNameInput" placeholder="Theme Name" style="margin-top:15px; width:80%; padding:5px; border-radius:5px;">
-    <button class="btn" id="saveThemeBtn" style="margin-top:15px;">Save</button>
+    <input type="text" id="themeNameInput" placeholder="Theme Name">
+    <button class="btn" id="saveThemeBtn">Save</button>
     <div class="close-btn" id="createClose">Close / Esc</div>
 </div>
 
 <script>
 // Quotes
-const quotes = [
-    '"Push yourself, because no one else is going to do it for you."',
-    '"Strength doesn’t come from what you can do, it comes from overcoming the things you once thought you couldn’t."',
-    '"Your body can stand almost anything. It’s your mind that you have to convince."',
-    '"No pain, no gain. Shut up and train."',
-    '"The hardest lift of all is lifting your butt off the couch."',
-    '"Don’t limit your challenges, challenge your limits."',
-    '"It’s going to be a journey. It’s not a sprint to get in shape."',
-    '"Success isn’t always about greatness. It’s about consistency."',
-    '"The only bad workout is the one you didn’t do."',
-    '"Sweat is fat crying."'
-];
-
-document.getElementById('quote').textContent = quotes[Math.floor(Math.random() * quotes.length)];
+const quotes=[
+'"Push yourself, because no one else is going to do it for you."',
+'"Strength doesn’t come from what you can do, it comes from overcoming the things you once thought you couldn’t."',
+'"Your body can stand almost anything. It’s your mind that you have to convince."',
+'"No pain, no gain. Shut up and train."',
+'"The hardest lift of all is lifting your butt off the couch."',
+'"Don’t limit your challenges, challenge your limits."',
+'"It’s going to be a journey. It’s not a sprint to get in shape."',
+'"Success isn’t always about greatness. It’s about consistency."',
+'"The only bad workout is the one you didn’t do."',
+'"Sweat is fat crying."'];
+document.getElementById('quote').textContent=quotes[Math.floor(Math.random()*quotes.length)];
 
 // Panels
-const settingsBtn = document.getElementById('settingsBtn');
-const settingsPanel = document.getElementById('settingsPanel');
-const settingsClose = document.getElementById('settingsClose');
+const settingsBtn=document.getElementById('settingsBtn');
+const settingsPanel=document.getElementById('settingsPanel');
+const settingsClose=document.getElementById('settingsClose');
+const themeOpenBtn=document.getElementById('themeOpenBtn');
+const themesPanel=document.getElementById('themesPanel');
+const themesClose=document.getElementById('themesClose');
+const createThemeBtn=document.getElementById('createThemeBtn');
+const createThemePanel=document.getElementById('createThemePanel');
+const createClose=document.getElementById('createClose');
+const enterBtn=document.getElementById('enterBtn');
 
-const themeOpenBtn = document.getElementById('themeOpenBtn');
-const themesPanel = document.getElementById('themesPanel');
-const themesClose = document.getElementById('themesClose');
-
-const createThemeBtn = document.getElementById('createThemeBtn');
-const createThemePanel = document.getElementById('createThemePanel');
-const createClose = document.getElementById('createClose');
-
-settingsBtn.onclick = () => settingsPanel.classList.add('show');
-settingsClose.onclick = () => settingsPanel.classList.remove('show');
-
-themeOpenBtn.onclick = () => themesPanel.classList.add('show');
-themesClose.onclick = () => themesPanel.classList.remove('show');
-
-createThemeBtn.onclick = () => createThemePanel.classList.add('show');
-createClose.onclick = () => createThemePanel.classList.remove('show');
-
-document.addEventListener('keydown', (e)=>{
-    if(e.key === 'Escape'){
+enterBtn.onclick=()=>settingsPanel.classList.add('show');
+settingsBtn.onclick=()=>settingsPanel.classList.add('show');
+settingsClose.onclick=()=>settingsPanel.classList.remove('show');
+themeOpenBtn.onclick=()=>themesPanel.classList.add('show');
+themesClose.onclick=()=>themesPanel.classList.remove('show');
+createThemeBtn.onclick=()=>createThemePanel.classList.add('show');
+createClose.onclick=()=>createThemePanel.classList.remove('show');
+document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){
         settingsPanel.classList.remove('show');
         themesPanel.classList.remove('show');
         createThemePanel.classList.remove('show');
     }
 });
 
-// Populate themes
-const themeList = document.getElementById('themesList');
-const themeNames = [
-    {name:"Dark Crimson", colors:["#330000","#660000","#990000"]},
-    {name:"Blueberry Blues", colors:["#0b1f50","#1a3c8c","#3b5ca3"]},
-    {name:"Tropical Vibes", colors:["#3e8e41","#f6c555","#f28e1c"]},
-    {name:"Lagoon", colors:["#2e8b8b","#5dade2","#82e0aa"]},
-    {name:"Sunset Glow", colors:["#ff7e5f","#feb47b","#fd5e53"]},
-    {name:"Neon Nights", colors:["#ff00ff","#00ffff","#ff9900"]},
-    {name:"Aurora", colors:["#4b0082","#00ff7f","#8a2be2"]},
-    {name:"Forest Mist", colors:["#014421","#228b22","#76b947"]},
-    {name:"Candy Pop", colors:["#ffb6c1","#ff69b4","#ff1493"]},
-    {name:"Ocean Deep", colors:["#001f3f","#005f73","#0a9396"]},
-    {name:"Sunflower Fields", colors:["#f6d743","#ffcc33","#ff9900"]},
-    {name:"Candy Cane", colors:["#ff0000","#ffffff","#ffcccc"]}
+// Themes
+const themeList=document.getElementById('themesList');
+const themeNames=[
+{name:"Dark Crimson",colors:["#330000","#660000","#990000"]},
+{name:"Blueberry Blues",colors:["#0b1f50","#1a3c8c","#3b5ca3"]},
+{name:"Tropical Vibes",colors:["#3e8e41","#f6c555","#f28e1c"]},
+{name:"Lagoon",colors:["#2e8b8b","#5dade2","#82e0aa"]},
+{name:"Sunset Glow",colors:["#ff7e5f","#feb47b","#fd5e53"]},
+{name:"Neon Nights",colors:["#ff00ff","#00ffff","#ff9900"]},
+{name:"Aurora",colors:["#4b0082","#00ff7f","#8a2be2"]},
+{name:"Forest Mist",colors:["#014421","#228b22","#76b947"]},
+{name:"Candy Pop",colors:["#ffb6c1","#ff69b4","#ff1493"]},
+{name:"Ocean Deep",colors:["#001f3f","#005f73","#0a9396"]},
+{name:"Sunflower Fields",colors:["#f6d743","#ffcc33","#ff9900"]},
+{name:"Candy Cane",colors:["#ff0000","#ffffff","#ffcccc"]}
 ];
-
 themeNames.forEach(theme=>{
-    const div = document.createElement('div');
-    div.className = 'theme-item';
-    const colorDiv = document.createElement('div');
-    colorDiv.className = 'theme-color';
-    colorDiv.style.background = theme.colors[0];
-    div.appendChild(colorDiv);
-    const span = document.createElement('span');
-    span.textContent = theme.name;
-    div.appendChild(span);
+    const div=document.createElement('div'); div.className='theme-item';
+    const colorDivs=document.createElement('div'); colorDivs.className='theme-colors';
+    theme.colors.forEach(c=>{
+        const cd=document.createElement('div'); cd.className='theme-color'; cd.style.background=c; colorDivs.appendChild(cd);
+    });
+    const span=document.createElement('span'); span.textContent=theme.name;
+    div.appendChild(colorDivs); div.appendChild(span);
+    div.onclick=()=>{document.body.style.background=`linear-gradient(-45deg,${theme.colors.join(',')})`;}
     themeList.appendChild(div);
 });
+
+// Custom palette
+const colorPalette=document.getElementById('colorPalette');
+const customColors=["#000","#111","#222","#333","#444","#555","#666","#777","#888","#999","#aaa","#bbb","#ccc","#ddd","#eee","#fff","#f28e1c","#f6c555","#3e8e41"];
+let selectedColors=[];
+customColors.forEach(c=>{
+    const d=document.createElement('div'); d.className='color-select'; d.style.background=c;
+    d.onclick=()=>{
+        if(selectedColors.includes(c)){
+            selectedColors=selectedColors.filter(s=>s!==c); d.classList.remove('selected');
+        }else if(selectedColors.length<5){
+            selectedColors.push(c); d.classList.add('selected');
+        }
+    }
+    colorPalette.appendChild(d);
+});
+
+document.getElementById('saveThemeBtn').onclick=()=>{
+    if(selectedColors.length<2){alert("Select at least 2 colors"); return;}
+    const name=document.getElementById('themeNameInput').value.trim(); if(!name){alert("Enter name"); return;}
+    const div=document.createElement('div'); div.className='theme-item';
+    const colorDivs=document.createElement('div'); colorDivs.className='theme-colors';
+    selectedColors.forEach(c=>{const cd=document.createElement('div'); cd.className='theme-color'; cd.style.background=c; colorDivs.appendChild(cd);});
+    const span=document.createElement('span'); span.textContent=name;
+    div.appendChild(colorDivs); div.appendChild(span);
+    div.onclick=()=>{document.body.style.background=`linear-gradient(-45deg,${selectedColors.join(',')})`;}
+    themeList.appendChild(div);
+    selectedColors=[]; document.getElementById('themeNameInput').value=''; createThemePanel.classList.remove('show');
+};
 </script>
 
 </body>
