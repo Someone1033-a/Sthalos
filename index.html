@@ -1,444 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sthalos</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
-@font-face { font-family: 'Brevia'; src: url('brevis.ttf') format('truetype'); }
-* { box-sizing: border-box; }
-html,body { height:100%; margin:0; font-family: Arial, sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-:root {
-  --accent: #ff1a1a;
-  --accent-dark: #000;
-  --bg-grad: linear-gradient(-45deg,#1a0033,#000033,#330000,#220033);
+/* Fonts */
+@font-face {
+    font-family: 'brevis';
+    src: url('brevis.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
+
+/* Body and background animation */
 body {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  overflow-x:hidden;
-  transition: background 700ms ease, color 400ms ease;
-  background: var(--bg-grad);
-  background-size:400% 400%;
-  animation: gradShift 12s ease infinite;
-  color:var(--accent);
-  -webkit-font-smoothing:antialiased;
+    margin: 0;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
+    background-size: 400% 400%;
+    animation: gradientShift 12s ease infinite;
 }
-@keyframes gradShift { 0% {background-position:0% 50%} 50% {background-position:100% 50%} 100% {background-position:0% 50%} }
 
-.top-right { position:absolute; top:18px; right:18px; display:flex; gap:12px; z-index:1200; }
-.circle-btn { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; background:rgba(0,0,0,0.22); cursor:pointer; transition:transform .24s; }
-.circle-btn:hover { transform:scale(1.06); box-shadow:0 10px 30px rgba(0,0,0,.4); }
-.circle-btn.google { background:#fff; color:#4285f4; font-weight:700; font-size:18px; }
-.circle-btn.insta { background:linear-gradient(45deg,#e1306c,#f77737); }
-.settings.rotate { transform:rotate(180deg); }
+@keyframes gradientShift {
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
+}
 
-#landing { z-index:10; padding:44px 20px; display:flex; flex-direction:column; align-items:center; gap:14px; width:100%; max-width:1200px; }
-h1 { font-family:'Brevia', sans-serif; font-size:clamp(36px,6vw,72px); margin:0; color:var(--accent); text-shadow:0 0 6px rgba(255,255,255,.06); }
-#tag { font-size:clamp(16px,2.2vw,22px); margin:0; color:var(--accent); opacity:.95; }
-.btn-enter { background:var(--accent); color:var(--accent-dark); border:none; padding:12px 28px; font-size:18px; border-radius:10px; cursor:pointer; box-shadow:0 8px 26px rgba(0,0,0,.25); }
-.btn-enter:hover { transform:translateY(-2px); }
+/* Top right icons */
+.top-right {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+}
 
-#quote { position:fixed; bottom:28px; left:50%; transform:translateX(-50%); font-size:clamp(13px,2.6vw,18px); color:rgba(255,255,255,.95); max-width:92%; z-index:1100; text-align:center; }
+.circle-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
 
-#menuOverlay { position:fixed; inset:0; display:none; align-items:center; justify-content:center; backdrop-filter: blur(8px); background:rgba(0,0,0,0.55); z-index:1000; }
-#menuBox { width:90%; max-width:420px; background:rgba(18,18,18,0.98); border-radius:14px; padding:22px; transform:scale(.96); opacity:0; transition:all .28s ease; max-height:80vh; overflow:auto; box-shadow:0 18px 60px rgba(0,0,0,.6); text-align:center; }
-#menuOverlay.show { display:flex; }
-#menuOverlay.show #menuBox { transform:scale(1); opacity:1; }
-#menuBox h2 { margin:6px 0 18px; font-size:20px; color:#fff; letter-spacing:0.6px; }
-.menu-btn { display:block; width:100%; padding:12px; border-radius:10px; background:var(--accent); color:var(--accent-dark); text-decoration:none; text-align:center; margin:8px 0; font-weight:700; }
-.menu-btn:hover { filter:brightness(1.06); }
+.circle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
 
-#menuCloseBtn { position:fixed; left:18px; bottom:18px; color:#fff; cursor:pointer; z-index:1010; display:none; padding:8px 12px; border-radius:6px; border:1px solid rgba(255,255,255,0.12); background:rgba(0,0,0,0.35); }
+.insta { background: #e1306c; }
+.google { background: #fff; color: #4285F4; font-weight: bold; font-size:22px; }
+.settings { background: #555; }
 
-.panel { position:fixed; top:0; right:-520px; width:420px; max-width:96vw; height:100vh; background:#000; color:#fff; z-index:1100; padding:18px; display:flex; flex-direction:column; justify-content:space-between; transition:right .36s cubic-bezier(.2,.9,.2,1); box-shadow:-28px 0 80px rgba(0,0,0,.6); text-align:center; }
-.panel.open { right:0; }
-.panel h3 { margin:10px 0 12px; font-size:18px; }
-.setting-item { background:#111; padding:12px; margin:8px 0; border-radius:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:8px; }
-.small-icon { width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; color:#fff; background:#333; }
-.item-label { font-weight:700; color:#fff; text-align:center; }
+/* Centered text */
+h1 {
+    font-size: 60px;
+    color: #ff1a1a;
+    font-family: 'Brevis', sans-serif;
+    margin: 10px 0;
+    text-align: center;
+}
 
-.panel-footer { padding:12px; background:#0b0b0b; border-top:1px solid #222; text-align:center; cursor:pointer; font-size:14px; border-radius:8px; }
+p {
+    font-size: 22px;
+    color: #ff1a1a;
+    margin: 10px 0 30px;
+    text-align: center;
+}
 
-#themesPanel { right:-520px; width:420px; max-width:96vw; z-index:1150; background:#050505; box-shadow:-28px 0 80px rgba(0,0,0,.7); display:flex; flex-direction:column; justify-content:space-between; transition:right .36s; text-align:center; }
-#themesPanel.open { right:0; }
-.theme-list { overflow:auto; padding:10px 12px 18px 12px; margin-top:12px; display:flex; flex-direction:column; gap:10px; max-height:72vh; align-items:center; }
+/* Enter button */
+.btn {
+    background: #ff1a1a;
+    color: black;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255,0,0,0.6);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
 
-.theme-row { width:100%; display:grid; grid-template-columns:64px 1fr 36px; align-items:center; gap:12px; padding:10px; border-radius:12px; cursor:pointer; transition:background .12s; text-align:center; }
-.theme-row:hover { background: rgba(255,255,255,0.02); }
-.theme-circle { width:64px; height:64px; border-radius:50%; flex:0 0 64px; box-shadow:inset 0 -6px 14px rgba(0,0,0,.25); margin:auto; }
-.theme-label { font-weight:800; color:#fff; text-align:center; }
-.delete-icon { display:flex; align-items:center; justify-content:center; color:#ff5b5b; cursor:pointer; opacity:0; transition:opacity .12s; }
-.theme-row.custom:hover .delete-icon { opacity:1; }
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255,0,0,0.8);
+}
 
-#createPanel { right:-620px; width:560px; max-width:98vw; z-index:1200; background:#070707; box-shadow:-32px 0 90px rgba(0,0,0,.85); display:flex; flex-direction:column; justify-content:space-between; transition:right .36s; text-align:center; padding:22px; }
-#createPanel.open { right:0; }
-.colors-grid { display:grid; grid-template-columns: repeat(5,1fr); gap:12px; margin-top:14px; justify-items:center; }
-.color-swatch { width:60px; height:60px; border-radius:50%; cursor:pointer; border:3px solid transparent; box-shadow:0 14px 40px rgba(0,0,0,.4); }
-.color-swatch.selected { border-color:#fff; transform:scale(.98); }
-.input-name { width:100%; padding:14px; border-radius:10px; border:none; margin-top:12px; background:#111; color:#fff; outline:none; font-size:15px; text-align:center; }
+/* Quotes */
+.quote {
+    position: absolute;
+    bottom: 30px;
+    text-align: center;
+    width: 80%;
+    font-size: 20px;
+    color: #ff1a1a;
+}
 
-.save-btn { margin-top:12px; background:#1a8cff; color:#fff; padding:12px; border-radius:10px; border:none; cursor:pointer; font-weight:800; }
-.save-btn:disabled { opacity:.45; cursor:not-allowed; }
+/* Panels */
+.panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    color: white;
+    display: none;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+    z-index: 10;
+}
 
-.confirm-popup { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); min-width:320px; background:rgba(10,10,10,0.98); color:#fff; padding:18px; border-radius:10px; z-index:1500; display:none; text-align:center; box-shadow:0 28px 120px rgba(0,0,0,.85); }
-.confirm-popup.active { display:block; }
-.confirm-actions { display:flex; gap:14px; justify-content:center; margin-top:14px; }
-.btn-confirm { background:#ff1a1a; color:#fff; padding:10px 16px; border:none; border-radius:10px; cursor:pointer; font-weight:700; }
-.btn-cancel { background:#333; color:#fff; padding:10px 16px; border:none; border-radius:10px; cursor:pointer; }
+.panel.show {
+    display: flex;
+    transform: translateX(0);
+}
 
-@media (max-width:800px) {
-  .panel, #themesPanel { width:92vw; right:-92vw; }
-  #createPanel { width:92vw; right:-92vw; }
-  .theme-circle { width:54px; height:54px; }
-  .theme-row { grid-template-columns:54px 1fr 34px; }
+.panel-header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.close-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: #444;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+/* Theme list */
+.theme-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+}
+
+.theme-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.theme-item:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.theme-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Create panel bigger */
+.create-theme-panel {
+    width: 350px;
+    text-align: center;
+}
+
+.panel::-webkit-scrollbar {
+    width: 6px;
+}
+.panel::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
 }
 </style>
 </head>
 <body>
 
 <div class="top-right">
-  <a class="circle-btn insta" href="https://instagram.com/train.with.harsh" target="_blank"><i class="fab fa-instagram"></i></a>
-  <div class="circle-btn google"><i class="fab fa-google"></i></div>
-  <div id="settingsBtn" class="circle-btn settings"><i class="fas fa-cog"></i></div>
-</div>
-
-<div id="landing">
-  <h1 id="brand">Sthalos</h1>
-  <div id="tag">Strength meets challenge. Coming soon.</div>
-  <button id="enterBtn" class="btn-enter">Enter</button>
-</div>
-
-<div id="quote"></div>
-
-<div id="menuOverlay" aria-hidden="true">
-  <div id="menuBox">
-    <h2>PICK YOUR DESTINATION</h2>
-    <a class="menu-btn" id="caliBtn">CALI-CHALLENGE GENERATOR</a>
-  </div>
-</div>
-<div id="menuCloseBtn" style="display:none">CLOSE / ESC</div>
-
-<aside id="settingsPanel" class="panel" aria-hidden="true">
-  <div>
-    <h3>Settings</h3>
-    <div class="setting-item" id="openThemesBtn">
-      <div class="small-icon"><i class="fas fa-palette"></i></div>
-      <div class="item-label">Change Theme</div>
+    <a href="https://instagram.com/train.with.harsh" target="_blank" class="circle-btn insta">
+        <i class="fab fa-instagram"></i>
+    </a>
+    <a href="#" class="circle-btn google">
+        <i class="fab fa-google"></i>
+    </a>
+    <div class="circle-btn settings" id="settingsBtn">
+        <i class="fas fa-cog"></i>
     </div>
-    <div style="margin-top:12px;color:#888;font-size:13px;">Other settings coming...</div>
-  </div>
-  <div class="panel-footer" id="settingsClose">CLOSE / ESC</div>
-</aside>
+</div>
 
-<aside id="themesPanel" class="" aria-hidden="true">
-  <div>
-    <h3>Themes</h3>
-    <div id="themeList" class="theme-list" role="list"></div>
-  </div>
-  <div class="panel-footer" id="themesClose">CLOSE / ESC</div>
-</aside>
+<h1>Sthalos</h1>
+<p>Strength meets challenge. Coming soon.</p>
+<button class="btn" id="enterBtn">ENTER</button>
+<div class="quote" id="quote"></div>
 
-<aside id="createPanel" aria-hidden="true">
-  <div>
-    <h3>Create Theme</h3>
-    <div style="font-size:13px;color:#bbb">Pick 2–5 colors</div>
-    <div id="colorsGrid" class="colors-grid"></div>
-    <input id="newThemeName" class="input-name" placeholder="Enter theme name" />
-    <button id="saveThemeBtn" class="save-btn" disabled>Save Theme</button>
-  </div>
-  <div class="panel-footer" id="createClose">CLOSE / ESC</div>
-</aside>
+<!-- Settings Panel -->
+<div class="panel" id="settingsPanel">
+    <div class="panel-header">Settings</div>
+    <div class="theme-btn btn" id="themeOpenBtn">Themes</div>
+    <div class="close-btn" id="settingsClose">Close / Esc</div>
+</div>
 
-<div id="confirmPopup" class="confirm-popup" role="dialog" aria-modal="true">
-  <div id="confirmText"></div>
-  <div class="confirm-actions">
-    <button id="confirmYes" class="btn-confirm">Confirm</button>
-    <button id="confirmNo" class="btn-cancel">Cancel</button>
-  </div>
+<!-- Themes Panel -->
+<div class="panel" id="themesPanel">
+    <div class="panel-header">Themes</div>
+    <div class="theme-list" id="themesList"></div>
+    <div class="theme-item" id="createThemeBtn">
+        <i class="fas fa-pencil-alt" style="margin-right:10px;"></i> Create Custom Theme
+    </div>
+    <div class="close-btn" id="themesClose">Close / Esc</div>
+</div>
+
+<!-- Create Theme Panel -->
+<div class="panel create-theme-panel" id="createThemePanel">
+    <div class="panel-header">Craft Your Theme</div>
+    <div style="margin-bottom:15px;">Pick 2-5 colors</div>
+    <div id="colorPalette" style="display:flex; flex-wrap: wrap; gap:10px; justify-content:center;"></div>
+    <input type="text" id="themeNameInput" placeholder="Theme Name" style="margin-top:15px; width:80%; padding:5px; border-radius:5px;">
+    <button class="btn" id="saveThemeBtn" style="margin-top:15px;">Save</button>
+    <div class="close-btn" id="createClose">Close / Esc</div>
 </div>
 
 <script>
-const builtinThemes = [
-  { id:'dark-crimson', name:'Dark Crimson', colors:['#1a0033','#000033','#330000','#220033'], text:'red' },
-  { id:'blueberry', name:'Blueberry Blues', colors:['#2e0854','#1a1f6b','#001a3d','#081b3c'], text:'red' },
-  { id:'tropical', name:'Tropical Vibes', colors:['#ffcc00','#ff6600','#228B22','#996600'], text:'blue' },
-  { id:'lagoon', name:'Lagoon', colors:['#ff66b2','#ffffff','#00ffff','#ff99cc'], text:'blue' },
-  { id:'cosmic', name:'Cosmic Night', colors:['#0f0c29','#302b63','#24243e','#4b2b7f'], text:'red' },
-  { id:'forest', name:'Forest Whisper', colors:['#0b3d20','#1f5f2a','#3b8d47','#0f2f1a'], text:'red' },
-  { id:'inferno', name:'Inferno Blaze', colors:['#2b0000','#ff3b00','#ff8b00','#662200'], text:'red' },
-  { id:'crystal', name:'Crystal Sky', colors:['#0066cc','#66ccff','#aaf0ff','#1a9cff'], text:'red' },
-  { id:'sakura', name:'Sakura Dream', colors:['#ffb3c6','#ffdfe6','#fff0f8','#ffb3d9'], text:'blue' },
-  { id:'neon', name:'Neon Storm', colors:['#00ffff','#ff00ff','#00ff88','#001a33'], text:'blue' },
-  { id:'desert', name:'Desert Mirage', colors:['#ef9a3c','#f4d06f','#c67f33','#e9c46a'], text:'blue' },
-  { id:'glacier', name:'Glacier Mist', colors:['#eaf6ff','#bfe9ff','#8fd6ff','#cfeeff'], text:'blue' }
+// Quotes
+const quotes = [
+    '"Push yourself, because no one else is going to do it for you."',
+    '"Strength doesn’t come from what you can do, it comes from overcoming the things you once thought you couldn’t."',
+    '"Your body can stand almost anything. It’s your mind that you have to convince."',
+    '"No pain, no gain. Shut up and train."',
+    '"The hardest lift of all is lifting your butt off the couch."',
+    '"Don’t limit your challenges, challenge your limits."',
+    '"It’s going to be a journey. It’s not a sprint to get in shape."',
+    '"Success isn’t always about greatness. It’s about consistency."',
+    '"The only bad workout is the one you didn’t do."',
+    '"Sweat is fat crying."'
 ];
 
-const paletteColors = [
-  '#0b3d20','#1f8a70','#3ad59f','#ffd166',
-  '#ff6b6b','#ffbf69','#ff9a8b','#c34a36',
-  '#6a4c93','#2b2d42','#1b998b','#8ecae6',
-  '#ffb4a2','#ff7b7b','#f72585','#7209b7',
-  '#0ea5a4','#06b6d4','#e0aaff','#8ec5ff'
-];
+document.getElementById('quote').textContent = quotes[Math.floor(Math.random() * quotes.length)];
 
-const STORAGE_CUSTOM = 'sthalos_custom_list';
-const STORAGE_THEME_INDEX = 'sthalos_theme_index';
-
-let themes = [];
-function loadThemes(){
-  themes = [...builtinThemes];
-  const stored = localStorage.getItem(STORAGE_CUSTOM);
-  if (stored){
-    try {
-      const custom = JSON.parse(stored);
-      if (Array.isArray(custom)) {
-        custom.forEach((t,i) => { if(!t.id) t.id = 'custom-'+i+'-'+Date.now(); themes.push(t); });
-      }
-    } catch(e){}
-  }
-}
-loadThemes();
-
-function gradientFrom(colors){ return `linear-gradient(120deg, ${colors.join(',')})`; }
-function applyTheme(theme){
-  document.body.style.background = gradientFrom(theme.colors);
-  document.body.style.backgroundSize = '400% 400%';
-  document.body.style.animation = 'gradShift 12s ease infinite';
-  if (theme.text === 'blue') {
-    document.documentElement.style.setProperty('--accent','#0b0b77');
-    document.documentElement.style.setProperty('--accent-dark','#000');
-    document.body.style.color = '#0b0b77';
-  } else {
-    document.documentElement.style.setProperty('--accent','#ff1a1a');
-    document.documentElement.style.setProperty('--accent-dark','#000');
-    document.body.style.color = '#ff1a1a';
-  }
-}
-
-let currentThemeIndex = 0;
-(function initTheme(){
-  const stored = localStorage.getItem(STORAGE_THEME_INDEX);
-  if (stored !== null && !isNaN(parseInt(stored))) currentThemeIndex = parseInt(stored);
-  loadThemes();
-  if (currentThemeIndex >= themes.length) currentThemeIndex = 0;
-  applyTheme(themes[currentThemeIndex]);
-})();
-
+// Panels
 const settingsBtn = document.getElementById('settingsBtn');
 const settingsPanel = document.getElementById('settingsPanel');
 const settingsClose = document.getElementById('settingsClose');
-const openThemesBtn = document.getElementById('openThemesBtn');
 
+const themeOpenBtn = document.getElementById('themeOpenBtn');
 const themesPanel = document.getElementById('themesPanel');
-const themeListEl = document.getElementById('themeList');
 const themesClose = document.getElementById('themesClose');
 
-const createPanel = document.getElementById('createPanel');
-const colorsGrid = document.getElementById('colorsGrid');
-const newThemeName = document.getElementById('newThemeName');
-const saveThemeBtn = document.getElementById('saveThemeBtn');
+const createThemeBtn = document.getElementById('createThemeBtn');
+const createThemePanel = document.getElementById('createThemePanel');
 const createClose = document.getElementById('createClose');
 
-const confirmPopup = document.getElementById('confirmPopup');
-const confirmText = document.getElementById('confirmText');
-const confirmYes = document.getElementById('confirmYes');
-const confirmNo = document.getElementById('confirmNo');
+settingsBtn.onclick = () => settingsPanel.classList.add('show');
+settingsClose.onclick = () => settingsPanel.classList.remove('show');
 
-const enterBtn = document.getElementById('enterBtn');
-const menuOverlay = document.getElementById('menuOverlay');
-const menuBox = document.getElementById('menuBox');
-const menuCloseBtn = document.getElementById('menuCloseBtn');
-const caliBtn = document.getElementById('caliBtn');
-const quoteEl = document.getElementById('quote');
+themeOpenBtn.onclick = () => themesPanel.classList.add('show');
+themesClose.onclick = () => themesPanel.classList.remove('show');
 
-const quotes = [
-  `"Strength is built, not given."`,
-  `"Pain is temporary, pride is forever."`,
-  `"Every rep counts."`,
-  `"The body achieves what the mind believes."`,
-  `"Calisthenics is art in motion."`,
-  `"Small progress is still progress."`,
-  `"Push harder than yesterday."`,
-  `"Your only limit is you."`,
-  `"Discipline beats motivation."`,
-  `"Power through the struggle."`
-];
-quoteEl.innerText = quotes[Math.floor(Math.random() * quotes.length)];
-
-enterBtn.addEventListener('click', ()=>{
-  menuOverlay.style.display = 'flex';
-  setTimeout(()=> menuOverlay.classList.add('show'), 30);
-  menuCloseBtn.style.display = 'block';
-});
-menuCloseBtn.addEventListener('click', closeMenu);
-function closeMenu(){ menuOverlay.classList.remove('show'); setTimeout(()=>{ menuOverlay.style.display='none'; menuCloseBtn.style.display='none'; },320); }
-
-settingsBtn.addEventListener('click', ()=>{
-  settingsBtn.classList.toggle('rotate');
-  settingsPanel.classList.toggle('open');
-});
-settingsClose.addEventListener('click', ()=> { settingsBtn.classList.remove('rotate'); settingsPanel.classList.remove('open'); });
-
-openThemesBtn.addEventListener('click', ()=> {
-  loadThemes(); renderThemeList();
-  themesPanel.classList.add('open');
-});
-themesClose.addEventListener('click', ()=> themesPanel.classList.remove('open'));
-
-function renderThemeList(){
-  loadThemes();
-  themeListEl.innerHTML = '';
-  themes.forEach((t, idx) => {
-    const row = document.createElement('div');
-    row.className = 'theme-row' + (t.id && String(t.id).startsWith('custom-') ? ' custom' : '');
-    const circle = document.createElement('div');
-    circle.className = 'theme-circle';
-    if (t.colors && t.colors.length>1) circle.style.background = `linear-gradient(90deg, ${t.colors.join(',')})`;
-    else circle.style.background = t.colors && t.colors[0] || '#444';
-    const label = document.createElement('div');
-    label.className = 'theme-label';
-    label.innerText = t.name;
-    const del = document.createElement('div');
-    del.className = 'delete-icon';
-    del.innerHTML = '<i class="fas fa-trash"></i>';
-    if (t.id && String(t.id).startsWith('custom-')) {
-      del.addEventListener('click', (e)=>{
-        e.stopPropagation();
-        confirmText.textContent = `Delete ${t.name}?`;
-        confirmPopup.classList.add('active');
-        function doDelete(){ deleteCustomTheme(t.id); confirmPopup.classList.remove('active'); cleanup(); }
-        function cancel(){ confirmPopup.classList.remove('active'); cleanup(); }
-        function cleanup(){ confirmYes.removeEventListener('click', doDelete); confirmNo.removeEventListener('click', cancel); }
-        confirmYes.addEventListener('click', doDelete);
-        confirmNo.addEventListener('click', cancel);
-      });
-    } else { del.style.visibility='hidden'; }
-    row.appendChild(circle);
-    row.appendChild(label);
-    row.appendChild(del);
-    row.addEventListener('click', ()=> {
-      setThemeIndex(idx);
-    });
-    themeListEl.appendChild(row);
-  });
-  const createRow = document.createElement('div');
-  createRow.className = 'theme-row';
-  createRow.style.border = '1px dashed rgba(255,255,255,0.05)';
-  createRow.style.marginTop = '8px';
-  const c = document.createElement('div');
-  c.className = 'theme-circle';
-  c.style.background = '#222';
-  const lab = document.createElement('div');
-  lab.className = 'theme-label';
-  lab.innerText = 'Create';
-  createRow.appendChild(c); createRow.appendChild(lab);
-  createRow.addEventListener('click', ()=> { createPanel.classList.add('open'); renderColorsGrid(); });
-  themeListEl.appendChild(createRow);
-  setTimeout(()=> {
-    const rows = themeListEl.querySelectorAll('.theme-row');
-    if (rows[currentThemeIndex]) rows[currentThemeIndex].scrollIntoView({behavior:'smooth', block:'center'});
-  },80);
-}
-
-function setThemeIndex(i){
-  currentThemeIndex = Math.max(0, Math.min(i, themes.length - 1));
-  applyTheme(themes[currentThemeIndex]);
-  localStorage.setItem(STORAGE_THEME_INDEX, '' + currentThemeIndex);
-  renderThemeList();
-}
-
-function deleteCustomTheme(id){
-  const stored = JSON.parse(localStorage.getItem(STORAGE_CUSTOM) || '[]');
-  const updated = stored.filter(t=> t.id !== id);
-  localStorage.setItem(STORAGE_CUSTOM, JSON.stringify(updated));
-  loadThemes();
-  if (currentThemeIndex >= themes.length) currentThemeIndex = 0;
-  applyTheme(themes[currentThemeIndex]);
-  renderThemeList();
-}
-
-function renderColorsGrid(){
-  colorsGrid.innerHTML = '';
-  paletteColors.forEach(c => {
-    const s = document.createElement('div');
-    s.className = 'color-swatch';
-    s.style.background = c;
-    s.dataset.color = c;
-    s.addEventListener('click', ()=> toggleSwatch(s));
-    colorsGrid.appendChild(s);
-  });
-  selectedColors = [];
-  newThemeName.value = '';
-  updateSaveButton();
-}
-
-let selectedColors = [];
-function toggleSwatch(el){
-  const col = el.dataset.color;
-  const idx = selectedColors.indexOf(col);
-  if (idx >= 0){
-    selectedColors.splice(idx,1);
-    el.classList.remove('selected');
-  } else {
-    if (selectedColors.length >= 5) { el.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:200}); return; }
-    selectedColors.push(col);
-    el.classList.add('selected');
-  }
-  updateSaveButton();
-}
-function updateSaveButton(){ saveThemeBtn.disabled = !(selectedColors.length >= 2 && newThemeName.value.trim().length >= 2); }
-newThemeName.addEventListener('input', updateSaveButton);
-
-saveThemeBtn.addEventListener('click', ()=>{
-  const name = newThemeName.value.trim();
-  if (!name || selectedColors.length < 2) return;
-  const newT = { id:'custom-'+Date.now(), name, colors:[...selectedColors], text:'blue' };
-  const stored = JSON.parse(localStorage.getItem(STORAGE_CUSTOM) || '[]');
-  stored.push(newT);
-  localStorage.setItem(STORAGE_CUSTOM, JSON.stringify(stored));
-  loadThemes();
-  renderThemeList();
-  setThemeIndex(themes.length - 1);
-  createPanel.classList.remove('open');
-});
-
-createClose.addEventListener('click', ()=> createPanel.classList.remove('open'));
-themesClose.addEventListener('click', ()=> themesPanel.classList.remove('open'));
+createThemeBtn.onclick = () => createThemePanel.classList.add('show');
+createClose.onclick = () => createThemePanel.classList.remove('show');
 
 document.addEventListener('keydown', (e)=>{
-  if (e.key === 'Escape'){
-    if (createPanel.classList.contains('open')) { createPanel.classList.remove('open'); return; }
-    if (themesPanel.classList.contains('open')) { themesPanel.classList.remove('open'); return; }
-    if (settingsPanel.classList.contains('open')) { settingsBtn.classList.remove('rotate'); settingsPanel.classList.remove('open'); return; }
-    if (menuOverlay.classList.contains('show')) { closeMenu(); return; }
-  }
+    if(e.key === 'Escape'){
+        settingsPanel.classList.remove('show');
+        themesPanel.classList.remove('show');
+        createThemePanel.classList.remove('show');
+    }
 });
 
-function initUI(){ renderColorsGrid(); renderThemeList(); }
-initUI();
+// Populate themes
+const themeList = document.getElementById('themesList');
+const themeNames = [
+    {name:"Dark Crimson", colors:["#330000","#660000","#990000"]},
+    {name:"Blueberry Blues", colors:["#0b1f50","#1a3c8c","#3b5ca3"]},
+    {name:"Tropical Vibes", colors:["#3e8e41","#f6c555","#f28e1c"]},
+    {name:"Lagoon", colors:["#2e8b8b","#5dade2","#82e0aa"]},
+    {name:"Sunset Glow", colors:["#ff7e5f","#feb47b","#fd5e53"]},
+    {name:"Neon Nights", colors:["#ff00ff","#00ffff","#ff9900"]},
+    {name:"Aurora", colors:["#4b0082","#00ff7f","#8a2be2"]},
+    {name:"Forest Mist", colors:["#014421","#228b22","#76b947"]},
+    {name:"Candy Pop", colors:["#ffb6c1","#ff69b4","#ff1493"]},
+    {name:"Ocean Deep", colors:["#001f3f","#005f73","#0a9396"]},
+    {name:"Sunflower Fields", colors:["#f6d743","#ffcc33","#ff9900"]},
+    {name:"Candy Cane", colors:["#ff0000","#ffffff","#ffcccc"]}
+];
 
-settingsBtn.addEventListener('click', ()=>{
-  settingsBtn.classList.toggle('rotate');
-  settingsPanel.classList.toggle('open');
+themeNames.forEach(theme=>{
+    const div = document.createElement('div');
+    div.className = 'theme-item';
+    const colorDiv = document.createElement('div');
+    colorDiv.className = 'theme-color';
+    colorDiv.style.background = theme.colors[0];
+    div.appendChild(colorDiv);
+    const span = document.createElement('span');
+    span.textContent = theme.name;
+    div.appendChild(span);
+    themeList.appendChild(div);
 });
-settingsClose.addEventListener('click', ()=> { settingsBtn.classList.remove('rotate'); settingsPanel.classList.remove('open'); });
-
-document.getElementById('openThemesBtn').addEventListener('click', ()=> {
-  settingsPanel.classList.add('open');
-  themesPanel.classList.add('open');
-  loadThemes(); renderThemeList();
-});
-
-menuCloseBtn.addEventListener('click', closeMenu);
-
-caliBtn.addEventListener('click', ()=> { closeMenu(); });
-
-document.addEventListener('mousedown', ()=>{});
 </script>
+
 </body>
 </html>
