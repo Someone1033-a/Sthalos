@@ -1,486 +1,500 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Sthalos — Combined</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-  /* Basic reset & font */
-  @font-face { font-family: 'Brevia'; src: url('brevis.ttf') format('truetype'); }
-  * { box-sizing: border-box; }
-  html,body { height:100%; margin:0; font-family: Arial, sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-  body { display:flex; flex-direction:column; align-items:center; justify-content:center; transition: background 700ms ease, color 400ms ease; text-align:center; overflow-x:hidden; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sthalos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  /* Default theme fallback, real backgrounds set by JS */
-  body[data-text="red"] { --accent: #ff1a1a; --accent-dark: #000; }
-  body[data-text="blue"] { --accent: #0b0b77; --accent-dark: #000; }
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      color: white;
+      text-align: center;
+    }
 
-  /* Top-right icon bar */
-  .top-right { position: absolute; top: 18px; right: 18px; display:flex; gap:12px; z-index:200; }
-  .circle-btn { width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;background:rgba(0,0,0,0.25);cursor:pointer;transition:transform .25s; }
-  .circle-btn:hover { transform:scale(1.08); box-shadow:0 4px 14px rgba(0,0,0,.45); }
-  .circle-btn.google { background:#fff; color:#4285f4; font-weight:700; font-size:18px; }
-  .circle-btn.insta { background:linear-gradient(45deg,#e1306c,#f77737); }
-  .settings.rotate { transform:rotate(180deg); }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-  /* Landing content */
-  #landing { z-index:1; padding: 40px 20px; display:flex; flex-direction:column; align-items:center; gap:16px; width:100%; max-width:1200px; }
-  h1 { font-family:'Brevia', sans-serif; font-size: clamp(36px,6vw,72px); margin:0; color:var(--accent, #ff1a1a); text-shadow:0 0 6px rgba(255,255,255,.06); }
-  #tag { font-size: clamp(16px,2.2vw,22px); margin:0; color:var(--accent, #ff1a1a); opacity:0.95; }
-  .btn-enter { background:var(--accent, #ff1a1a); color:var(--accent-dark, #000); border:none; padding:14px 34px; font-size:18px; border-radius:10px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.3); }
-  .btn-enter:hover { transform:translateY(-2px); }
+    .top-right {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 15px;
+    }
 
-  /* quote centered bottom */
-  #quote { position: fixed; bottom: 28px; left:50%; transform:translateX(-50%); font-size: clamp(13px,2.6vw,18px); color: rgba(255,255,255,.9); max-width:90%; z-index:10; }
+    .circle-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
 
-  /* Menu overlay */
-  #menuOverlay { position:fixed; inset:0; display:none; align-items:center; justify-content:center; backdrop-filter: blur(8px); background:rgba(0,0,0,0.6); z-index:100; }
-  #menuBox { width:90%; max-width:420px; background: rgba(20,20,20,0.96); border-radius:14px; padding:22px; transform:scale(.9); opacity:0; transition:all .28s ease; max-height:80vh; overflow:auto; box-shadow:0 10px 40px rgba(0,0,0,.6); }
-  #menuOverlay.show { display:flex; }
-  #menuOverlay.show #menuBox { transform:scale(1); opacity:1; }
-  #menuBox h2 { margin:6px 0 18px; font-size:20px; color:#fff; }
-  .menu-btn { display:block; width:100%; padding:12px; border-radius:10px; background:var(--accent, #ff1a1a); color:var(--accent-dark,#000); text-decoration:none; text-align:center; margin:8px 0; font-weight:600; }
-  .menu-btn:hover { filter:brightness(1.06); }
+    .circle-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(255,255,255,0.6);
+    }
 
-  #menuClose { position:fixed; left:20px; bottom:18px; color:#fff; cursor:pointer; z-index:110; }
+    .insta { background: #e1306c; }
+    .google { background: #fff; color: #4285F4; font-weight: bold; font-size: 22px;}
+    .settings { background: #555; }
 
-  /* SETTINGS PANEL (slides from right) */
-  .panel { position:fixed; top:0; right:-360px; width:320px; max-width:92vw; height:100vh; background:#000; color:#fff; z-index:150; padding:18px; display:flex; flex-direction:column; justify-content:space-between; transition:right .36s cubic-bezier(.2,.9,.2,1); box-shadow: -20px 0 60px rgba(0,0,0,.6); }
-  .panel.open { right:0; }
-  .panel h3 { margin:10px 0 6px; font-size:18px; }
-  .setting-item { background:#161616; padding:10px; margin:8px 0; border-radius:8px; cursor:pointer; display:flex; align-items:center; gap:12px; }
-  .small-icon { width:34px; height:34px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:14px; color:#fff; flex:0 0 34px; }
-  .item-label { flex:1; text-align:left; font-weight:600; }
-  .panel-footer { padding:10px; background:#0f0f0f; border-top:1px solid #222; text-align:center; cursor:pointer; font-size:14px; }
+    h1 {
+      font-size: 60px;
+      color: #ff1a1a;
+      margin: 10px 0;
+    }
 
-  /* THEMES PANEL stacked above SETTINGS (same position/size) */
-  #themesPanel { position:fixed; top:0; right:-360px; width:320px; max-width:92vw; height:100vh; background:#020202; color:#fff; z-index:160; padding:18px; display:flex; flex-direction:column; justify-content:space-between; transition:right .36s cubic-bezier(.2,.9,.2,1); box-shadow:-20px 0 60px rgba(0,0,0,.7); }
-  #themesPanel.open { right:0; }
-  .theme-list { overflow:auto; padding-right:6px; margin-top:8px; gap:8px; display:flex; flex-direction:column; }
+    p {
+      font-size: 22px;
+      color: #ff1a1a;
+      margin: 10px 0 30px;
+    }
 
-  .theme-row { display:flex; gap:12px; align-items:center; padding:8px; border-radius:8px; cursor:pointer; background:transparent; transition: background .15s; }
-  .theme-row:hover { background: rgba(255,255,255,0.03); }
-  .theme-circle { width:36px;height:36px;border-radius:50%;flex:0 0 36px; box-shadow:inset 0 -3px 6px rgba(0,0,0,.25); }
-  .theme-name { font-weight:600; color:#fff; }
+    .btn {
+      background: #ff1a1a;
+      color: black;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+    }
+    .btn:hover {
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+    }
 
-  /* CREATE PANEL (over themes) */
-  #createPanel { position:fixed; top:0; right:-360px; width:320px; height:100vh; background:#070707; color:#fff; z-index:170; padding:18px; display:flex; flex-direction:column; justify-content:space-between; transition:right .36s cubic-bezier(.2,.9,.2,1); box-shadow:-20px 0 60px rgba(0,0,0,.8); }
-  #createPanel.open { right:0; }
-  .colors-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:10px; margin-top:8px; }
-  .color-swatch { width:100%; padding-top:100%; border-radius:8px; position:relative; cursor:pointer; box-shadow: 0 6px 18px rgba(0,0,0,.35); border:3px solid transparent; }
-  .color-swatch.selected { border-color: #fff; transform:scale(.98); }
-  .swatch-inner { position:absolute; inset:6px; border-radius:6px; }
+    .quote {
+      position: absolute;
+      bottom: 30px;
+      width: 100%;
+      font-size: 18px;
+      color: #fff;
+      text-align: center;
+    }
 
-  input.input-name { width:100%; padding:10px; border-radius:8px; border:none; margin-top:12px; background:#111; color:#fff; outline:none; font-size:14px; }
+    .menu-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.5);
+      flex-direction: column;
+      z-index: 20;
+    }
 
-  .save-btn { margin-top:10px; background:#1a8cff; color:#fff; padding:10px; border-radius:8px; border:none; cursor:pointer; font-weight:700; }
-  .save-btn:disabled { opacity:.45; cursor:not-allowed; transform:none; }
+    .menu-box {
+      background: rgba(0,0,0,0.85);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      min-width: 300px;
+    }
 
-  /* responsive tweaks */
-  @media (max-width:700px) {
-    .panel, #themesPanel, #createPanel { width:88vw; right:-92vw; }
-    .panel.open, #themesPanel.open, #createPanel.open { right:0; }
-  }
-</style>
+    .menu-box h2 {
+      margin-bottom: 20px;
+    }
+
+    .menu-btn {
+      background: #ff1a1a;
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      margin: 10px;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .menu-close {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 14px;
+      background: none;
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    .settings-panel {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 300px;
+      height: 100%;
+      background: #000;
+      color: #fff;
+      transition: right 0.4s ease;
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .settings-panel.active { right: 0; }
+
+    .settings-panel h3 {
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    .settings-option {
+      padding: 10px;
+      cursor: pointer;
+      border: 1px solid #333;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      text-align: left;
+    }
+    .settings-close {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 14px;
+      background: none;
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    .themes-popup, .create-theme-popup, .delete-confirm-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.9);
+      padding: 20px;
+      border-radius: 12px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      z-index: 40;
+      min-width: 300px;
+    }
+
+    .themes-popup.active,
+    .create-theme-popup.active,
+    .delete-confirm-popup.active {
+      display: flex;
+    }
+
+    .theme-option {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #333;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .theme-option:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .theme-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .delete-icon {
+      display: none;
+      color: #ff4444;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    .theme-option.custom:hover .delete-icon {
+      display: inline;
+    }
+
+    .themes-close,
+    .create-theme-close,
+    .delete-confirm-close {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 14px;
+      background: none;
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    .create-theme-popup input {
+      margin-top: 10px;
+      padding: 5px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .color-cell {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .color-cell.selected {
+      border: 2px solid #fff;
+    }
+
+    .save-theme-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #ff1a1a;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .delete-confirm-popup p {
+      margin-bottom: 20px;
+    }
+    .delete-actions {
+      display: flex;
+      gap: 15px;
+    }
+    .delete-actions button {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .confirm-btn { background: #ff1a1a; color: #fff; }
+    .cancel-btn { background: #333; color: #fff; }
+
+  </style>
 </head>
 <body>
 
-  <!-- top icons -->
   <div class="top-right">
-    <a class="circle-btn insta" href="https://instagram.com/train.with.harsh" target="_blank"><i class="fab fa-instagram"></i></a>
-    <div class="circle-btn google"><i class="fab fa-google"></i></div>
-    <div id="settingsBtn" class="circle-btn settings"><i class="fas fa-cog"></i></div>
+    <a href="https://instagram.com/train.with.harsh" target="_blank" class="circle-btn insta">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="#" class="circle-btn google">
+      <i class="fab fa-google"></i>
+    </a>
+    <div class="circle-btn settings" id="settingsBtn">
+      <i class="fas fa-cog"></i>
+    </div>
   </div>
 
-  <!-- landing main -->
-  <div id="landing">
-    <h1 id="brand">Sthalos</h1>
-    <div id="tag">Strength meets challenge. Coming soon.</div>
-    <button class="btn-enter" id="enterBtn">Enter</button>
-  </div>
+  <h1>Sthalos</h1>
+  <p>Strength meets challenge. Coming soon.</p>
+  <button class="btn" id="enterBtn">ENTER</button>
+  <div class="quote" id="quote"></div>
 
-  <!-- quote -->
-  <div id="quote"></div>
-
-  <!-- menu overlay -->
-  <div id="menuOverlay">
-    <div id="menuBox">
+  <div class="menu-overlay" id="menuOverlay">
+    <div class="menu-box">
       <h2>PICK YOUR DESTINATION</h2>
-      <a class="menu-btn" id="goCali">CALI-CHALLENGE GENERATOR</a>
-      <div style="height:28px"></div>
+      <button class="menu-btn">CALI-CHALLENGE GENERATOR</button>
     </div>
+    <button class="menu-close" id="menuClose">Close/Esc</button>
   </div>
-  <div id="menuClose" style="display:none;position:fixed;left:18px;bottom:18px;color:#fff;cursor:pointer;z-index:110">CLOSE / ESC</div>
 
-  <!-- SETTINGS panel -->
-  <aside id="settingsPanel" class="panel" aria-hidden="true">
-    <div>
-      <h3>Settings</h3>
-      <div class="setting-item" id="openThemesBtn">
-        <div class="small-icon"><i class="fas fa-palette"></i></div>
-        <div class="item-label">Change Theme</div>
-      </div>
-      <!-- placeholder for future settings -->
-      <div style="margin-top:10px;color:#888;font-size:13px;padding:0 4px;">Other settings coming...</div>
+  <div class="settings-panel" id="settingsPanel">
+    <h3>Settings</h3>
+    <div class="settings-option" id="themesOption">Themes</div>
+    <button class="settings-close" id="settingsClose">Close/Esc</button>
+  </div>
+
+  <div class="themes-popup" id="themesPopup">
+    <h3>Themes</h3>
+    <div class="theme-option" id="createTheme"><i class="fas fa-pencil-alt"></i>&nbsp; Create</div>
+    <div id="themesList"></div>
+    <button class="themes-close" id="themesClose">Close/Esc</button>
+  </div>
+
+  <div class="create-theme-popup" id="createThemePopup">
+    <h3>Create Theme</h3>
+    <div class="color-grid" id="colorGrid"></div>
+    <input type="text" id="themeNameInput" placeholder="Enter theme name">
+    <button class="save-theme-btn" id="saveThemeBtn">Save</button>
+    <button class="create-theme-close" id="createThemeClose">Close/Esc</button>
+  </div>
+
+  <div class="delete-confirm-popup" id="deleteConfirmPopup">
+    <p id="deleteConfirmText"></p>
+    <div class="delete-actions">
+      <button class="confirm-btn" id="confirmDeleteBtn">Confirm</button>
+      <button class="cancel-btn" id="cancelDeleteBtn">Cancel</button>
     </div>
-
-    <div class="panel-footer" id="settingsClose">CLOSE / ESC</div>
-  </aside>
-
-  <!-- THEMES panel (over settings) -->
-  <aside id="themesPanel">
-    <div>
-      <h3>Themes</h3>
-      <div class="theme-list" id="themeList" role="list"></div>
-    </div>
-    <div class="panel-footer" id="themesClose">CLOSE / ESC</div>
-  </aside>
-
-  <!-- CREATE theme panel (over themes) -->
-  <aside id="createPanel">
-    <div>
-      <h3>Create Theme</h3>
-      <div style="font-size:13px;color:#bbb">Pick 2–5 colors for your gradient</div>
-      <div class="colors-grid" id="colorsGrid"></div>
-
-      <input class="input-name" id="newThemeName" placeholder="Enter theme name" />
-      <button id="saveThemeBtn" class="save-btn" disabled>Save Theme</button>
-    </div>
-    <div class="panel-footer" id="createClose">CLOSE / ESC</div>
-  </aside>
+    <button class="delete-confirm-close" id="deleteConfirmClose">Close/Esc</button>
+  </div>
 
 <script>
-/* ---------- Utilities & data ---------- */
-
-// Built-in themes (12). Each theme: { id, name, colors: [hex...], text:'red'|'blue' }
-const builtinThemes = [
-  { id:'dark-crimson', name:'Dark Crimson', colors:['#1a0033','#000033','#330000','#220033'], text:'red' },
-  { id:'blueberry', name:'Blueberry Blues', colors:['#2e0854','#1a1f6b','#001a3d','#081b3c'], text:'red' },
-  { id:'tropical', name:'Tropical Vibes', colors:['#ffcc00','#ff6600','#228B22','#996600'], text:'blue' },
-  { id:'lagoon', name:'Lagoon', colors:['#ff66b2','#ffffff','#00ffff','#ff99cc'], text:'blue' },
-  { id:'cosmic', name:'Cosmic Night', colors:['#0f0c29','#302b63','#24243e','#4b2b7f'], text:'red' },
-  { id:'forest', name:'Forest Whisper', colors:['#0b3d20','#1f5f2a','#3b8d47','#0f2f1a'], text:'red' },
-  { id:'inferno', name:'Inferno Blaze', colors:['#2b0000','#ff3b00','#ff8b00','#662200'], text:'red' },
-  { id:'crystal', name:'Crystal Sky', colors:['#0066cc','#66ccff','#aaf0ff','#1a9cff'], text:'red' },
-  { id:'sakura', name:'Sakura Dream', colors:['#ffb3c6','#ffdfe6','#fff0f8','#ffb3d9'], text:'blue' },
-  { id:'neon', name:'Neon Storm', colors:['#0ff','#ff00ff','#00ff88','#001a33'], text:'blue' },
-  { id:'desert', name:'Desert Mirage', colors:['#ef9a3c','#f4d06f','#c67f33','#e9c46a'], text:'blue' },
-  { id:'glacier', name:'Glacier Mist', colors:['#eaf6ff','#bfe9ff','#8fd6ff','#cfeeff'], text:'blue' }
-];
-
-// Additional palette colors (20) for custom creation
-const paletteColors = [
-  '#0b3d20','#1f8a70','#3ad59f','#ffd166',
-  '#ff6b6b','#ffbf69','#ff9a8b','#c34a36',
-  '#6a4c93','#2b2d42','#1b998b','#8ecae6',
-  '#ffb4a2','#ff7b7b','#f72585','#7209b7',
-  '#0ea5a4','#06b6d4','#e0aaff','#8ec5ff'
-];
-
-/* ---------- state & storage ---------- */
-let themes = []; // will include builtin + custom
-const STORAGE_THEMES = 'sthalos_custom_themes';
-const STORAGE_THEME_INDEX = 'sthalos_theme_index';
-const STORAGE_CUSTOM_LIST = 'sthalos_custom_list';
-
-// load custom themes from localStorage then merge with builtins
-function loadThemes() {
-  themes = [...builtinThemes];
-  const stored = localStorage.getItem(STORAGE_CUSTOM_LIST);
-  if (stored) {
-    try {
-      const custom = JSON.parse(stored);
-      if (Array.isArray(custom)) {
-        // give each custom theme a unique id if missing
-        custom.forEach((t, i) => {
-          if(!t.id) t.id = 'custom-' + i + '-' + Date.now();
-          themes.push(t);
-        });
-      }
-    } catch(e) { console.warn('bad custom themes stored'); }
-  }
-}
-loadThemes();
-
-/* ---------- theme application ---------- */
-// create gradient text from colors
-function gradientFromColors(colors) {
-  // angle randomization not necessary; choose fixed 120deg for nicer look
-  return `linear-gradient(120deg, ${colors.join(',')})`;
-}
-function applyThemeObj(theme) {
-  // theme.colors -> gradient background, theme.text -> 'red' or 'blue'
-  document.body.style.background = gradientFromColors(theme.colors);
-  document.body.setAttribute('data-text', theme.text === 'blue' ? 'blue' : 'red');
-  // set CSS var for accent for use in buttons
-  if (theme.text === 'blue') {
-    document.documentElement.style.setProperty('--accent', '#0b0b77');
-    document.documentElement.style.setProperty('--accent-dark', '#000');
-  } else {
-    document.documentElement.style.setProperty('--accent', '#ff1a1a');
-    document.documentElement.style.setProperty('--accent-dark', '#000');
-  }
-}
-// set theme by index in themes array and persist index
-function setThemeIndex(index) {
-  const i = Math.max(0, Math.min(index, themes.length - 1));
-  applyThemeObj(themes[i]);
-  localStorage.setItem(STORAGE_THEME_INDEX, '' + i);
-  currentThemeIndex = i;
-  renderThemeList(); // highlight selected theme
-}
-let currentThemeIndex = 0;
-(function initTheme() {
-  const storedIndex = localStorage.getItem(STORAGE_THEME_INDEX);
-  if (storedIndex !== null && !isNaN(parseInt(storedIndex))) currentThemeIndex = parseInt(storedIndex);
-  loadThemes();
-  if (currentThemeIndex >= themes.length) currentThemeIndex = 0;
-  setThemeIndex(currentThemeIndex);
-})();
-
-/* ---------- DOM references ---------- */
-const settingsBtn = document.getElementById('settingsBtn');
-const settingsPanel = document.getElementById('settingsPanel');
-const settingsClose = document.getElementById('settingsClose');
-const openThemesBtn = document.getElementById('openThemesBtn');
-
-const themesPanel = document.getElementById('themesPanel');
-const themeListEl = document.getElementById('themeList');
-const themesClose = document.getElementById('themesClose');
-
-const createPanel = document.getElementById('createPanel');
-const colorsGrid = document.getElementById('colorsGrid');
-const newThemeName = document.getElementById('newThemeName');
-const saveThemeBtn = document.getElementById('saveThemeBtn');
-const createClose = document.getElementById('createClose');
-
-const enterBtn = document.getElementById('enterBtn');
-const menuOverlay = document.getElementById('menuOverlay');
-const menuClose = document.getElementById('menuClose');
-const menuCloseBtn = document.getElementById('menuClose');
-
-const quoteEl = document.getElementById('quote');
-
-/* ---------- QUOTE ---------- */
 const quotes = [
-  `"Strength is built, not given."`,
-  `"Pain is temporary, pride is forever."`,
-  `"Every rep counts."`,
+  `"Strength does not come from winning."`,
+  `"Fall seven times and stand up eight."`,
   `"The body achieves what the mind believes."`,
-  `"Calisthenics is art in motion."`,
-  `"Small progress is still progress."`,
-  `"Push harder than yesterday."`,
-  `"Your only limit is you."`,
+  `"Push yourself, because no one else will."`,
   `"Discipline beats motivation."`,
-  `"Power through the struggle."`
+  `"Suffer the pain of discipline or regret."`,
+  `"No pain, no gain."`,
+  `"You are stronger than you think."`,
+  `"Consistency is key."`,
+  `"Calisthenics builds warriors."`
 ];
-quoteEl.innerText = quotes[Math.floor(Math.random() * quotes.length)];
+document.getElementById("quote").innerText = quotes[Math.floor(Math.random()*quotes.length)];
 
- /* ---------- MENU open/close ---------- */
-enterBtn.addEventListener('click', ()=> {
-  menuOverlay.style.display = 'flex';
-  setTimeout(()=> menuOverlay.classList.add('show'), 30);
-  menuClose.style.display = 'block';
+const enterBtn = document.getElementById("enterBtn");
+const menuOverlay = document.getElementById("menuOverlay");
+const menuClose = document.getElementById("menuClose");
+enterBtn.addEventListener("click", () => menuOverlay.style.display = "flex");
+menuClose.addEventListener("click", () => menuOverlay.style.display = "none");
+
+const settingsBtn = document.getElementById("settingsBtn");
+const settingsPanel = document.getElementById("settingsPanel");
+const settingsClose = document.getElementById("settingsClose");
+settingsBtn.addEventListener("click", () => settingsPanel.classList.add("active"));
+settingsClose.addEventListener("click", () => settingsPanel.classList.remove("active"));
+
+const themesOption = document.getElementById("themesOption");
+const themesPopup = document.getElementById("themesPopup");
+const themesClose = document.getElementById("themesClose");
+themesOption.addEventListener("click", () => themesPopup.classList.add("active"));
+themesClose.addEventListener("click", () => themesPopup.classList.remove("active"));
+
+const createTheme = document.getElementById("createTheme");
+const createThemePopup = document.getElementById("createThemePopup");
+const createThemeClose = document.getElementById("createThemeClose");
+createTheme.addEventListener("click", () => createThemePopup.classList.add("active"));
+createThemeClose.addEventListener("click", () => createThemePopup.classList.remove("active"));
+
+const colors = ["#ff0000","#00ff00","#0000ff","#ffff00","#ff00ff","#00ffff","#ffa500","#800080","#008000","#000000","#ffffff","#808080","#800000","#008080","#000080","#f0e68c","#ff1493","#7fffd4","#ffd700","#a52a2a"];
+const colorGrid = document.getElementById("colorGrid");
+colors.forEach(c=>{
+  const cell=document.createElement("div");
+  cell.className="color-cell";
+  cell.style.background=c;
+  cell.addEventListener("click",()=>cell.classList.toggle("selected"));
+  colorGrid.appendChild(cell);
 });
-menuClose.addEventListener('click', ()=> closeMenu());
-function closeMenu() {
-  menuOverlay.classList.remove('show');
-  setTimeout(()=> { menuOverlay.style.display='none'; menuClose.style.display='none'; }, 320);
-}
 
-/* ---------- SETTINGS open/close ---------- */
-settingsBtn.addEventListener('click', ()=>{
-  settingsBtn.classList.toggle('rotate');
-  settingsPanel.classList.toggle('open');
-});
-// close settings
-settingsClose.addEventListener('click', ()=> {
-  settingsBtn.classList.remove('rotate');
-  settingsPanel.classList.remove('open');
-});
+const saveThemeBtn=document.getElementById("saveThemeBtn");
+const themeNameInput=document.getElementById("themeNameInput");
+const themesList=document.getElementById("themesList");
+let customThemes=[];
+let themeToDelete=null;
 
-/* ---------- THEMES panel ---------- */
-openThemesBtn.addEventListener('click', ()=> {
-  // ensure themes list up to date
-  loadThemes(); renderThemeList();
-  themesPanel.classList.add('open');
+saveThemeBtn.addEventListener("click",()=>{
+  const name=themeNameInput.value.trim();
+  const selected=[...document.querySelectorAll(".color-cell.selected")].map(c=>c.style.background);
+  if(name && selected.length>=2){
+    const theme={name,colors:selected};
+    customThemes.push(theme);
+    addThemeOption(theme,true);
+    themeNameInput.value="";
+    document.querySelectorAll(".color-cell").forEach(c=>c.classList.remove("selected"));
+    createThemePopup.classList.remove("active");
+  }
 });
 
-// close themes
-themesClose.addEventListener('click', ()=> { themesPanel.classList.remove('open'); });
-
-/* render theme list (create entry + themes) */
-function renderThemeList() {
-  themeListEl.innerHTML = '';
-  // 1) Create row (pencil)
-  const createRow = document.createElement('div');
-  createRow.className = 'theme-row';
-  createRow.innerHTML = `<div class="theme-circle" style="background:#222;display:flex;align-items:center;justify-content:center;"><i class="fas fa-pencil-alt" style="color:#fff;"></i></div>
-                         <div class="theme-name">Create</div>`;
-  createRow.addEventListener('click', ()=> {
-    // open create panel (over themes)
-    createPanel.classList.add('open');
-    // ensure colors grid populated
-    renderPaletteGrid();
-  });
-  themeListEl.appendChild(createRow);
-
-  // 2) existing themes
-  themes.forEach((t, idx) => {
-    const row = document.createElement('div');
-    row.className = 'theme-row';
-    // circle: show first color or gradient small
-    const circle = document.createElement('div');
-    circle.className = 'theme-circle';
-    if (t.colors && t.colors.length>1) {
-      circle.style.background = t.colors[0];
-    } else circle.style.background = t.colors && t.colors[0] || '#444';
-
-    const label = document.createElement('div');
-    label.className = 'theme-name';
-    label.innerText = t.name || ('Theme '+idx);
-
-    row.appendChild(circle);
-    row.appendChild(label);
-    row.addEventListener('click', ()=> {
-      setThemeIndex(idx);
+function addThemeOption(theme,isCustom=false){
+  const opt=document.createElement("div");
+  opt.className="theme-option"+(isCustom?" custom":"");
+  const left=document.createElement("div");
+  left.style.display="flex"; left.style.alignItems="center";
+  const icon=document.createElement("div");
+  icon.className="theme-icon";
+  icon.style.background=theme.colors[0];
+  left.appendChild(icon);
+  const span=document.createElement("span");
+  span.innerText=theme.name;
+  left.appendChild(span);
+  opt.appendChild(left);
+  if(isCustom){
+    const del=document.createElement("i");
+    del.className="fas fa-trash delete-icon";
+    del.addEventListener("click",(e)=>{
+      e.stopPropagation();
+      themeToDelete=theme;
+      document.getElementById("deleteConfirmText").innerText=`Delete ${theme.name}?`;
+      document.getElementById("deleteConfirmPopup").classList.add("active");
     });
-
-    // highlight currently selected
-    if (idx === currentThemeIndex) {
-      row.style.outline = '2px solid rgba(255,255,255,0.08)';
-      row.style.borderRadius = '8px';
-    }
-    themeListEl.appendChild(row);
-  });
-}
-renderThemeList();
-
-/* ---------- CREATE panel: palette & saving ---------- */
-function renderPaletteGrid() {
-  colorsGrid.innerHTML = '';
-  paletteColors.forEach((c, i) => {
-    const sw = document.createElement('div');
-    sw.className = 'color-swatch';
-    sw.dataset.color = c;
-    sw.innerHTML = `<div class="swatch-inner" style="background:${c}"></div>`;
-    sw.addEventListener('click', () => toggleSwatch(sw));
-    colorsGrid.appendChild(sw);
-  });
-  updateSaveButton();
-}
-
-// selected colors state
-let selectedColors = [];
-function toggleSwatch(sw) {
-  const col = sw.dataset.color;
-  const idx = selectedColors.indexOf(col);
-  if (idx >= 0) {
-    selectedColors.splice(idx,1);
-    sw.classList.remove('selected');
-  } else {
-    if (selectedColors.length >= 5) {
-      // small flash
-      sw.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:220});
-      return;
-    }
-    selectedColors.push(col);
-    sw.classList.add('selected');
+    opt.appendChild(del);
   }
-  updateSaveButton();
+  opt.addEventListener("click",()=>applyTheme(theme.colors));
+  themesList.appendChild(opt);
 }
 
-function updateSaveButton(){
-  if (selectedColors.length >= 2 && newThemeName.value.trim().length>=2) {
-    saveThemeBtn.disabled = false;
-  } else saveThemeBtn.disabled = true;
+function applyTheme(colors){
+  document.body.style.background=`linear-gradient(-45deg, ${colors.join(",")})`;
+  document.body.style.backgroundSize="400% 400%";
+  document.body.style.animation="gradientShift 12s ease infinite";
 }
 
-newThemeName.addEventListener('input', updateSaveButton);
-
-// save theme
-saveThemeBtn.addEventListener('click', ()=>{
-  const name = newThemeName.value.trim();
-  if (!name || selectedColors.length < 2) return;
-  const newTheme = { id:'custom-'+Date.now(), name, colors: [...selectedColors], text:'blue' }; // default text color blue for custom
-  // persist
-  const existing = JSON.parse(localStorage.getItem(STORAGE_CUSTOM_LIST) || '[]');
-  existing.push(newTheme);
-  localStorage.setItem(STORAGE_CUSTOM_LIST, JSON.stringify(existing));
-
-  // reload theme list (and set to new theme)
-  loadThemes();
-  renderThemeList();
-  // set current to last element (custom appended at end)
-  setThemeIndex(themes.length - 1);
-
-  // reset create UI and close create panel
-  selectedColors = [];
-  newThemeName.value = '';
-  saveThemeBtn.disabled = true;
-  // clear selection visuals
-  document.querySelectorAll('.color-swatch.selected').forEach(el => el.classList.remove('selected'));
-  createPanel.classList.remove('open');
-  // keep themes panel open so user sees the new theme
+document.getElementById("confirmDeleteBtn").addEventListener("click",()=>{
+  if(themeToDelete){
+    customThemes=customThemes.filter(t=>t!==themeToDelete);
+    themesList.innerHTML="";
+    customThemes.forEach(t=>addThemeOption(t,true));
+    themeToDelete=null;
+  }
+  document.getElementById("deleteConfirmPopup").classList.remove("active");
 });
 
-/* close create */
-createClose.addEventListener('click', ()=> {
-  createPanel.classList.remove('open');
+document.getElementById("cancelDeleteBtn").addEventListener("click",()=>{
+  themeToDelete=null;
+  document.getElementById("deleteConfirmPopup").classList.remove("active");
+});
+document.getElementById("deleteConfirmClose").addEventListener("click",()=>{
+  themeToDelete=null;
+  document.getElementById("deleteConfirmPopup").classList.remove("active");
 });
 
-/* ESC key handling: close topmost open panel (create -> themes -> settings) and menu overlay */
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    if (createPanel.classList.contains('open')) {
-      createPanel.classList.remove('open'); return;
-    }
-    if (themesPanel.classList.contains('open')) {
-      themesPanel.classList.remove('open'); return;
-    }
-    if (settingsPanel.classList.contains('open')) {
-      settingsBtn.classList.remove('rotate');
-      settingsPanel.classList.remove('open'); return;
-    }
-    // else if menu open - close
-    if (menuOverlay.classList.contains('show')) {
-      closeMenu();
-    }
+document.addEventListener("keydown",(e)=>{
+  if(e.key==="Escape"){
+    menuOverlay.style.display="none";
+    settingsPanel.classList.remove("active");
+    themesPopup.classList.remove("active");
+    createThemePopup.classList.remove("active");
+    document.getElementById("deleteConfirmPopup").classList.remove("active");
   }
 });
-
-/* also ensure clicking outside panels doesn't break: clicking settings btn toggles only settings */
-settingsBtn.addEventListener('dblclick', ()=> {
-  // double click quick reset (dev)
-  settingsPanel.classList.remove('open'); themesPanel.classList.remove('open'); createPanel.classList.remove('open');
-});
-
-/* Close handlers: when a panel is closed ensure lower ones remain unchanged */
-
-/* ensure theme list updates if localStorage changed elsewhere (not likely) */
-window.addEventListener('storage', ()=> {
-  loadThemes(); renderThemeList();
-});
-
-/* initial render / populate palette */
-renderPaletteGrid();
-
-/* UX: when opening themes, ensure theme list highlights correct selected theme */
-openThemesBtn.addEventListener('click', ()=> {
-  // scroll to selected item if present after render
-  setTimeout(()=> {
-    const rows = themeListEl.querySelectorAll('.theme-row');
-    if (rows[currentThemeIndex+1]) { // +1 because createRow is first
-      rows[currentThemeIndex+1].scrollIntoView({behavior:'smooth',block:'center'});
-    }
-  },120);
-});
-
-/* Small touch: clicking theme twice toggles apply — handled by setThemeIndex */
-
-/* Prevent accidental text selection on double clicks */
-document.addEventListener('mousedown', e=> e.preventDefault());
 </script>
 </body>
 </html>
