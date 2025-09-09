@@ -3,615 +3,193 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sthalos — Full Theme Dump</title>
+  <title>Sthalos</title>
 
-  <!-- Font Awesome for icons -->
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  <!-- CSS: paste PART B contents inside a <style> here or in an external CSS file -->
   <style>
-    /* ============================================================
-       Sthalos - Expanded Full File
-       - No shortcuts
-       - 28 explicit themes, each with its own CSS class
-       - Centered themes popup with explicit HTML items
-       - Individual JS handler functions for each theme
-       ============================================================ */
-
-    /* Reset-ish */
-    html, body, div, span, applet, object, iframe,
-    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-    a, abbr, acronym, address, big, cite, code,
-    del, dfn, em, img, ins, kbd, q, s, samp,
-    small, strike, strong, sub, sup, tt, var,
-    b, u, i, center,
-    dl, dt, dd, ol, ul, li,
-    fieldset, form, label, legend,
-    table, caption, tbody, tfoot, thead, tr, th, td,
-    article, aside, canvas, details, embed,
-    figure, figcaption, footer, header, hgroup,
-    menu, nav, output, ruby, section, summary,
-    time, mark, audio, video {
-      margin: 0;
-      padding: 0;
-      border: 0;
-      font-size: 100%;
-      vertical-align: baseline;
-    }
-
-    /* Basic body and layout */
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      min-height: 100vh;
-      width: 100%;
-      overflow-x: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-      background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      transition: background 0.7s ease, color 0.4s ease;
-      color: #ff1a1a;
-    }
-
-    /* Animation for background shift */
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    /* Top-right icon bar */
-    .top-right {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      display: flex;
-      gap: 14px;
-      z-index: 1200;
-    }
-
-    .circle-btn {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      text-decoration: none;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      background: #444;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-
-    .circle-btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
-    }
-
-    .insta { background: #e1306c; }
-    .google { background: #fff; color: #4285F4; font-weight: bold; }
-    .settings { background: #555; }
-
-    /* Heading and paragraph using accent color variable */
-    :root {
-      --accent: #ff1a1a;
-    }
-
-    h1 {
-      font-family: 'Brevia', Arial, sans-serif;
-      font-size: 60px;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    p.lead {
-      font-size: 20px;
-      color: var(--accent);
-      margin-bottom: 18px;
-    }
-
-    /* Enter button */
-    .btn-enter {
-      background: var(--accent);
-      color: black;
-      padding: 14px 36px;
-      border-radius: 10px;
-      font-size: 18px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.35);
-      transition: transform 0.12s ease, box-shadow 0.2s ease;
-    }
-
-    .btn-enter:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(0,0,0,0.45);
-    }
-
-    /* Quote area: centered horizontally and limited width */
-    #quote {
-      position: fixed;
-      bottom: 36px;
-      left: 50%;
-      transform: translateX(-50%);
-      max-width: 900px;
-      padding: 0 24px;
-      color: var(--accent);
-      font-size: 18px;
-      z-index: 900;
-    }
-
-    /* Menu overlay (center popup) */
-    #menuOverlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.56);
-      backdrop-filter: blur(6px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    #menuBox {
-      width: 92%;
-      max-width: 460px;
-      background: rgba(8,8,8,0.98);
-      border-radius: 14px;
-      padding: 28px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-      color: #fff;
-      transform: scale(0.92);
-      opacity: 0;
-      transition: transform 0.28s ease, opacity 0.28s ease;
-      max-height: 86vh;
-      overflow-y: auto;
-    }
-
-    #menuOverlay.show #menuBox {
-      transform: scale(1);
-      opacity: 1;
-    }
-
-    #menuBox h2 {
-      font-size: 20px;
-      margin-bottom: 16px;
-      color: #fff;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-align: center;
-    }
-
-    .menu-feature {
-      display: block;
-      width: 100%;
-      text-decoration: none;
-      background: #222;
-      color: #fff;
-      padding: 12px 16px;
-      border-radius: 10px;
-      margin: 8px 0;
-      text-align: center;
-      font-weight: 700;
-    }
-
-    .menu-close {
-      margin-top: 18px;
-      display: inline-block;
-      color: #fff;
-      background: transparent;
-      border: 1px solid #444;
-      padding: 8px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    /* Settings side panel */
-    #settingsPanel {
-      position: fixed;
-      top: 0;
-      right: -320px;
-      width: 320px;
-      height: 100%;
-      background: #000;
-      color: #fff;
-      z-index: 1100;
-      transition: right 0.36s cubic-bezier(.2,.9,.2,1);
-      display: flex;
-      flex-direction: column;
-      padding: 18px;
-    }
-
-    #settingsPanel.open {
-      right: 0;
-    }
-
-    #settingsPanel h3 {
-      margin-top: 4px;
-      margin-bottom: 8px;
-      font-size: 20px;
-      text-align: center;
-    }
-
-    .setting-item {
-      background: #111;
-      padding: 10px;
-      border-radius: 8px;
-      margin: 8px 0;
-      text-align: center;
-      cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.04);
-    }
-
-    .setting-item:hover {
-      background: #222;
-    }
-
-    .settings-footer {
-      margin-top: auto;
-      background: #0e0e0e;
-      padding: 12px;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 14px;
-      cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.03);
-    }
-
-    .settings-footer:hover {
-      background: #191919;
-    }
-
-    /* Themes centered popup (explicit, not side) */
-    #themesModalOverlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1300;
-      backdrop-filter: blur(4px);
-    }
-
-    #themesModal {
-      width: 94%;
-      max-width: 760px;
-      max-height: 86vh;
-      background: rgba(6,6,6,0.98);
-      border-radius: 12px;
-      padding: 18px;
-      overflow-y: auto;
-      color: #fff;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    #themesModalHeader {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    #themesModalHeader h3 {
-      margin: 0;
-      font-size: 18px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    /* Themes list area */
-    #themesGrid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    /* single theme card */
-    .theme-card {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px;
-      background: rgba(255,255,255,0.03);
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform 0.12s ease, background 0.12s ease;
-    }
-
-    .theme-card:hover {
-      transform: translateY(-4px);
-      background: rgba(255,255,255,0.06);
-    }
-
-    .theme-dot {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      border: 2px solid rgba(255,255,255,0.06);
-    }
-
-    .theme-name {
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      text-align: left;
-    }
-
-    .theme-desc {
-      font-size: 12px;
-      opacity: 0.8;
-      color: #ddd;
-      margin-top: 3px;
-      text-align: left;
-    }
-
-    /* bottom close button for modal */
-    #themesCloseBtn {
-      margin-top: 12px;
-      align-self: center;
-      background: transparent;
-      color: #fff;
-      border: 1px solid #333;
-      padding: 8px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    #themesCloseBtn:hover {
-      background: rgba(255,255,255,0.04);
-    }
-
-    /* Responsive: stacked single column on small devices */
-    @media (max-width: 640px) {
-      .theme-card { padding: 12px; }
-      #themesGrid { grid-template-columns: 1fr; }
-      h1 { font-size: 36px; }
-    }
-
-    /* ---------- Now explicit theme CSS classes (28 themes) ---------- */
-    /* Each theme sets background gradient and sets the --accent root variable for headlines/quote */
-
-    /* 1 - Dark Crimson */
-    body.theme-01 {
-      background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #ff1a1a;
-    }
-
-    /* 2 - Blueberry Blues */
-    body.theme-02 {
-      background: linear-gradient(-45deg, #0d1b2a, #1b263b, #415a77, #1b1f4f);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #ffd9e0;
-    }
-
-    /* 3 - Tropical Sunset */
-    body.theme-03 {
-      background: linear-gradient(-45deg, #ff7e5f, #feb47b, #f6d365, #fda085);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #07104b;
-    }
-
-    /* 4 - Candy Lagoon */
-    body.theme-04 {
-      background: linear-gradient(-45deg, #ff66b2, #ffffff, #00ffff, #ff99cc);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #07104b;
-    }
-
-    /* 5 - Cosmic Night */
-    body.theme-05 {
-      background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #4b2b7f);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #ffb6c6;
-    }
-
-    /* 6 - Forest Whisper */
-    body.theme-06 {
-      background: linear-gradient(-45deg, #0b3d20, #1f5f2a, #3b8d47, #0f2f1a);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #ffdca3;
-    }
-
-    /* 7 - Inferno Blaze */
-    body.theme-07 {
-      background: linear-gradient(-45deg, #2b0000, #ff3b00, #ff8b00, #662200);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #fff1e6;
-    }
-
-    /* 8 - Crystal Sky */
-    body.theme-08 {
-      background: linear-gradient(-45deg, #0066cc, #66ccff, #aaf0ff, #1a9cff);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #001a3d;
-    }
-
-    /* 9 - Sakura Dream */
-    body.theme-09 {
-      background: linear-gradient(-45deg, #ffb3c6, #ffdfe6, #fff0f8, #ffb3d9);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #07104b;
-    }
-
-    /* 10 - Neon Storm */
-    body.theme-10 {
-      background: linear-gradient(-45deg, #00ffff, #ff00ff, #00ff88, #001a33);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #ffffff;
-    }
-
-    /* 11 - Desert Mirage */
-    body.theme-11 {
-      background: linear-gradient(-45deg, #ef9a3c, #f4d06f, #c67f33, #e9c46a);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #07104b;
-    }
-
-    /* 12 - Glacier Mist */
-    body.theme-12 {
-      background: linear-gradient(-45deg, #eaf6ff, #bfe9ff, #8fd6ff, #cfeeff);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #001a3d;
-    }
-
-    /* 13 - Royal Gold */
-    body.theme-13 {
-      background: linear-gradient(-45deg, #f7d794, #f6caa3, #f0b67f, #f2a65a);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #07104b;
-    }
-
-    /* 14 - Ocean Deep */
-    body.theme-14 {
-      background: linear-gradient(-45deg, #001f3f, #003f5c, #2f4b7c, #665191);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #a8e6ff;
-    }
-
-    /* 15 - Ember Glow */
-    body.theme-15 {
-      background: linear-gradient(-45deg, #ff4e50, #f9d423, #ff7b00, #ff3b3b);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #0b0b0b;
-    }
-
-    /* 16 - Meadow Fresh */
-    body.theme-16 {
-      background: linear-gradient(-45deg, #76b852, #8dc26f, #b7e4a5, #4a8f29);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #05311a;
-    }
-
-    /* 17 - Twilight Purple */
-    body.theme-17 {
-      background: linear-gradient(-45deg, #2c3e50, #4ca1af, #7b2ff7, #b983ff);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #fff6f6;
-    }
-
-    /* 18 - Copper Canyon */
-    body.theme-18 {
-      background: linear-gradient(-45deg, #7b3f00, #c86b2d, #ffaa5c, #3d1300);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #fff0e0;
-    }
-
-    /* 19 - Arctic Dawn */
-    body.theme-19 {
-      background: linear-gradient(-45deg, #cfe9ff, #a6e1ff, #7bd3ff, #e6fbff);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #012a4a;
-    }
-
-    /* 20 - Rosewood */
-    body.theme-20 {
-      background: linear-gradient(-45deg, #2b0a3d, #72306a, #a93f86, #ff6b9f);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #fff6f6;
-    }
-
-    /* 21 - Mango Tango */
-    body.theme-21 {
-      background: linear-gradient(-45deg, #ffb347, #ffcc33, #ff7f50, #ffcc66);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #041a2b;
-    }
-
-    /* 22 - Indigo Dusk */
-    body.theme-22 {
-      background: linear-gradient(-45deg, #2b5876, #4e4376, #6c5b7b, #8a65a7);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #fff7ff;
-    }
-
-    /* 23 - Mint Whisper */
-    body.theme-23 {
-      background: linear-gradient(-45deg, #d4fc79, #96e6a1, #b8ffcc, #6dd3b0);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #012a1a;
-    }
-
-    /* 24 - Solar Flare */
-    body.theme-24 {
-      background: linear-gradient(-45deg, #f7971e, #ffd200, #ff4e50, #ff7b00);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #07104b;
-    }
-
-    /* 25 - Velvet Night */
-    body.theme-25 {
-      background: linear-gradient(-45deg, #141e30, #243b55, #2b2d42, #1b263b);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #f0f8ff;
-    }
-
-    /* 26 - Pearl Horizon */
-    body.theme-26 {
-      background: linear-gradient(-45deg, #f8f1f1, #e8f6ff, #dff3ff, #d7f0ff);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #081830;
-    }
-
-    /* 27 - Twilight Ember */
-    body.theme-27 {
-      background: linear-gradient(-45deg, #421e0f, #8b4000, #c66a00, #ff9b2f);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #fff6ef;
-    }
-
-    /* 28 - Lunar Grey */
-    body.theme-28 {
-      background: linear-gradient(-45deg, #3a3a3a, #6b6b6b, #a3a3a3, #dddddd);
-      background-size: 400% 400%;
-      animation: gradientShift 12s ease infinite;
-      --accent: #041430;
-    }
-
-    /* End of explicit theme classes -------------------------------------------------- */
+  /* PASTE PART B/* ======= Fonts ======= */
+@font-face {
+  font-family: 'Brevis';
+  src: url('brevis.ttf') format('truetype'); /* ensure brevis.ttf is in same folder */
+}
+
+/* ---------- Base & layout ---------- */
+:root {
+  --accent: #ff1a1a;
+}
+
+html,body{height:100%;}
+
+body {
+  margin:0;
+  font-family: 'Brevis', Arial, sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  text-align:center;
+  background: linear-gradient(-45deg,#1a0033,#000033,#330000,#220033);
+  background-size:400% 400%;
+  animation: gradientShift 12s ease infinite;
+  transition: background 0.7s ease, color 0.4s ease;
+  color:var(--accent);
+}
+
+/* background shift */
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* Top-right icons */
+.top-right{position:fixed;top:20px;right:20px;display:flex;gap:14px;z-index:1200}
+.circle-btn{width:46px;height:46px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:white;background:#444;text-decoration:none;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.circle-btn:hover{transform:scale(1.08)}
+.insta{background:#e1306c}.google{background:#fff;color:#4285F4}.settings{background:#555}
+
+/* headline */
+h1{font-size:60px;margin-bottom:8px;color:var(--accent)}
+.lead{font-size:20px;margin-bottom:18px;color:var(--accent)}
+
+/* enter button */
+.btn-enter{background:var(--accent);color:black;padding:14px 36px;border-radius:10px;border:none;cursor:pointer;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.btn-enter:hover{transform:translateY(-2px)}
+
+/* quote */
+#quote{position:fixed;bottom:36px;left:50%;transform:translateX(-50%);max-width:900px;padding:0 24px;color:var(--accent);font-size:18px;z-index:900}
+
+/* menu overlay */
+#menuOverlay{position:fixed;inset:0;background:rgba(0,0,0,.56);backdrop-filter:blur(6px);display:none;justify-content:center;align-items:center;z-index:1000}
+#menuBox{width:92%;max-width:460px;background:rgba(8,8,8,.98);border-radius:14px;padding:28px;color:#fff;transform:scale(.92);opacity:0;transition:transform .28s ease,opacity .28s}
+#menuOverlay.show #menuBox{transform:scale(1);opacity:1}
+#menuBox h2{font-size:20px;margin-bottom:16px;color:#fff;text-transform:uppercase}
+.menu-feature{display:block;background:#222;color:#fff;padding:12px 16px;border-radius:10px;margin:8px 0;text-decoration:none;font-weight:700;text-align:center}
+.menu-close{margin-top:18px;display:inline-block;color:#fff;background:transparent;border:1px solid #444;padding:8px 12px;border-radius:8px;cursor:pointer}
+
+/* settings panel */
+#settingsPanel{position:fixed;top:0;right:-100%;width:320px;height:100%;background:#000;color:#fff;z-index:1300;transition:right .36s cubic-bezier(.2,.9,.2,1);display:flex;flex-direction:column;padding:18px}
+#settingsPanel.open{right:0}
+#settingsPanel h3{margin:4px 0 12px 0;font-size:20px;text-align:center}
+.setting-item{background:#111;padding:10px;border-radius:8px;margin:8px 0;text-align:center;cursor:pointer}
+.settings-footer{margin-top:auto;background:#0e0e0e;padding:12px;border-radius:8px;text-align:center;cursor:pointer}
+
+/* themes modal */
+#themesModalOverlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;justify-content:center;align-items:center;z-index:1400;backdrop-filter:blur(4px)}
+#themesModal{width:94%;max-width:760px;max-height:86vh;background:rgba(6,6,6,.98);border-radius:12px;padding:18px;overflow-y:auto;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,.7);display:flex;flex-direction:column;gap:12px}
+#themesModalHeader{display:flex;align-items:center;justify-content:space-between}
+#themesModalHeader h3{margin:0;font-size:18px;text-transform:uppercase}
+#themesGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px}
+
+/* theme card */
+.theme-card{display:flex;align-items:center;gap:12px;padding:10px;background:rgba(255,255,255,.03);border-radius:10px;cursor:pointer}
+.theme-card:hover{transform:translateY(-4px);background:rgba(255,255,255,.06)}
+.theme-dot{width:34px;height:34px;border-radius:50%;flex-shrink:0;box-shadow:0 4px 10px rgba(0,0,0,.3);border:2px solid rgba(255,255,255,.06)}
+.theme-name{font-size:15px;font-weight:700;color:#fff}
+.theme-desc{font-size:12px;opacity:.8;color:#ddd;margin-top:3px}
+
+/* themes close button */
+#themesCloseBtn{margin-top:12px;align-self:center;background:transparent;color:#fff;border:1px solid #333;padding:8px 12px;border-radius:8px;cursor:pointer}
+#themesCloseBtn:hover{background:rgba(255,255,255,.04)}
+
+/* responsive small devices */
+@media (max-width:640px){
+  #themesGrid{grid-template-columns:1fr}
+  h1{font-size:36px}
+  .theme-card{padding:12px}
+}
+
+/* ========= 28 theme classes (explicit) ========= */
+
+/* 01 Dark Crimson */
+body.theme-01{background:linear-gradient(-45deg,#1a0033,#000033,#330000,#220033);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#ff1a1a}
+
+/* 02 Blueberry Blues */
+body.theme-02{background:linear-gradient(-45deg,#0d1b2a,#1b263b,#415a77,#1b1f4f);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#ffd9e0}
+
+/* 03 Tropical Sunset */
+body.theme-03{background:linear-gradient(-45deg,#ff7e5f,#feb47b,#f6d365,#fda085);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#07104b}
 
+/* 04 Candy Lagoon */
+body.theme-04{background:linear-gradient(-45deg,#ff66b2,#ffffff,#00ffff,#ff99cc);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#07104b}
+
+/* 05 Cosmic Night */
+body.theme-05{background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#4b2b7f);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#ffb6c6}
+
+/* 06 Forest Whisper */
+body.theme-06{background:linear-gradient(-45deg,#0b3d20,#1f5f2a,#3b8d47,#0f2f1a);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#ffdca3}
+
+/* 07 Inferno Blaze */
+body.theme-07{background:linear-gradient(-45deg,#2b0000,#ff3b00,#ff8b00,#662200);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#fff1e6}
+
+/* 08 Crystal Sky */
+body.theme-08{background:linear-gradient(-45deg,#0066cc,#66ccff,#aaf0ff,#1a9cff);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#001a3d}
+
+/* 09 Sakura Dream */
+body.theme-09{background:linear-gradient(-45deg,#ffb3c6,#ffdfe6,#fff0f8,#ffb3d9);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#07104b}
+
+/* 10 Neon Storm */
+body.theme-10{background:linear-gradient(-45deg,#00ffff,#ff00ff,#00ff88,#001a33);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#ffffff}
+
+/* 11 Desert Mirage */
+body.theme-11{background:linear-gradient(-45deg,#ef9a3c,#f4d06f,#c67f33,#e9c46a);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#07104b}
+
+/* 12 Glacier Mist */
+body.theme-12{background:linear-gradient(-45deg,#eaf6ff,#bfe9ff,#8fd6ff,#cfeeff);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#001a3d}
+
+/* 13 Royal Gold */
+body.theme-13{background:linear-gradient(-45deg,#f7d794,#f6caa3,#f0b67f,#f2a65a);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#07104b}
+
+/* 14 Ocean Deep */
+body.theme-14{background:linear-gradient(-45deg,#001f3f,#003f5c,#2f4b7c,#665191);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#a8e6ff}
+
+/* 15 Ember Glow */
+body.theme-15{background:linear-gradient(-45deg,#ff4e50,#f9d423,#ff7b00,#ff3b3b);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#0b0b0b}
+
+/* 16 Meadow Fresh */
+body.theme-16{background:linear-gradient(-45deg,#76b852,#8dc26f,#b7e4a5,#4a8f29);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#05311a}
+
+/* 17 Twilight Purple */
+body.theme-17{background:linear-gradient(-45deg,#2c3e50,#4ca1af,#7b2ff7,#b983ff);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#fff6f6}
+
+/* 18 Copper Canyon */
+body.theme-18{background:linear-gradient(-45deg,#7b3f00,#c86b2d,#ffaa5c,#3d1300);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#fff0e0}
+
+/* 19 Arctic Dawn */
+body.theme-19{background:linear-gradient(-45deg,#cfe9ff,#a6e1ff,#7bd3ff,#e6fbff);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#012a4a}
+
+/* 20 Rosewood */
+body.theme-20{background:linear-gradient(-45deg,#2b0a3d,#72306a,#a93f86,#ff6b9f);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#fff6f6}
+
+/* 21 Mango Tango */
+body.theme-21{background:linear-gradient(-45deg,#ffb347,#ffcc33,#ff7f50,#ffcc66);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#041a2b}
+
+/* 22 Indigo Dusk */
+body.theme-22{background:linear-gradient(-45deg,#2b5876,#4e4376,#6c5b7b,#8a65a7);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#fff7ff}
+
+/* 23 Mint Whisper */
+body.theme-23{background:linear-gradient(-45deg,#d4fc79,#96e6a1,#b8ffcc,#6dd3b0);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#012a1a}
+
+/* 24 Solar Flare */
+body.theme-24{background:linear-gradient(-45deg,#f7971e,#ffd200,#ff4e50,#ff7b00);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#07104b}
+
+/* 25 Velvet Night */
+body.theme-25{background:linear-gradient(-45deg,#141e30,#243b55,#2b2d42,#1b263b);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#f0f8ff}
+
+/* 26 Pearl Horizon */
+body.theme-26{background:linear-gradient(-45deg,#f8f1f1,#e8f6ff,#dff3ff,#d7f0ff);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#081830}
+
+/* 27 Twilight Ember */
+body.theme-27{background:linear-gradient(-45deg,#421e0f,#8b4000,#c66a00,#ff9b2f);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#fff6ef}
+
+/* 28 Lunar Grey */
+body.theme-28{background:linear-gradient(-45deg,#3a3a3a,#6b6b6b,#a3a3a3,#dddddd);background-size:400% 400%;animation:gradientShift 12s ease infinite;--accent:#041430}
+ CSS HERE */
   </style>
 </head>
-
 <body class="theme-01">
 
   <!-- Top-right icons -->
@@ -643,11 +221,7 @@
   <div id="menuOverlay" role="dialog" aria-modal="true" aria-hidden="true">
     <div id="menuBox" role="document">
       <h2>PICK YOUR DESTINATION</h2>
-
       <a class="menu-feature" href="#" id="featureCali">CALI-CHALLENGE GENERATOR</a>
-
-      <div style="height:8px;"></div>
-
       <button id="menuClose" class="menu-close" aria-label="Close menu">Close / Esc</button>
     </div>
   </div>
@@ -655,26 +229,21 @@
   <!-- Settings side panel -->
   <aside id="settingsPanel" aria-hidden="true">
     <h3>Settings</h3>
-
     <div class="setting-item" id="openThemes">Change Theme (Open Themes Menu)</div>
-
-    <div style="height:8px;"></div>
-
     <div class="settings-footer" id="closeSettings">CLOSE / ESC</div>
   </aside>
 
-  <!-- Themes centered modal (explicit, long list of 28) -->
+  <!-- Themes centered modal (28 explicit theme cards) -->
   <div id="themesModalOverlay" aria-hidden="true">
     <div id="themesModal" role="dialog" aria-modal="true" aria-labelledby="themesTitle">
-
       <div id="themesModalHeader">
         <h3 id="themesTitle">Themes</h3>
-        <div style="width:8px;"></div>
       </div>
 
       <div id="themesGrid">
 
-        <!-- Theme card 01 -->
+        <!-- 28 theme cards: each has explicit ID to hook up handlers -->
+        <!-- 01 -->
         <div class="theme-card" id="themeCard01" role="button" tabindex="0" aria-label="Apply Dark Crimson">
           <div class="theme-dot" style="background: linear-gradient(135deg,#1a0033,#000033,#330000,#220033);"></div>
           <div>
@@ -683,7 +252,7 @@
           </div>
         </div>
 
-        <!-- Theme card 02 -->
+        <!-- 02 -->
         <div class="theme-card" id="themeCard02" role="button" tabindex="0" aria-label="Apply Blueberry Blues">
           <div class="theme-dot" style="background: linear-gradient(135deg,#0d1b2a,#1b263b,#415a77,#1b1f4f);"></div>
           <div>
@@ -692,7 +261,7 @@
           </div>
         </div>
 
-        <!-- Theme card 03 -->
+        <!-- 03 -->
         <div class="theme-card" id="themeCard03" role="button" tabindex="0" aria-label="Apply Tropical Sunset">
           <div class="theme-dot" style="background: linear-gradient(135deg,#ff7e5f,#feb47b,#f6d365,#fda085);"></div>
           <div>
@@ -701,7 +270,7 @@
           </div>
         </div>
 
-        <!-- Theme card 04 -->
+        <!-- 04 -->
         <div class="theme-card" id="themeCard04" role="button" tabindex="0" aria-label="Apply Candy Lagoon">
           <div class="theme-dot" style="background: linear-gradient(135deg,#ff66b2,#ffffff,#00ffff,#ff99cc);"></div>
           <div>
@@ -710,7 +279,7 @@
           </div>
         </div>
 
-        <!-- Theme card 05 -->
+        <!-- 05 -->
         <div class="theme-card" id="themeCard05" role="button" tabindex="0" aria-label="Apply Cosmic Night">
           <div class="theme-dot" style="background: linear-gradient(135deg,#0f0c29,#302b63,#24243e,#4b2b7f);"></div>
           <div>
@@ -719,7 +288,7 @@
           </div>
         </div>
 
-        <!-- Theme card 06 -->
+        <!-- 06 -->
         <div class="theme-card" id="themeCard06" role="button" tabindex="0" aria-label="Apply Forest Whisper">
           <div class="theme-dot" style="background: linear-gradient(135deg,#0b3d20,#1f5f2a,#3b8d47,#0f2f1a);"></div>
           <div>
@@ -728,7 +297,7 @@
           </div>
         </div>
 
-        <!-- Theme card 07 -->
+        <!-- 07 -->
         <div class="theme-card" id="themeCard07" role="button" tabindex="0" aria-label="Apply Inferno Blaze">
           <div class="theme-dot" style="background: linear-gradient(135deg,#2b0000,#ff3b00,#ff8b00,#662200);"></div>
           <div>
@@ -737,7 +306,7 @@
           </div>
         </div>
 
-        <!-- Theme card 08 -->
+        <!-- 08 -->
         <div class="theme-card" id="themeCard08" role="button" tabindex="0" aria-label="Apply Crystal Sky">
           <div class="theme-dot" style="background: linear-gradient(135deg,#0066cc,#66ccff,#aaf0ff,#1a9cff);"></div>
           <div>
@@ -746,7 +315,7 @@
           </div>
         </div>
 
-        <!-- Theme card 09 -->
+        <!-- 09 -->
         <div class="theme-card" id="themeCard09" role="button" tabindex="0" aria-label="Apply Sakura Dream">
           <div class="theme-dot" style="background: linear-gradient(135deg,#ffb3c6,#ffdfe6,#fff0f8,#ffb3d9);"></div>
           <div>
@@ -755,7 +324,7 @@
           </div>
         </div>
 
-        <!-- Theme card 10 -->
+        <!-- 10 -->
         <div class="theme-card" id="themeCard10" role="button" tabindex="0" aria-label="Apply Neon Storm">
           <div class="theme-dot" style="background: linear-gradient(135deg,#00ffff,#ff00ff,#00ff88,#001a33);"></div>
           <div>
@@ -764,7 +333,7 @@
           </div>
         </div>
 
-        <!-- Theme card 11 -->
+        <!-- 11 -->
         <div class="theme-card" id="themeCard11" role="button" tabindex="0" aria-label="Apply Desert Mirage">
           <div class="theme-dot" style="background: linear-gradient(135deg,#ef9a3c,#f4d06f,#c67f33,#e9c46a);"></div>
           <div>
@@ -773,7 +342,7 @@
           </div>
         </div>
 
-        <!-- Theme card 12 -->
+        <!-- 12 -->
         <div class="theme-card" id="themeCard12" role="button" tabindex="0" aria-label="Apply Glacier Mist">
           <div class="theme-dot" style="background: linear-gradient(135deg,#eaf6ff,#bfe9ff,#8fd6ff,#cfeeff);"></div>
           <div>
@@ -782,7 +351,7 @@
           </div>
         </div>
 
-        <!-- Theme card 13 -->
+        <!-- 13 -->
         <div class="theme-card" id="themeCard13" role="button" tabindex="0" aria-label="Apply Royal Gold">
           <div class="theme-dot" style="background: linear-gradient(135deg,#f7d794,#f6caa3,#f0b67f,#f2a65a);"></div>
           <div>
@@ -791,7 +360,7 @@
           </div>
         </div>
 
-        <!-- Theme card 14 -->
+        <!-- 14 -->
         <div class="theme-card" id="themeCard14" role="button" tabindex="0" aria-label="Apply Ocean Deep">
           <div class="theme-dot" style="background: linear-gradient(135deg,#001f3f,#003f5c,#2f4b7c,#665191);"></div>
           <div>
@@ -800,7 +369,7 @@
           </div>
         </div>
 
-        <!-- Theme card 15 -->
+        <!-- 15 -->
         <div class="theme-card" id="themeCard15" role="button" tabindex="0" aria-label="Apply Ember Glow">
           <div class="theme-dot" style="background: linear-gradient(135deg,#ff4e50,#f9d423,#ff7b00,#ff3b3b);"></div>
           <div>
@@ -809,7 +378,7 @@
           </div>
         </div>
 
-        <!-- Theme card 16 -->
+        <!-- 16 -->
         <div class="theme-card" id="themeCard16" role="button" tabindex="0" aria-label="Apply Meadow Fresh">
           <div class="theme-dot" style="background: linear-gradient(135deg,#76b852,#8dc26f,#b7e4a5,#4a8f29);"></div>
           <div>
@@ -818,7 +387,7 @@
           </div>
         </div>
 
-        <!-- Theme card 17 -->
+        <!-- 17 -->
         <div class="theme-card" id="themeCard17" role="button" tabindex="0" aria-label="Apply Twilight Purple">
           <div class="theme-dot" style="background: linear-gradient(135deg,#2c3e50,#4ca1af,#7b2ff7,#b983ff);"></div>
           <div>
@@ -827,7 +396,7 @@
           </div>
         </div>
 
-        <!-- Theme card 18 -->
+        <!-- 18 -->
         <div class="theme-card" id="themeCard18" role="button" tabindex="0" aria-label="Apply Copper Canyon">
           <div class="theme-dot" style="background: linear-gradient(135deg,#7b3f00,#c86b2d,#ffaa5c,#3d1300);"></div>
           <div>
@@ -836,7 +405,7 @@
           </div>
         </div>
 
-        <!-- Theme card 19 -->
+        <!-- 19 -->
         <div class="theme-card" id="themeCard19" role="button" tabindex="0" aria-label="Apply Arctic Dawn">
           <div class="theme-dot" style="background: linear-gradient(135deg,#cfe9ff,#a6e1ff,#7bd3ff,#e6fbff);"></div>
           <div>
@@ -845,7 +414,7 @@
           </div>
         </div>
 
-        <!-- Theme card 20 -->
+        <!-- 20 -->
         <div class="theme-card" id="themeCard20" role="button" tabindex="0" aria-label="Apply Rosewood">
           <div class="theme-dot" style="background: linear-gradient(135deg,#2b0a3d,#72306a,#a93f86,#ff6b9f);"></div>
           <div>
@@ -854,7 +423,7 @@
           </div>
         </div>
 
-        <!-- Theme card 21 -->
+        <!-- 21 -->
         <div class="theme-card" id="themeCard21" role="button" tabindex="0" aria-label="Apply Mango Tango">
           <div class="theme-dot" style="background: linear-gradient(135deg,#ffb347,#ffcc33,#ff7f50,#ffcc66);"></div>
           <div>
@@ -863,7 +432,7 @@
           </div>
         </div>
 
-        <!-- Theme card 22 -->
+        <!-- 22 -->
         <div class="theme-card" id="themeCard22" role="button" tabindex="0" aria-label="Apply Indigo Dusk">
           <div class="theme-dot" style="background: linear-gradient(135deg,#2b5876,#4e4376,#6c5b7b,#8a65a7);"></div>
           <div>
@@ -872,7 +441,7 @@
           </div>
         </div>
 
-        <!-- Theme card 23 -->
+        <!-- 23 -->
         <div class="theme-card" id="themeCard23" role="button" tabindex="0" aria-label="Apply Mint Whisper">
           <div class="theme-dot" style="background: linear-gradient(135deg,#d4fc79,#96e6a1,#b8ffcc,#6dd3b0);"></div>
           <div>
@@ -881,7 +450,7 @@
           </div>
         </div>
 
-        <!-- Theme card 24 -->
+        <!-- 24 -->
         <div class="theme-card" id="themeCard24" role="button" tabindex="0" aria-label="Apply Solar Flare">
           <div class="theme-dot" style="background: linear-gradient(135deg,#f7971e,#ffd200,#ff4e50,#ff7b00);"></div>
           <div>
@@ -890,7 +459,7 @@
           </div>
         </div>
 
-        <!-- Theme card 25 -->
+        <!-- 25 -->
         <div class="theme-card" id="themeCard25" role="button" tabindex="0" aria-label="Apply Velvet Night">
           <div class="theme-dot" style="background: linear-gradient(135deg,#141e30,#243b55,#2b2d42,#1b263b);"></div>
           <div>
@@ -899,7 +468,7 @@
           </div>
         </div>
 
-        <!-- Theme card 26 -->
+        <!-- 26 -->
         <div class="theme-card" id="themeCard26" role="button" tabindex="0" aria-label="Apply Pearl Horizon">
           <div class="theme-dot" style="background: linear-gradient(135deg,#f8f1f1,#e8f6ff,#dff3ff,#d7f0ff);"></div>
           <div>
@@ -908,7 +477,7 @@
           </div>
         </div>
 
-        <!-- Theme card 27 -->
+        <!-- 27 -->
         <div class="theme-card" id="themeCard27" role="button" tabindex="0" aria-label="Apply Twilight Ember">
           <div class="theme-dot" style="background: linear-gradient(135deg,#421e0f,#8b4000,#c66a00,#ff9b2f);"></div>
           <div>
@@ -917,7 +486,7 @@
           </div>
         </div>
 
-        <!-- Theme card 28 -->
+        <!-- 28 -->
         <div class="theme-card" id="themeCard28" role="button" tabindex="0" aria-label="Apply Lunar Grey">
           <div class="theme-dot" style="background: linear-gradient(135deg,#3a3a3a,#6b6b6b,#a3a3a3,#dddddd);"></div>
           <div>
@@ -933,702 +502,301 @@
     </div> <!-- end themesModal -->
   </div> <!-- end themesModalOverlay -->
 
-  <script>
-    /* =============================================================
-       Interaction JS (explicit, no loops for theme handlers)
-       - show/hide menu
-       - show/hide settings side panel
-       - open/close themes modal
-       - explicit applyTheme functions for each theme (1..28)
-       - close/esc logic
-       ============================================================= */
+  <!-- JS: paste PART /* ================= QUOTES ================= */
+var quotes = [
+  "Strength is built, not given.",
+  "Pain is temporary, pride is forever.",
+  "Every rep counts.",
+  "The body achieves what the mind believes.",
+  "Calisthenics is art in motion.",
+  "Small progress is still progress.",
+  "Push harder than yesterday.",
+  "Your only limit is you.",
+  "Discipline beats motivation.",
+  "Power through the struggle."
+];
 
-    /* Quotes array (still used) */
-    var quotes = [
-      "Strength is built, not given.",
-      "Pain is temporary, pride is forever.",
-      "Every rep counts.",
-      "The body achieves what the mind believes.",
-      "Calisthenics is art in motion.",
-      "Small progress is still progress.",
-      "Push harder than yesterday.",
-      "Your only limit is you.",
-      "Discipline beats motivation.",
-      "Power through the struggle."
-    ];
+try {
+  var quoteEl = document.getElementById('quote');
+  if (quoteEl) quoteEl.innerText = quotes[Math.floor(Math.random()*quotes.length)];
+} catch(e){console.error(e);}
 
-    /* place a random quote */
+/* ============== BASIC UI NODES ============== */
+var enterBtn = document.getElementById('enterBtn');
+var menuOverlay = document.getElementById('menuOverlay');
+var menuClose = document.getElementById('menuClose');
+var settingsBtn = document.getElementById('settingsBtn');
+var settingsPanel = document.getElementById('settingsPanel');
+var openThemes = document.getElementById('openThemes');
+var closeSettings = document.getElementById('closeSettings');
+var themesModalOverlay = document.getElementById('themesModalOverlay');
+var themesCloseBtn = document.getElementById('themesCloseBtn');
+
+/* ============== ENTER MENU ============== */
+if (enterBtn) {
+  enterBtn.addEventListener('click', function(){
     try {
-      var quoteEl = document.getElementById('quote');
-      if (quoteEl) {
-        var idx = Math.floor(Math.random() * quotes.length);
-        quoteEl.innerText = quotes[idx];
+      enterBtn.style.transform = 'scale(1.06)';
+      setTimeout(function(){
+        enterBtn.style.transform = '';
+        menuOverlay.style.display = 'flex';
+        setTimeout(function(){ menuOverlay.classList.add('show'); }, 30);
+      }, 120);
+    } catch(err){ console.error(err); }
+  });
+}
+if (menuClose) {
+  menuClose.addEventListener('click', function(){
+    try {
+      menuOverlay.classList.remove('show');
+      setTimeout(function(){ menuOverlay.style.display = 'none'; }, 350);
+    } catch(err){ console.error(err); }
+  });
+}
+
+/* ============== SETTINGS PANEL ============== */
+if (settingsBtn) {
+  settingsBtn.addEventListener('click', function(){
+    settingsBtn.classList.toggle('rotate');
+    settingsPanel.classList.toggle('open');
+  });
+}
+if (closeSettings) {
+  closeSettings.addEventListener('click', function(){
+    settingsBtn.classList.remove('rotate');
+    settingsPanel.classList.remove('open');
+  });
+}
+
+/* ============== THEMES MODAL OPEN/CLOSE ============== */
+if (openThemes) {
+  openThemes.addEventListener('click', function(){
+    themesModalOverlay.style.display = 'flex';
+    themesModalOverlay.setAttribute('aria-hidden','false');
+    var modal = document.getElementById('themesModal');
+    if (modal) modal.scrollTop = 0;
+  });
+}
+if (themesCloseBtn) {
+  themesCloseBtn.addEventListener('click', function(){
+    themesModalOverlay.style.display = 'none';
+    themesModalOverlay.setAttribute('aria-hidden','true');
+  });
+}
+if (themesModalOverlay) {
+  themesModalOverlay.addEventListener('click', function(e){
+    if (e.target === themesModalOverlay) {
+      themesModalOverlay.style.display = 'none';
+      themesModalOverlay.setAttribute('aria-hidden','true');
+    }
+  });
+}
+
+/* ================= ESC handling ================= */
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape' || e.key === 'Esc') {
+    try {
+      if (settingsPanel.classList.contains('open')) {
+        settingsBtn.classList.remove('rotate');
+        settingsPanel.classList.remove('open');
       }
-    } catch (err) {
-      console.error('Quote load error', err);
-    }
-
-    /* Basic UI nodes */
-    var enterBtn = document.getElementById('enterBtn');
-    var menuOverlay = document.getElementById('menuOverlay');
-    var menuClose = document.getElementById('menuClose');
-    var settingsBtn = document.getElementById('settingsBtn');
-    var settingsPanel = document.getElementById('settingsPanel');
-    var openThemes = document.getElementById('openThemes');
-    var closeSettings = document.getElementById('closeSettings');
-    var themesModalOverlay = document.getElementById('themesModalOverlay');
-    var themesCloseBtn = document.getElementById('themesCloseBtn');
-
-    /* ENTER -> show menu animation then open */
-    if (enterBtn) {
-      enterBtn.addEventListener('click', function () {
-        try {
-          enterBtn.style.transform = 'scale(1.06)';
-          setTimeout(function () {
-            enterBtn.style.transform = '';
-            menuOverlay.style.display = 'flex';
-            setTimeout(function () {
-              menuOverlay.classList.add('show');
-            }, 30);
-          }, 120);
-        } catch (err) {
-          console.error('Enter animation error', err);
-        }
-      });
-    }
-
-    /* menu close */
-    if (menuClose) {
-      menuClose.addEventListener('click', function () {
-        try {
-          menuOverlay.classList.remove('show');
-          setTimeout(function () {
-            menuOverlay.style.display = 'none';
-          }, 350);
-        } catch (err) {
-          console.error('Menu close error', err);
-        }
-      });
-    }
-
-    /* Settings side toggle */
-    if (settingsBtn) {
-      settingsBtn.addEventListener('click', function () {
-        try {
-          settingsBtn.classList.toggle('rotate');
-          settingsPanel.classList.toggle('open');
-        } catch (err) {
-          console.error('Settings toggle error', err);
-        }
-      });
-    }
-
-    /* open themes modal from settings item */
-    if (openThemes) {
-      openThemes.addEventListener('click', function () {
-        try {
-          themesModalOverlay.style.display = 'flex';
-          themesModalOverlay.setAttribute('aria-hidden', 'false');
-          // scroll to top of modal
-          var modal = document.getElementById('themesModal');
-          if (modal) modal.scrollTop = 0;
-        } catch (err) {
-          console.error('Open themes error', err);
-        }
-      });
-    }
-
-    /* close settings */
-    if (closeSettings) {
-      closeSettings.addEventListener('click', function () {
-        try {
-          settingsBtn.classList.remove('rotate');
-          settingsPanel.classList.remove('open');
-        } catch (err) {
-          console.error('Close settings error', err);
-        }
-      });
-    }
-
-    /* close themes modal */
-    if (themesCloseBtn) {
-      themesCloseBtn.addEventListener('click', function () {
-        try {
-          themesModalOverlay.style.display = 'none';
-          themesModalOverlay.setAttribute('aria-hidden', 'true');
-        } catch (err) {
-          console.error('Themes close error', err);
-        }
-      });
-    }
-
-    /* close modal if click outside inner area */
-    themesModalOverlay.addEventListener('click', function (e) {
-      if (e.target === themesModalOverlay) {
+      if (menuOverlay.classList.contains('show')) {
+        menuOverlay.classList.remove('show');
+        setTimeout(function(){ menuOverlay.style.display = 'none'; }, 350);
+      }
+      if (themesModalOverlay && themesModalOverlay.style.display === 'flex') {
         themesModalOverlay.style.display = 'none';
-        themesModalOverlay.setAttribute('aria-hidden', 'true');
+        themesModalOverlay.setAttribute('aria-hidden','true');
       }
-    });
-
-    /* ESC closes overlays/panels */
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' || e.key === 'Esc') {
-        try {
-          if (settingsPanel.classList.contains('open')) {
-            settingsBtn.classList.remove('rotate');
-            settingsPanel.classList.remove('open');
-          }
-          if (menuOverlay.classList.contains('show')) {
-            menuOverlay.classList.remove('show');
-            setTimeout(function () {
-              menuOverlay.style.display = 'none';
-            }, 350);
-          }
-          if (themesModalOverlay.style.display === 'flex') {
-            themesModalOverlay.style.display = 'none';
-            themesModalOverlay.setAttribute('aria-hidden', 'true');
-          }
-        } catch (err) {
-          console.error('Escape handling error', err);
-        }
-      }
-    });
-
-    /* -----------------------------------------------------------------
-       Explicit theme apply functions for each of the 28 themes.
-       Each function:
-         - sets body.className to the theme class
-         - sets the CSS root variable --accent where needed (for headings)
-         - stores the theme index in localStorage for persistence
-       ----------------------------------------------------------------- */
-
-    function applyTheme01() {
-      try {
-        document.body.className = 'theme-01';
-        document.documentElement.style.setProperty('--accent', '#ff1a1a');
-        localStorage.setItem('sthalos_theme', 'theme-01');
-      } catch (err) {
-        console.error('applyTheme01 error', err);
-      }
-    }
-
-    function applyTheme02() {
-      try {
-        document.body.className = 'theme-02';
-        document.documentElement.style.setProperty('--accent', '#ffd9e0');
-        localStorage.setItem('sthalos_theme', 'theme-02');
-      } catch (err) {
-        console.error('applyTheme02 error', err);
-      }
-    }
-
-    function applyTheme03() {
-      try {
-        document.body.className = 'theme-03';
-        document.documentElement.style.setProperty('--accent', '#07104b');
-        localStorage.setItem('sthalos_theme', 'theme-03');
-      } catch (err) {
-        console.error('applyTheme03 error', err);
-      }
-    }
-
-    function applyTheme04() {
-      try {
-        document.body.className = 'theme-04';
-        document.documentElement.style.setProperty('--accent', '#07104b');
-        localStorage.setItem('sthalos_theme', 'theme-04');
-      } catch (err) {
-        console.error('applyTheme04 error', err);
-      }
-    }
-
-    function applyTheme05() {
-      try {
-        document.body.className = 'theme-05';
-        document.documentElement.style.setProperty('--accent', '#ffb6c6');
-        localStorage.setItem('sthalos_theme', 'theme-05');
-      } catch (err) {
-        console.error('applyTheme05 error', err);
-      }
-    }
-
-    function applyTheme06() {
-      try {
-        document.body.className = 'theme-06';
-        document.documentElement.style.setProperty('--accent', '#ffdca3');
-        localStorage.setItem('sthalos_theme', 'theme-06');
-      } catch (err) {
-        console.error('applyTheme06 error', err);
-      }
-    }
-
-    function applyTheme07() {
-      try {
-        document.body.className = 'theme-07';
-        document.documentElement.style.setProperty('--accent', '#fff1e6');
-        localStorage.setItem('sthalos_theme', 'theme-07');
-      } catch (err) {
-        console.error('applyTheme07 error', err);
-      }
-    }
-
-    function applyTheme08() {
-      try {
-        document.body.className = 'theme-08';
-        document.documentElement.style.setProperty('--accent', '#001a3d');
-        localStorage.setItem('sthalos_theme', 'theme-08');
-      } catch (err) {
-        console.error('applyTheme08 error', err);
-      }
-    }
-
-    function applyTheme09() {
-      try {
-        document.body.className = 'theme-09';
-        document.documentElement.style.setProperty('--accent', '#07104b');
-        localStorage.setItem('sthalos_theme', 'theme-09');
-      } catch (err) {
-        console.error('applyTheme09 error', err);
-      }
-    }
-
-    function applyTheme10() {
-      try {
-        document.body.className = 'theme-10';
-        document.documentElement.style.setProperty('--accent', '#ffffff');
-        localStorage.setItem('sthalos_theme', 'theme-10');
-      } catch (err) {
-        console.error('applyTheme10 error', err);
-      }
-    }
-
-    function applyTheme11() {
-      try {
-        document.body.className = 'theme-11';
-        document.documentElement.style.setProperty('--accent', '#07104b');
-        localStorage.setItem('sthalos_theme', 'theme-11');
-      } catch (err) {
-        console.error('applyTheme11 error', err);
-      }
-    }
-
-    function applyTheme12() {
-      try {
-        document.body.className = 'theme-12';
-        document.documentElement.style.setProperty('--accent', '#001a3d');
-        localStorage.setItem('sthalos_theme', 'theme-12');
-      } catch (err) {
-        console.error('applyTheme12 error', err);
-      }
-    }
-
-    function applyTheme13() {
-      try {
-        document.body.className = 'theme-13';
-        document.documentElement.style.setProperty('--accent', '#07104b');
-        localStorage.setItem('sthalos_theme', 'theme-13');
-      } catch (err) {
-        console.error('applyTheme13 error', err);
-      }
-    }
-
-    function applyTheme14() {
-      try {
-        document.body.className = 'theme-14';
-        document.documentElement.style.setProperty('--accent', '#a8e6ff');
-        localStorage.setItem('sthalos_theme', 'theme-14');
-      } catch (err) {
-        console.error('applyTheme14 error', err);
-      }
-    }
-
-    function applyTheme15() {
-      try {
-        document.body.className = 'theme-15';
-        document.documentElement.style.setProperty('--accent', '#0b0b0b');
-        localStorage.setItem('sthalos_theme', 'theme-15');
-      } catch (err) {
-        console.error('applyTheme15 error', err);
-      }
-    }
-
-    function applyTheme16() {
-      try {
-        document.body.className = 'theme-16';
-        document.documentElement.style.setProperty('--accent', '#05311a');
-        localStorage.setItem('sthalos_theme', 'theme-16');
-      } catch (err) {
-        console.error('applyTheme16 error', err);
-      }
-    }
-
-    function applyTheme17() {
-      try {
-        document.body.className = 'theme-17';
-        document.documentElement.style.setProperty('--accent', '#fff6f6');
-        localStorage.setItem('sthalos_theme', 'theme-17');
-      } catch (err) {
-        console.error('applyTheme17 error', err);
-      }
-    }
-
-    function applyTheme18() {
-      try {
-        document.body.className = 'theme-18';
-        document.documentElement.style.setProperty('--accent', '#fff0e0');
-        localStorage.setItem('sthalos_theme', 'theme-18');
-      } catch (err) {
-        console.error('applyTheme18 error', err);
-      }
-    }
-
-    function applyTheme19() {
-      try {
-        document.body.className = 'theme-19';
-        document.documentElement.style.setProperty('--accent', '#012a4a');
-        localStorage.setItem('sthalos_theme', 'theme-19');
-      } catch (err) {
-        console.error('applyTheme19 error', err);
-      }
-    }
-
-    function applyTheme20() {
-      try {
-        document.body.className = 'theme-20';
-        document.documentElement.style.setProperty('--accent', '#fff6f6');
-        localStorage.setItem('sthalos_theme', 'theme-20');
-      } catch (err) {
-        console.error('applyTheme20 error', err);
-      }
-    }
-
-    function applyTheme21() {
-      try {
-        document.body.className = 'theme-21';
-        document.documentElement.style.setProperty('--accent', '#041a2b');
-        localStorage.setItem('sthalos_theme', 'theme-21');
-      } catch (err) {
-        console.error('applyTheme21 error', err);
-      }
-    }
-
-    function applyTheme22() {
-      try {
-        document.body.className = 'theme-22';
-        document.documentElement.style.setProperty('--accent', '#fff7ff');
-        localStorage.setItem('sthalos_theme', 'theme-22');
-      } catch (err) {
-        console.error('applyTheme22 error', err);
-      }
-    }
-
-    function applyTheme23() {
-      try {
-        document.body.className = 'theme-23';
-        document.documentElement.style.setProperty('--accent', '#012a1a');
-        localStorage.setItem('sthalos_theme', 'theme-23');
-      } catch (err) {
-        console.error('applyTheme23 error', err);
-      }
-    }
-
-    function applyTheme24() {
-      try {
-        document.body.className = 'theme-24';
-        document.documentElement.style.setProperty('--accent', '#07104b');
-        localStorage.setItem('sthalos_theme', 'theme-24');
-      } catch (err) {
-        console.error('applyTheme24 error', err);
-      }
-    }
-
-    function applyTheme25() {
-      try {
-        document.body.className = 'theme-25';
-        document.documentElement.style.setProperty('--accent', '#f0f8ff');
-        localStorage.setItem('sthalos_theme', 'theme-25');
-      } catch (err) {
-        console.error('applyTheme25 error', err);
-      }
-    }
-
-    function applyTheme26() {
-      try {
-        document.body.className = 'theme-26';
-        document.documentElement.style.setProperty('--accent', '#081830');
-        localStorage.setItem('sthalos_theme', 'theme-26');
-      } catch (err) {
-        console.error('applyTheme26 error', err);
-      }
-    }
-
-    function applyTheme27() {
-      try {
-        document.body.className = 'theme-27';
-        document.documentElement.style.setProperty('--accent', '#fff6ef');
-        localStorage.setItem('sthalos_theme', 'theme-27');
-      } catch (err) {
-        console.error('applyTheme27 error', err);
-      }
-    }
-
-    function applyTheme28() {
-      try {
-        document.body.className = 'theme-28';
-        document.documentElement.style.setProperty('--accent', '#041430');
-        localStorage.setItem('sthalos_theme', 'theme-28');
-      } catch (err) {
-        console.error('applyTheme28 error', err);
-      }
-    }
-
-    /* -------------------------------------------------------------------
-       Hook up click / keyboard handlers to each theme card explicitly
-       (No loops — each event attached individually)
-       ------------------------------------------------------------------- */
-
-    var themeCard01 = document.getElementById('themeCard01');
-    if (themeCard01) {
-      themeCard01.addEventListener('click', function () { applyTheme01(); });
-      themeCard01.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme01(); });
-    }
-
-    var themeCard02 = document.getElementById('themeCard02');
-    if (themeCard02) {
-      themeCard02.addEventListener('click', function () { applyTheme02(); });
-      themeCard02.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme02(); });
-    }
-
-    var themeCard03 = document.getElementById('themeCard03');
-    if (themeCard03) {
-      themeCard03.addEventListener('click', function () { applyTheme03(); });
-      themeCard03.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme03(); });
-    }
-
-    var themeCard04 = document.getElementById('themeCard04');
-    if (themeCard04) {
-      themeCard04.addEventListener('click', function () { applyTheme04(); });
-      themeCard04.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme04(); });
-    }
-
-    var themeCard05 = document.getElementById('themeCard05');
-    if (themeCard05) {
-      themeCard05.addEventListener('click', function () { applyTheme05(); });
-      themeCard05.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme05(); });
-    }
-
-    var themeCard06 = document.getElementById('themeCard06');
-    if (themeCard06) {
-      themeCard06.addEventListener('click', function () { applyTheme06(); });
-      themeCard06.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme06(); });
-    }
-
-    var themeCard07 = document.getElementById('themeCard07');
-    if (themeCard07) {
-      themeCard07.addEventListener('click', function () { applyTheme07(); });
-      themeCard07.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme07(); });
-    }
-
-    var themeCard08 = document.getElementById('themeCard08');
-    if (themeCard08) {
-      themeCard08.addEventListener('click', function () { applyTheme08(); });
-      themeCard08.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme08(); });
-    }
-
-    var themeCard09 = document.getElementById('themeCard09');
-    if (themeCard09) {
-      themeCard09.addEventListener('click', function () { applyTheme09(); });
-      themeCard09.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme09(); });
-    }
-
-    var themeCard10 = document.getElementById('themeCard10');
-    if (themeCard10) {
-      themeCard10.addEventListener('click', function () { applyTheme10(); });
-      themeCard10.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme10(); });
-    }
-
-    var themeCard11 = document.getElementById('themeCard11');
-    if (themeCard11) {
-      themeCard11.addEventListener('click', function () { applyTheme11(); });
-      themeCard11.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme11(); });
-    }
-
-    var themeCard12 = document.getElementById('themeCard12');
-    if (themeCard12) {
-      themeCard12.addEventListener('click', function () { applyTheme12(); });
-      themeCard12.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme12(); });
-    }
-
-    var themeCard13 = document.getElementById('themeCard13');
-    if (themeCard13) {
-      themeCard13.addEventListener('click', function () { applyTheme13(); });
-      themeCard13.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme13(); });
-    }
-
-    var themeCard14 = document.getElementById('themeCard14');
-    if (themeCard14) {
-      themeCard14.addEventListener('click', function () { applyTheme14(); });
-      themeCard14.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme14(); });
-    }
-
-    var themeCard15 = document.getElementById('themeCard15');
-    if (themeCard15) {
-      themeCard15.addEventListener('click', function () { applyTheme15(); });
-      themeCard15.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme15(); });
-    }
-
-    var themeCard16 = document.getElementById('themeCard16');
-    if (themeCard16) {
-      themeCard16.addEventListener('click', function () { applyTheme16(); });
-      themeCard16.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme16(); });
-    }
-
-    var themeCard17 = document.getElementById('themeCard17');
-    if (themeCard17) {
-      themeCard17.addEventListener('click', function () { applyTheme17(); });
-      themeCard17.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme17(); });
-    }
-
-    var themeCard18 = document.getElementById('themeCard18');
-    if (themeCard18) {
-      themeCard18.addEventListener('click', function () { applyTheme18(); });
-      themeCard18.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme18(); });
-    }
-
-    var themeCard19 = document.getElementById('themeCard19');
-    if (themeCard19) {
-      themeCard19.addEventListener('click', function () { applyTheme19(); });
-      themeCard19.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme19(); });
-    }
-
-    var themeCard20 = document.getElementById('themeCard20');
-    if (themeCard20) {
-      themeCard20.addEventListener('click', function () { applyTheme20(); });
-      themeCard20.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme20(); });
-    }
-
-    var themeCard21 = document.getElementById('themeCard21');
-    if (themeCard21) {
-      themeCard21.addEventListener('click', function () { applyTheme21(); });
-      themeCard21.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme21(); });
-    }
-
-    var themeCard22 = document.getElementById('themeCard22');
-    if (themeCard22) {
-      themeCard22.addEventListener('click', function () { applyTheme22(); });
-      themeCard22.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme22(); });
-    }
-
-    var themeCard23 = document.getElementById('themeCard23');
-    if (themeCard23) {
-      themeCard23.addEventListener('click', function () { applyTheme23(); });
-      themeCard23.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme23(); });
-    }
-
-    var themeCard24 = document.getElementById('themeCard24');
-    if (themeCard24) {
-      themeCard24.addEventListener('click', function () { applyTheme24(); });
-      themeCard24.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme24(); });
-    }
-
-    var themeCard25 = document.getElementById('themeCard25');
-    if (themeCard25) {
-      themeCard25.addEventListener('click', function () { applyTheme25(); });
-      themeCard25.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme25(); });
-    }
-
-    var themeCard26 = document.getElementById('themeCard26');
-    if (themeCard26) {
-      themeCard26.addEventListener('click', function () { applyTheme26(); });
-      themeCard26.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme26(); });
-    }
-
-    var themeCard27 = document.getElementById('themeCard27');
-    if (themeCard27) {
-      themeCard27.addEventListener('click', function () { applyTheme27(); });
-      themeCard27.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme27(); });
-    }
-
-    var themeCard28 = document.getElementById('themeCard28');
-    if (themeCard28) {
-      themeCard28.addEventListener('click', function () { applyTheme28(); });
-      themeCard28.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyTheme28(); });
-    }
-
-    /* -------------------------------------------------------------------
-       Persist last theme on load (explicit check)
-       ------------------------------------------------------------------- */
-    try {
-      var saved = localStorage.getItem('sthalos_theme');
-      if (saved && typeof saved === 'string') {
-        // apply by class name (explicit mapping)
-        if (saved === 'theme-01') applyTheme01();
-        else if (saved === 'theme-02') applyTheme02();
-        else if (saved === 'theme-03') applyTheme03();
-        else if (saved === 'theme-04') applyTheme04();
-        else if (saved === 'theme-05') applyTheme05();
-        else if (saved === 'theme-06') applyTheme06();
-        else if (saved === 'theme-07') applyTheme07();
-        else if (saved === 'theme-08') applyTheme08();
-        else if (saved === 'theme-09') applyTheme09();
-        else if (saved === 'theme-10') applyTheme10();
-        else if (saved === 'theme-11') applyTheme11();
-        else if (saved === 'theme-12') applyTheme12();
-        else if (saved === 'theme-13') applyTheme13();
-        else if (saved === 'theme-14') applyTheme14();
-        else if (saved === 'theme-15') applyTheme15();
-        else if (saved === 'theme-16') applyTheme16();
-        else if (saved === 'theme-17') applyTheme17();
-        else if (saved === 'theme-18') applyTheme18();
-        else if (saved === 'theme-19') applyTheme19();
-        else if (saved === 'theme-20') applyTheme20();
-        else if (saved === 'theme-21') applyTheme21();
-        else if (saved === 'theme-22') applyTheme22();
-        else if (saved === 'theme-23') applyTheme23();
-        else if (saved === 'theme-24') applyTheme24();
-        else if (saved === 'theme-25') applyTheme25();
-        else if (saved === 'theme-26') applyTheme26();
-        else if (saved === 'theme-27') applyTheme27();
-        else if (saved === 'theme-28') applyTheme28();
-      }
-    } catch (e) {
-      console.error('Theme restore error', e);
-    }
-
-    /* -------------------------------------------------------------------
-       Accessibility: trap focus for modal when open (basic)
-       We'll ensure pressing TAB doesn't leave the modal when it's open.
-       This is minimal and explicit: we won't rely on fancy libraries.
-       ------------------------------------------------------------------- */
-
-    (function setupFocusTrap() {
-      var lastFocused = null;
-
-      // When themes modal opens, remember last focus and focus first card
-      var focusableFirst = document.getElementById('themeCard01');
-
-      document.getElementById('openThemes').addEventListener('click', function () {
-        try {
-          lastFocused = document.activeElement;
-          var f = focusableFirst;
-          if (f && typeof f.focus === 'function') f.focus();
-        } catch (err) {
-          // ignore
-        }
-      });
-
-      // When modal closed restore focus
-      document.getElementById('themesCloseBtn').addEventListener('click', function () {
-        try {
-          if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
-        } catch (err) {
-          // ignore
-        }
-      });
-    })();
-
-
+    } catch(err){ console.error(err); }
+  }
+});
+
+/* ================= EXPLICIT THEME FUNCTIONS (1..28) ================= */
+/* each sets body.className and updates --accent and localStorage */
+/* 01 */
+function applyTheme01(){ document.body.className='theme-01'; document.documentElement.style.setProperty('--accent','#ff1a1a'); localStorage.setItem('sthalos_theme','theme-01'); }
+/* 02 */
+function applyTheme02(){ document.body.className='theme-02'; document.documentElement.style.setProperty('--accent','#ffd9e0'); localStorage.setItem('sthalos_theme','theme-02'); }
+/* 03 */
+function applyTheme03(){ document.body.className='theme-03'; document.documentElement.style.setProperty('--accent','#07104b'); localStorage.setItem('sthalos_theme','theme-03'); }
+/* 04 */
+function applyTheme04(){ document.body.className='theme-04'; document.documentElement.style.setProperty('--accent','#07104b'); localStorage.setItem('sthalos_theme','theme-04'); }
+/* 05 */
+function applyTheme05(){ document.body.className='theme-05'; document.documentElement.style.setProperty('--accent','#ffb6c6'); localStorage.setItem('sthalos_theme','theme-05'); }
+/* 06 */
+function applyTheme06(){ document.body.className='theme-06'; document.documentElement.style.setProperty('--accent','#ffdca3'); localStorage.setItem('sthalos_theme','theme-06'); }
+/* 07 */
+function applyTheme07(){ document.body.className='theme-07'; document.documentElement.style.setProperty('--accent','#fff1e6'); localStorage.setItem('sthalos_theme','theme-07'); }
+/* 08 */
+function applyTheme08(){ document.body.className='theme-08'; document.documentElement.style.setProperty('--accent','#001a3d'); localStorage.setItem('sthalos_theme','theme-08'); }
+/* 09 */
+function applyTheme09(){ document.body.className='theme-09'; document.documentElement.style.setProperty('--accent','#07104b'); localStorage.setItem('sthalos_theme','theme-09'); }
+/* 10 */
+function applyTheme10(){ document.body.className='theme-10'; document.documentElement.style.setProperty('--accent','#ffffff'); localStorage.setItem('sthalos_theme','theme-10'); }
+/* 11 */
+function applyTheme11(){ document.body.className='theme-11'; document.documentElement.style.setProperty('--accent','#07104b'); localStorage.setItem('sthalos_theme','theme-11'); }
+/* 12 */
+function applyTheme12(){ document.body.className='theme-12'; document.documentElement.style.setProperty('--accent','#001a3d'); localStorage.setItem('sthalos_theme','theme-12'); }
+/* 13 */
+function applyTheme13(){ document.body.className='theme-13'; document.documentElement.style.setProperty('--accent','#07104b'); localStorage.setItem('sthalos_theme','theme-13'); }
+/* 14 */
+function applyTheme14(){ document.body.className='theme-14'; document.documentElement.style.setProperty('--accent','#a8e6ff'); localStorage.setItem('sthalos_theme','theme-14'); }
+/* 15 */
+function applyTheme15(){ document.body.className='theme-15'; document.documentElement.style.setProperty('--accent','#0b0b0b'); localStorage.setItem('sthalos_theme','theme-15'); }
+/* 16 */
+function applyTheme16(){ document.body.className='theme-16'; document.documentElement.style.setProperty('--accent','#05311a'); localStorage.setItem('sthalos_theme','theme-16'); }
+/* 17 */
+function applyTheme17(){ document.body.className='theme-17'; document.documentElement.style.setProperty('--accent','#fff6f6'); localStorage.setItem('sthalos_theme','theme-17'); }
+/* 18 */
+function applyTheme18(){ document.body.className='theme-18'; document.documentElement.style.setProperty('--accent','#fff0e0'); localStorage.setItem('sthalos_theme','theme-18'); }
+/* 19 */
+function applyTheme19(){ document.body.className='theme-19'; document.documentElement.style.setProperty('--accent','#012a4a'); localStorage.setItem('sthalos_theme','theme-19'); }
+/* 20 */
+function applyTheme20(){ document.body.className='theme-20'; document.documentElement.style.setProperty('--accent','#fff6f6'); localStorage.setItem('sthalos_theme','theme-20'); }
+/* 21 */
+function applyTheme21(){ document.body.className='theme-21'; document.documentElement.style.setProperty('--accent','#041a2b'); localStorage.setItem('sthalos_theme','theme-21'); }
+/* 22 */
+function applyTheme22(){ document.body.className='theme-22'; document.documentElement.style.setProperty('--accent','#fff7ff'); localStorage.setItem('sthalos_theme','theme-22'); }
+/* 23 */
+function applyTheme23(){ document.body.className='theme-23'; document.documentElement.style.setProperty('--accent','#012a1a'); localStorage.setItem('sthalos_theme','theme-23'); }
+/* 24 */
+function applyTheme24(){ document.body.className='theme-24'; document.documentElement.style.setProperty('--accent','#07104b'); localStorage.setItem('sthalos_theme','theme-24'); }
+/* 25 */
+function applyTheme25(){ document.body.className='theme-25'; document.documentElement.style.setProperty('--accent','#f0f8ff'); localStorage.setItem('sthalos_theme','theme-25'); }
+/* 26 */
+function applyTheme26(){ document.body.className='theme-26'; document.documentElement.style.setProperty('--accent','#081830'); localStorage.setItem('sthalos_theme','theme-26'); }
+/* 27 */
+function applyTheme27(){ document.body.className='theme-27'; document.documentElement.style.setProperty('--accent','#fff6ef'); localStorage.setItem('sthalos_theme','theme-27'); }
+/* 28 */
+function applyTheme28(){ document.body.className='theme-28'; document.documentElement.style.setProperty('--accent','#041430'); localStorage.setItem('sthalos_theme','theme-28'); }
+
+/* ============= Attach explicit handlers for each card ============= */
+try {
+  var t01 = document.getElementById('themeCard01');
+  if (t01){ t01.addEventListener('click', applyTheme01); t01.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme01(); }); }
+
+  var t02 = document.getElementById('themeCard02');
+  if (t02){ t02.addEventListener('click', applyTheme02); t02.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme02(); }); }
+
+  var t03 = document.getElementById('themeCard03');
+  if (t03){ t03.addEventListener('click', applyTheme03); t03.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme03(); }); }
+
+  var t04 = document.getElementById('themeCard04');
+  if (t04){ t04.addEventListener('click', applyTheme04); t04.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme04(); }); }
+
+  var t05 = document.getElementById('themeCard05');
+  if (t05){ t05.addEventListener('click', applyTheme05); t05.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme05(); }); }
+
+  var t06 = document.getElementById('themeCard06');
+  if (t06){ t06.addEventListener('click', applyTheme06); t06.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme06(); }); }
+
+  var t07 = document.getElementById('themeCard07');
+  if (t07){ t07.addEventListener('click', applyTheme07); t07.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme07(); }); }
+
+  var t08 = document.getElementById('themeCard08');
+  if (t08){ t08.addEventListener('click', applyTheme08); t08.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme08(); }); }
+
+  var t09 = document.getElementById('themeCard09');
+  if (t09){ t09.addEventListener('click', applyTheme09); t09.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme09(); }); }
+
+  var t10 = document.getElementById('themeCard10');
+  if (t10){ t10.addEventListener('click', applyTheme10); t10.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme10(); }); }
+
+  var t11 = document.getElementById('themeCard11');
+  if (t11){ t11.addEventListener('click', applyTheme11); t11.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme11(); }); }
+
+  var t12 = document.getElementById('themeCard12');
+  if (t12){ t12.addEventListener('click', applyTheme12); t12.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme12(); }); }
+
+  var t13 = document.getElementById('themeCard13');
+  if (t13){ t13.addEventListener('click', applyTheme13); t13.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme13(); }); }
+
+  var t14 = document.getElementById('themeCard14');
+  if (t14){ t14.addEventListener('click', applyTheme14); t14.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme14(); }); }
+
+  var t15 = document.getElementById('themeCard15');
+  if (t15){ t15.addEventListener('click', applyTheme15); t15.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme15(); }); }
+
+  var t16 = document.getElementById('themeCard16');
+  if (t16){ t16.addEventListener('click', applyTheme16); t16.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme16(); }); }
+
+  var t17 = document.getElementById('themeCard17');
+  if (t17){ t17.addEventListener('click', applyTheme17); t17.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme17(); }); }
+
+  var t18 = document.getElementById('themeCard18');
+  if (t18){ t18.addEventListener('click', applyTheme18); t18.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme18(); }); }
+
+  var t19 = document.getElementById('themeCard19');
+  if (t19){ t19.addEventListener('click', applyTheme19); t19.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme19(); }); }
+
+  var t20 = document.getElementById('themeCard20');
+  if (t20){ t20.addEventListener('click', applyTheme20); t20.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme20(); }); }
+
+  var t21 = document.getElementById('themeCard21');
+  if (t21){ t21.addEventListener('click', applyTheme21); t21.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme21(); }); }
+
+  var t22 = document.getElementById('themeCard22');
+  if (t22){ t22.addEventListener('click', applyTheme22); t22.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme22(); }); }
+
+  var t23 = document.getElementById('themeCard23');
+  if (t23){ t23.addEventListener('click', applyTheme23); t23.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme23(); }); }
+
+  var t24 = document.getElementById('themeCard24');
+  if (t24){ t24.addEventListener('click', applyTheme24); t24.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme24(); }); }
+
+  var t25 = document.getElementById('themeCard25');
+  if (t25){ t25.addEventListener('click', applyTheme25); t25.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme25(); }); }
+
+  var t26 = document.getElementById('themeCard26');
+  if (t26){ t26.addEventListener('click', applyTheme26); t26.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme26(); }); }
+
+  var t27 = document.getElementById('themeCard27');
+  if (t27){ t27.addEventListener('click', applyTheme27); t27.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme27(); }); }
+
+  var t28 = document.getElementById('themeCard28');
+  if (t28){ t28.addEventListener('click', applyTheme28); t28.addEventListener('keydown', function(e){ if(e.key==='Enter') applyTheme28(); }); }
+
+} catch(e){ console.error('theme handler attach error', e); }
+
+/* ========== restore theme on load ========== */
+try {
+  var savedTheme = localStorage.getItem('sthalos_theme');
+  if (savedTheme && typeof savedTheme === 'string') {
+    if (savedTheme === 'theme-01') applyTheme01();
+    else if (savedTheme === 'theme-02') applyTheme02();
+    else if (savedTheme === 'theme-03') applyTheme03();
+    else if (savedTheme === 'theme-04') applyTheme04();
+    else if (savedTheme === 'theme-05') applyTheme05();
+    else if (savedTheme === 'theme-06') applyTheme06();
+    else if (savedTheme === 'theme-07') applyTheme07();
+    else if (savedTheme === 'theme-08') applyTheme08();
+    else if (savedTheme === 'theme-09') applyTheme09();
+    else if (savedTheme === 'theme-10') applyTheme10();
+    else if (savedTheme === 'theme-11') applyTheme11();
+    else if (savedTheme === 'theme-12') applyTheme12();
+    else if (savedTheme === 'theme-13') applyTheme13();
+    else if (savedTheme === 'theme-14') applyTheme14();
+    else if (savedTheme === 'theme-15') applyTheme15();
+    else if (savedTheme === 'theme-16') applyTheme16();
+    else if (savedTheme === 'theme-17') applyTheme17();
+    else if (savedTheme === 'theme-18') applyTheme18();
+    else if (savedTheme === 'theme-19') applyTheme19();
+    else if (savedTheme === 'theme-20') applyTheme20();
+    else if (savedTheme === 'theme-21') applyTheme21();
+    else if (savedTheme === 'theme-22') applyTheme22();
+    else if (savedTheme === 'theme-23') applyTheme23();
+    else if (savedTheme === 'theme-24') applyTheme24();
+    else if (savedTheme === 'theme-25') applyTheme25();
+    else if (savedTheme === 'theme-26') applyTheme26();
+    else if (savedTheme === 'theme-27') applyTheme27();
+    else if (savedTheme === 'theme-28') applyTheme28();
+  }
+} catch(e){ console.error('restore saved theme error', e); }
+C contents inside <script> here or in external JS file -->
+  <script>
+  /* PASTE PART C JS HERE */
   </script>
-
 </body>
 </html>
+
