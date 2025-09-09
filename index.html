@@ -1,389 +1,510 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sthalos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sthalos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(-45deg, #1a0033, #000033, #330000, #220033);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      color: white;
+      text-align: center;
+    }
 
-<style>
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-/*====================*/
-/* Font */
-@font-face {
-    font-family: 'brevis';
-    src: url('brevis.ttf') format('truetype');
-}
+    .top-right {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 15px;
+    }
 
-/*====================*/
-/* Body */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(-45deg,#1a0033,#000033,#330000,#220033);
-    background-size: 400% 400%;
-    animation: gradientShift 12s ease infinite;
-    overflow: hidden;
-    transition: background 0.5s ease;
-}
+    .circle-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
 
-@keyframes gradientShift {
-    0% {background-position:0% 50%;}
-    50% {background-position:100% 50%;}
-    100% {background-position:0% 50%;}
-}
+    .circle-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(255,255,255,0.6);
+    }
 
-/*====================*/
-/* Top-right buttons */
-.top-right {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    gap: 15px;
-}
+    .insta { background: #e1306c; }
+    .google { background: #fff; color: #4285F4; font-weight: bold; font-size: 22px;}
+    .settings { background: #555; }
 
-.circle-btn {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
+    h1 {
+      font-size: 60px;
+      color: #ff1a1a;
+      margin: 10px 0;
+    }
 
-.circle-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(255,255,255,0.6);
-}
+    p {
+      font-size: 22px;
+      color: #ff1a1a;
+      margin: 10px 0 30px;
+    }
 
-.insta { background:#e1306c;}
-.google { background:#fff;color:#4285F4;font-weight:bold;font-size:22px;}
-.settings { background:#555;}
+    .btn {
+      background: #ff1a1a;
+      color: black;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+    }
+    .btn:hover {
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+    }
 
-/*====================*/
-/* Main Text */
-h1 {
-    font-size: 60px;
-    color: #ff1a1a;
-    font-family: 'brevis',sans-serif;
-    margin: 10px 0;
-    text-align: center;
-}
+    .quote {
+      position: absolute;
+      bottom: 30px;
+      width: 100%;
+      font-size: 18px;
+      color: #fff;
+      text-align: center;
+    }
 
-p {
-    font-size: 22px;
-    color: #ff1a1a;
-    margin: 10px 0 30px;
-    text-align: center;
-}
+    .menu-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.5);
+      flex-direction: column;
+      z-index: 20;
+    }
 
-/*====================*/
-/* ENTER button */
-.btn {
-    background: #ff1a1a;
-    color: black;
-    padding: 15px 40px;
-    border: none;
-    border-radius: 10px;
-    font-size: 20px;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(255,0,0,0.6);
-    transition: transform 0.2s, box-shadow 0.2s;
-}
+    .menu-box {
+      background: rgba(0,0,0,0.85);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      min-width: 300px;
+    }
 
-.btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(255,0,0,0.8);
-}
+    .menu-box h2 {
+      margin-bottom: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #fff;
+    }
 
-/*====================*/
-/* Quote */
-.quote {
-    position: absolute;
-    bottom: 30px;
-    width: 80%;
-    text-align: center;
-    font-size: 20px;
-    color: #ff1a1a;
-}
+    .menu-btn {
+      background: #ff1a1a;
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      margin: 10px;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
 
-/*====================*/
-/* Panels */
-.panel {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 300px;
-    height: 100%;
-    background: rgba(0,0,0,0.95);
-    color: white;
-    display: none;
-    flex-direction: column;
-    padding: 20px;
-    overflow-y: auto;
-    transition: transform 0.3s ease;
-    z-index: 10;
-}
+    .menu-close {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 14px;
+      background: none;
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 6px;
+    }
 
-.panel.show {
-    display: flex;
-    transform: translateX(0);
-}
+    .settings-panel {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 300px;
+      height: 100%;
+      background: #000;
+      color: #fff;
+      transition: right 0.4s ease;
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .settings-panel.active { right: 0; }
 
-.panel-header {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-align: center;
-}
+    .settings-panel h3 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      text-align: center;
+    }
 
-.close-btn {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    background: #444;
-    color: white;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 14px;
-    border-radius: 5px;
-}
+    .settings-option {
+      padding: 10px;
+      cursor: pointer;
+      border: 1px solid #333;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .settings-close {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 14px;
+      background: none;
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 6px;
+    }
 
-/*====================*/
-/* Theme list */
-.theme-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    overflow-y: auto;
-    max-height: 60vh;
-}
+    .themes-popup, .create-theme-popup, .delete-confirm-popup {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 400px;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      padding: 20px;
+      border-radius: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 40;
+      transition: right 0.4s ease;
+      overflow-y: auto;
+    }
+    .themes-popup.active,
+    .create-theme-popup.active,
+    .delete-confirm-popup.active {
+      right: 0;
+    }
 
-.theme-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
+    .theme-option {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #333;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-align: center;
+    }
 
-.theme-item:hover {
-    background: rgba(255,255,255,0.1);
-}
+    .theme-option:hover {
+      background: rgba(255,255,255,0.1);
+    }
 
-.theme-colors {
-    display: flex;
-    gap: 5px;
-}
+    .theme-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
 
-.theme-color {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-}
+    .delete-icon {
+      display: none;
+      color: #ff4444;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    .theme-option.custom:hover .delete-icon {
+      display: inline;
+    }
 
-/*====================*/
-/* Create theme panel */
-.create-theme-panel {
-    width: 350px;
-    text-align: center;
-}
+    .themes-close,
+    .create-theme-close,
+    .delete-confirm-close {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 14px;
+      background: none;
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 6px;
+    }
 
-.create-theme-panel input {
-    padding: 5px;
-    width: 80%;
-    border-radius: 5px;
-    margin-top: 15px;
-}
+    .create-theme-popup input {
+      margin-top: 10px;
+      padding: 5px;
+      border-radius: 6px;
+      border: none;
+      width: 90%;
+      text-align: center;
+    }
 
-.create-theme-panel .color-select {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid #fff;
-    display: inline-block;
-}
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .color-cell {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .color-cell.selected {
+      border: 2px solid #fff;
+    }
 
-.create-theme-panel .selected {
-    border: 2px solid #ff1a1a;
-}
+    .save-theme-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #ff1a1a;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+    }
 
-/* Scrollbar for panels */
-.panel::-webkit-scrollbar {
-    width: 6px;
-}
-.panel::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.3);
-    border-radius: 3px;
-}
+    .delete-confirm-popup p {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .delete-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+    .delete-actions button {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .confirm-btn { background: #ff1a1a; color: #fff; }
+    .cancel-btn { background: #333; color: #fff; }
 
-</style>
+  </style>
 </head>
 <body>
 
-<!-- Top-right icons -->
-<div class="top-right">
+  <div class="top-right">
     <a href="https://instagram.com/train.with.harsh" target="_blank" class="circle-btn insta">
-        <i class="fab fa-instagram"></i>
+      <i class="fab fa-instagram"></i>
     </a>
     <a href="#" class="circle-btn google">
-        <i class="fab fa-google"></i>
+      <i class="fab fa-google"></i>
     </a>
-    <div class="circle-btn settings" id="settingsBtn"><i class="fas fa-cog"></i></div>
-</div>
-
-<!-- Main content -->
-<h1>Sthalos</h1>
-<p>Strength meets challenge. Coming soon.</p>
-<button class="btn" id="enterBtn">ENTER</button>
-<div class="quote" id="quote"></div>
-
-<!-- Settings panel -->
-<div class="panel" id="settingsPanel">
-    <div class="panel-header">Settings</div>
-    <div class="theme-btn btn" id="themeOpenBtn">Themes</div>
-    <div class="close-btn" id="settingsClose">Close / Esc</div>
-</div>
-
-<!-- Themes panel -->
-<div class="panel" id="themesPanel">
-    <div class="panel-header">Themes</div>
-    <div class="theme-list" id="themesList"></div>
-    <div class="theme-item" id="createThemeBtn">
-        <i class="fas fa-pencil-alt" style="margin-right:10px;"></i> Create Custom Theme
+    <div class="circle-btn settings" id="settingsBtn">
+      <i class="fas fa-cog"></i>
     </div>
-    <div class="close-btn" id="themesClose">Close / Esc</div>
-</div>
+  </div>
 
-<!-- Create theme panel -->
-<div class="panel create-theme-panel" id="createThemePanel">
-    <div class="panel-header">Craft Your Theme</div>
-    <div style="margin-bottom:15px;">Pick 2-5 colors</div>
-    <div id="colorPalette" style="display:flex; flex-wrap: wrap; gap:10px; justify-content:center;"></div>
-    <input type="text" id="themeNameInput" placeholder="Theme Name">
-    <button class="btn" id="saveThemeBtn">Save</button>
-    <div class="close-btn" id="createClose">Close / Esc</div>
-</div>
+  <h1>Sthalos</h1>
+  <p>Strength meets challenge. Coming soon.</p>
+  <button class="btn" id="enterBtn">ENTER</button>
+  <div class="quote" id="quote"></div>
+
+  <div class="menu-overlay" id="menuOverlay">
+    <div class="menu-box">
+      <h2>PICK YOUR DESTINATION</h2>
+      <button class="menu-btn">CALI-CHALLENGE GENERATOR</button>
+    </div>
+    <button class="menu-close" id="menuClose">Close/Esc</button>
+  </div>
+
+  <div class="settings-panel" id="settingsPanel">
+    <h3>Settings</h3>
+    <div class="settings-option" id="themesOption">Themes</div>
+    <button class="settings-close" id="settingsClose">Close/Esc</button>
+  </div>
+
+  <div class="themes-popup" id="themesPopup">
+    <h3>Themes</h3>
+    <div id="themesList"></div>
+    <div class="theme-option" id="createTheme"><i class="fas fa-pencil-alt"></i>&nbsp; Create</div>
+    <button class="themes-close" id="themesClose">Close/Esc</button>
+  </div>
+
+  <div class="create-theme-popup" id="createThemePopup">
+    <h3>Create Theme</h3>
+    <div class="color-grid" id="colorGrid"></div>
+    <input type="text" id="themeNameInput" placeholder="Enter theme name">
+    <button class="save-theme-btn" id="saveThemeBtn">Save</button>
+    <button class="create-theme-close" id="createThemeClose">Close/Esc</button>
+  </div>
+
+  <div class="delete-confirm-popup" id="deleteConfirmPopup">
+    <p id="deleteConfirmText"></p>
+    <div class="delete-actions">
+      <button class="confirm-btn" id="confirmDeleteBtn">Confirm</button>
+      <button class="cancel-btn" id="cancelDeleteBtn">Cancel</button>
+    </div>
+    <button class="delete-confirm-close" id="deleteConfirmClose">Close/Esc</button>
+  </div>
 
 <script>
-//------------------- Quotes
-const quotes=[
-'"Push yourself, because no one else is going to do it for you."',
-'"Strength doesn’t come from what you can do, it comes from overcoming the things you once thought you couldn’t."',
-'"Your body can stand almost anything. It’s your mind that you have to convince."',
-'"No pain, no gain. Shut up and train."',
-'"The hardest lift of all is lifting your butt off the couch."',
-'"Don’t limit your challenges, challenge your limits."',
-'"It’s going to be a journey. It’s not a sprint to get in shape."',
-'"Success isn’t always about greatness. It’s about consistency."',
-'"The only bad workout is the one you didn’t do."',
-'"Sweat is fat crying."'
+const quotes = [
+  `"Strength does not come from winning."`,
+  `"Fall seven times and stand up eight."`,
+  `"The body achieves what the mind believes."`,
+  `"Push yourself, because no one else will."`,
+  `"Discipline beats motivation."`,
+  `"Suffer the pain of discipline or regret."`,
+  `"No pain, no gain."`,
+  `"You are stronger than you think."`,
+  `"Consistency is key."`,
+  `"Calisthenics builds warriors."`
 ];
-document.getElementById('quote').textContent=quotes[Math.floor(Math.random()*quotes.length)];
+document.getElementById("quote").innerText = quotes[Math.floor(Math.random()*quotes.length)];
 
-//------------------- Panels
-const settingsBtn=document.getElementById('settingsBtn');
-const settingsPanel=document.getElementById('settingsPanel');
-const settingsClose=document.getElementById('settingsClose');
-const themeOpenBtn=document.getElementById('themeOpenBtn');
-const themesPanel=document.getElementById('themesPanel');
-const themesClose=document.getElementById('themesClose');
-const createThemeBtn=document.getElementById('createThemeBtn');
-const createThemePanel=document.getElementById('createThemePanel');
-const createClose=document.getElementById('createClose');
-const enterBtn=document.getElementById('enterBtn');
+const enterBtn = document.getElementById("enterBtn");
+const menuOverlay = document.getElementById("menuOverlay");
+const menuClose = document.getElementById("menuClose");
+enterBtn.addEventListener("click", () => menuOverlay.style.display = "flex");
+menuClose.addEventListener("click", () => menuOverlay.style.display = "none");
 
-enterBtn.onclick=()=>settingsPanel.classList.add('show');
-settingsBtn.onclick=()=>settingsPanel.classList.add('show');
-settingsClose.onclick=()=>settingsPanel.classList.remove('show');
-themeOpenBtn.onclick=()=>themesPanel.classList.add('show');
-themesClose.onclick=()=>themesPanel.classList.remove('show');
-createThemeBtn.onclick=()=>createThemePanel.classList.add('show');
-createClose.onclick=()=>createThemePanel.classList.remove('show');
-document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'){
-        settingsPanel.classList.remove('show');
-        themesPanel.classList.remove('show');
-        createThemePanel.classList.remove('show');
-    }
+const settingsBtn = document.getElementById("settingsBtn");
+const settingsPanel = document.getElementById("settingsPanel");
+const settingsClose = document.getElementById("settingsClose");
+settingsBtn.addEventListener("click", () => settingsPanel.classList.add("active"));
+settingsClose.addEventListener("click", () => settingsPanel.classList.remove("active"));
+
+const themesOption = document.getElementById("themesOption");
+const themesPopup = document.getElementById("themesPopup");
+const themesClose = document.getElementById("themesClose");
+themesOption.addEventListener("click", () => themesPopup.classList.add("active"));
+themesClose.addEventListener("click", () => themesPopup.classList.remove("active"));
+
+const createTheme = document.getElementById("createTheme");
+const createThemePopup = document.getElementById("createThemePopup");
+const createThemeClose = document.getElementById("createThemeClose");
+createTheme.addEventListener("click", () => createThemePopup.classList.add("active"));
+createThemeClose.addEventListener("click", () => createThemePopup.classList.remove("active"));
+
+const colors = ["#ff0000","#00ff00","#0000ff","#ffff00","#ff00ff","#00ffff","#ffa500","#800080","#008000","#000000","#ffffff","#808080","#800000","#008080","#000080","#f0e68c","#ff1493","#7fffd4","#ffd700","#a52a2a"];
+const colorGrid = document.getElementById("colorGrid");
+colors.forEach(c=>{
+  const cell=document.createElement("div");
+  cell.className="color-cell";
+  cell.style.background=c;
+  cell.addEventListener("click",()=>cell.classList.toggle("selected"));
+  colorGrid.appendChild(cell);
 });
 
-//------------------- Themes
-const themeList=document.getElementById('themesList');
-const themeNames=[
-{name:"Dark Crimson",colors:["#330000","#660000","#990000"]},
-{name:"Blueberry Blues",colors:["#0b1f50","#1a3c8c","#3b5ca3"]},
-{name:"Tropical Vibes",colors:["#3e8e41","#f6c555","#f28e1c"]},
-{name:"Lagoon",colors:["#2e8b8b","#5dade2","#82e0aa"]},
-{name:"Sunset Glow",colors:["#ff7e5f","#feb47b","#fd5e53"]},
-{name:"Neon Nights",colors:["#ff00ff","#00ffff","#ff9900"]},
-{name:"Aurora",colors:["#4b0082","#00ff7f","#8a2be2"]},
-{name:"Forest Mist",colors:["#014421","#228b22","#76b947"]},
-{name:"Candy Pop",colors:["#ffb6c1","#ff69b4","#ff1493"]},
-{name:"Ocean Deep",colors:["#001f3f","#005f73","#0a9396"]},
-{name:"Sunflower Fields",colors:["#f6d743","#ffcc33","#ff9900"]},
-{name:"Candy Cane",colors:["#ff0000","#ffffff","#ffcccc"]}
-];
+const saveThemeBtn=document.getElementById("saveThemeBtn");
+const themeNameInput=document.getElementById("themeNameInput");
+const themesList=document.getElementById("themesList");
+let customThemes=[];
+let themeToDelete=null;
 
-themeNames.forEach(theme=>{
-    const div=document.createElement('div'); div.className='theme-item';
-    const colorDivs=document.createElement('div'); colorDivs.className='theme-colors';
-    theme.colors.forEach(c=>{
-        const cd=document.createElement('div'); cd.className='theme-color'; cd.style.background=c; colorDivs.appendChild(cd);
+saveThemeBtn.addEventListener("click",()=>{
+  const name=themeNameInput.value.trim();
+  const selected=[...document.querySelectorAll(".color-cell.selected")].map(c=>c.style.background);
+  if(name && selected.length>=2){
+    const theme={name,colors:selected};
+    customThemes.push(theme);
+    addThemeOption(theme,true);
+    themeNameInput.value="";
+    document.querySelectorAll(".color-cell").forEach(c=>c.classList.remove("selected"));
+    createThemePopup.classList.remove("active");
+  }
+});
+
+function addThemeOption(theme,isCustom=false){
+  const opt=document.createElement("div");
+  opt.className="theme-option"+(isCustom?" custom":"");
+  const left=document.createElement("div");
+  left.style.display="flex"; left.style.alignItems="center"; left.style.justifyContent="center";
+  const icon=document.createElement("div");
+  icon.className="theme-icon";
+  icon.style.background=theme.colors[0];
+  left.appendChild(icon);
+  const span=document.createElement("span");
+  span.innerText=theme.name;
+  left.appendChild(span);
+  opt.appendChild(left);
+  if(isCustom){
+    const del=document.createElement("i");
+    del.className="fas fa-trash delete-icon";
+    del.addEventListener("click",(e)=>{
+      e.stopPropagation();
+      themeToDelete=theme;
+      document.getElementById("deleteConfirmText").innerText=`Delete ${theme.name}?`;
+      document.getElementById("deleteConfirmPopup").classList.add("active");
     });
-    const span=document.createElement('span'); span.textContent=theme.name;
-    div.appendChild(colorDivs); div.appendChild(span);
-    div.onclick=()=>{document.body.style.background=`linear-gradient(-45deg,${theme.colors.join(',')})`;}
-    themeList.appendChild(div);
+    opt.appendChild(del);
+  }
+  opt.addEventListener("click",()=>applyTheme(theme.colors));
+  themesList.appendChild(opt);
+}
+
+function applyTheme(colors){
+  document.body.style.background=`linear-gradient(-45deg, ${colors.join(",")})`;
+  document.body.style.backgroundSize="400% 400%";
+  document.body.style.animation="gradientShift 12s ease infinite";
+}
+
+document.getElementById("confirmDeleteBtn").addEventListener("click",()=>{
+  if(themeToDelete){
+    customThemes=customThemes.filter(t=>t!==themeToDelete);
+    themesList.innerHTML="";
+    customThemes.forEach(t=>addThemeOption(t,true));
+    themeToDelete=null;
+  }
+  document.getElementById("deleteConfirmPopup").classList.remove("active");
 });
 
-//------------------- Custom palette
-const colorPalette=document.getElementById('colorPalette');
-const customColors=["#000","#111","#222","#333","#444","#555","#666","#777","#888","#999","#aaa","#bbb","#ccc","#ddd","#eee","#fff","#f28e1c","#f6c555","#3e8e41"];
-let selectedColors=[];
-customColors.forEach(c=>{
-    const d=document.createElement('div'); d.className='color-select'; d.style.background=c;
-    d.onclick=()=>{
-        if(selectedColors.includes(c)){
-            selectedColors=selectedColors.filter(s=>s!==c); d.classList.remove('selected');
-        }else if(selectedColors.length<5){
-            selectedColors.push(c); d.classList.add('selected');
-        }
-    }
-    colorPalette.appendChild(d);
+document.getElementById("cancelDeleteBtn").addEventListener("click",()=>{
+  themeToDelete=null;
+  document.getElementById("deleteConfirmPopup").classList.remove("active");
+});
+document.getElementById("deleteConfirmClose").addEventListener("click",()=>{
+  themeToDelete=null;
+  document.getElementById("deleteConfirmPopup").classList.remove("active");
 });
 
-document.getElementById('saveThemeBtn').onclick=()=>{
-    if(selectedColors.length<2){alert("Select at least 2 colors"); return;}
-    const name=document.getElementById('themeNameInput').value.trim(); if(!name){alert("Enter name"); return;}
-    const div=document.createElement('div'); div.className='theme-item';
-    const colorDivs=document.createElement('div'); colorDivs.className='theme-colors';
-    selectedColors.forEach(c=>{const cd=document.createElement('div'); cd.className='theme-color'; cd.style.background=c; colorDivs.appendChild(cd);});
-    const span=document.createElement('span'); span.textContent=name;
-    div.appendChild(colorDivs); div.appendChild(span);
-    div.onclick=()=>{document.body.style.background=`linear-gradient(-45deg,${selectedColors.join(',')})`;}
-    themeList.appendChild(div);
-    selectedColors=[]; document.getElementById('themeNameInput').value=''; createThemePanel.classList.remove('show');
-};
-
+document.addEventListener("keydown",(e)=>{
+  if(e.key==="Escape"){
+    menuOverlay.style.display="none";
+    settingsPanel.classList.remove("active");
+    themesPopup.classList.remove("active");
+    createThemePopup.classList.remove("active");
+    document.getElementById("deleteConfirmPopup").classList.remove("active");
+  }
+});
 </script>
-
 </body>
 </html>
