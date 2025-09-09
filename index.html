@@ -4,233 +4,265 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sthalos</title>
+
+<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
-/*-------------------*/
-/* Fonts */
+
+/*====================*/
+/* Font */
 @font-face {
-    font-family:'brevis';
-    src:url('brevis.ttf') format('truetype');
+    font-family: 'brevis';
+    src: url('brevis.ttf') format('truetype');
 }
 
-/*-------------------*/
-/* Body and background */
+/*====================*/
+/* Body */
 body {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
     font-family: Arial, sans-serif;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    background:linear-gradient(-45deg,#1a0033,#000033,#330000,#220033);
-    background-size:400% 400%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(-45deg,#1a0033,#000033,#330000,#220033);
+    background-size: 400% 400%;
     animation: gradientShift 12s ease infinite;
-    overflow:hidden;
+    overflow: hidden;
     transition: background 0.5s ease;
 }
+
 @keyframes gradientShift {
-    0% { background-position:0% 50%; }
-    50% { background-position:100% 50%; }
-    100% { background-position:0% 50%; }
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
 }
 
-/*-------------------*/
-/* Top-right icons */
+/*====================*/
+/* Top-right buttons */
 .top-right {
-    position:absolute;
-    top:20px;
-    right:20px;
-    display:flex;
-    gap:15px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
 }
+
 .circle-btn {
-    width:45px;
-    height:45px;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:white;
-    font-size:20px;
-    cursor:pointer;
-    text-decoration:none;
-    transition:transform 0.2s, box-shadow 0.2s;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
+
 .circle-btn:hover {
     transform: scale(1.1);
     box-shadow: 0 0 10px rgba(255,255,255,0.6);
 }
-.insta { background:#e1306c; }
-.google { background:#fff; color:#4285F4; font-weight:bold; font-size:22px;}
-.settings { background:#555; }
 
-/*-------------------*/
+.insta { background:#e1306c;}
+.google { background:#fff;color:#4285F4;font-weight:bold;font-size:22px;}
+.settings { background:#555;}
+
+/*====================*/
 /* Main Text */
 h1 {
-    font-size:60px;
-    color:#ff1a1a;
-    font-family:'Brevis', sans-serif;
-    margin:10px 0;
-    text-align:center;
+    font-size: 60px;
+    color: #ff1a1a;
+    font-family: 'brevis',sans-serif;
+    margin: 10px 0;
+    text-align: center;
 }
+
 p {
-    font-size:22px;
-    color:#ff1a1a;
-    margin:10px 0 30px;
-    text-align:center;
+    font-size: 22px;
+    color: #ff1a1a;
+    margin: 10px 0 30px;
+    text-align: center;
 }
 
-/*-------------------*/
-/* Enter Button */
+/*====================*/
+/* ENTER button */
 .btn {
-    background:#ff1a1a;
-    color:black;
-    padding:15px 40px;
-    border:none;
-    border-radius:10px;
-    font-size:20px;
-    cursor:pointer;
-    box-shadow:0 0 10px rgba(255,0,0,0.6);
-    transition:transform 0.2s, box-shadow 0.2s;
-}
-.btn:hover {
-    transform:scale(1.05);
-    box-shadow:0 0 20px rgba(255,0,0,0.8);
+    background: #ff1a1a;
+    color: black;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255,0,0,0.6);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/*-------------------*/
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255,0,0,0.8);
+}
+
+/*====================*/
 /* Quote */
 .quote {
-    position:absolute;
-    bottom:30px;
-    width:80%;
-    text-align:center;
-    font-size:20px;
-    color:#ff1a1a;
+    position: absolute;
+    bottom: 30px;
+    width: 80%;
+    text-align: center;
+    font-size: 20px;
+    color: #ff1a1a;
 }
 
-/*-------------------*/
+/*====================*/
 /* Panels */
 .panel {
-    position:fixed;
-    top:0;
-    right:0;
-    width:300px;
-    height:100%;
-    background:rgba(0,0,0,0.95);
-    color:white;
-    display:none;
-    flex-direction:column;
-    padding:20px;
-    overflow-y:auto;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    color: white;
+    display: none;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
     transition: transform 0.3s ease;
-    z-index:10;
-}
-.panel.show {
-    display:flex;
-    transform:translateX(0);
-}
-.panel-header {
-    font-size:20px;
-    font-weight:bold;
-    margin-bottom:20px;
-    text-align:center;
-}
-.close-btn {
-    position:absolute;
-    bottom:20px;
-    left:20px;
-    background:#444;
-    color:white;
-    padding:5px 10px;
-    cursor:pointer;
-    font-size:14px;
-    border-radius:5px;
-}
-.theme-list {
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    overflow-y:auto;
-    max-height:60vh;
-}
-.theme-item {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:10px;
-    border-radius:5px;
-    cursor:pointer;
-    transition:background 0.2s;
-}
-.theme-item:hover {
-    background:rgba(255,255,255,0.1);
-}
-.theme-colors {
-    display:flex;
-    gap:5px;
-}
-.theme-color {
-    width:20px;
-    height:20px;
-    border-radius:50%;
+    z-index: 10;
 }
 
-/*-------------------*/
-/* Create Theme Panel */
+.panel.show {
+    display: flex;
+    transform: translateX(0);
+}
+
+.panel-header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.close-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: #444;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+/*====================*/
+/* Theme list */
+.theme-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    max-height: 60vh;
+}
+
+.theme-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.theme-item:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.theme-colors {
+    display: flex;
+    gap: 5px;
+}
+
+.theme-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+/*====================*/
+/* Create theme panel */
 .create-theme-panel {
-    width:350px;
-    text-align:center;
+    width: 350px;
+    text-align: center;
 }
+
 .create-theme-panel input {
-    padding:5px;
-    width:80%;
-    border-radius:5px;
-    margin-top:15px;
+    padding: 5px;
+    width: 80%;
+    border-radius: 5px;
+    margin-top: 15px;
 }
+
 .create-theme-panel .color-select {
-    width:30px;
-    height:30px;
-    border-radius:50%;
-    cursor:pointer;
-    border:2px solid #fff;
-    display:inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+    display: inline-block;
 }
+
 .create-theme-panel .selected {
-    border:2px solid #ff1a1a;
+    border: 2px solid #ff1a1a;
 }
+
+/* Scrollbar for panels */
 .panel::-webkit-scrollbar {
-    width:6px;
+    width: 6px;
 }
 .panel::-webkit-scrollbar-thumb {
-    background:rgba(255,255,255,0.3);
-    border-radius:3px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
 }
+
 </style>
 </head>
 <body>
 
+<!-- Top-right icons -->
 <div class="top-right">
-    <a href="https://instagram.com/train.with.harsh" target="_blank" class="circle-btn insta"><i class="fab fa-instagram"></i></a>
-    <a href="#" class="circle-btn google"><i class="fab fa-google"></i></a>
+    <a href="https://instagram.com/train.with.harsh" target="_blank" class="circle-btn insta">
+        <i class="fab fa-instagram"></i>
+    </a>
+    <a href="#" class="circle-btn google">
+        <i class="fab fa-google"></i>
+    </a>
     <div class="circle-btn settings" id="settingsBtn"><i class="fas fa-cog"></i></div>
 </div>
 
+<!-- Main content -->
 <h1>Sthalos</h1>
 <p>Strength meets challenge. Coming soon.</p>
 <button class="btn" id="enterBtn">ENTER</button>
 <div class="quote" id="quote"></div>
 
-<!-- Settings Panel -->
+<!-- Settings panel -->
 <div class="panel" id="settingsPanel">
     <div class="panel-header">Settings</div>
     <div class="theme-btn btn" id="themeOpenBtn">Themes</div>
     <div class="close-btn" id="settingsClose">Close / Esc</div>
 </div>
 
-<!-- Themes Panel -->
+<!-- Themes panel -->
 <div class="panel" id="themesPanel">
     <div class="panel-header">Themes</div>
     <div class="theme-list" id="themesList"></div>
@@ -240,7 +272,7 @@ p {
     <div class="close-btn" id="themesClose">Close / Esc</div>
 </div>
 
-<!-- Create Theme Panel -->
+<!-- Create theme panel -->
 <div class="panel create-theme-panel" id="createThemePanel">
     <div class="panel-header">Craft Your Theme</div>
     <div style="margin-bottom:15px;">Pick 2-5 colors</div>
@@ -262,7 +294,8 @@ const quotes=[
 '"It’s going to be a journey. It’s not a sprint to get in shape."',
 '"Success isn’t always about greatness. It’s about consistency."',
 '"The only bad workout is the one you didn’t do."',
-'"Sweat is fat crying."'];
+'"Sweat is fat crying."'
+];
 document.getElementById('quote').textContent=quotes[Math.floor(Math.random()*quotes.length)];
 
 //------------------- Panels
@@ -349,6 +382,7 @@ document.getElementById('saveThemeBtn').onclick=()=>{
     themeList.appendChild(div);
     selectedColors=[]; document.getElementById('themeNameInput').value=''; createThemePanel.classList.remove('show');
 };
+
 </script>
 
 </body>
