@@ -860,6 +860,119 @@ renderThemes();
   // (no globals added)
 })();
 </script>
+<script>
+(function(){
+  // menu item that triggers generator
+  const featureCali = document.getElementById('featureCali');
+  const menuOverlay = document.getElementById('menuOverlay');
+
+  // overlays
+  const genIntro = document.getElementById('genIntroOverlay');
+  const genType = document.getElementById('genTypeOverlay');
+  const genLevel = document.getElementById('genLevelOverlay');
+  const genLoading = document.getElementById('genLoadingOverlay');
+  const genChallenge = document.getElementById('genChallengeOverlay');
+  const genComplete = document.getElementById('genCompleteOverlay');
+
+  // buttons
+  const genIntroBack = document.getElementById('genIntroBack');
+  const genIntroProceed = document.getElementById('genIntroProceed');
+
+  const genTypeBack = document.getElementById('genTypeBack');
+  const genLevelBack = document.getElementById('genLevelBack');
+
+  const genChallengeBack = document.getElementById('genChallengeBack');
+  const genCompleteBtn = document.getElementById('genCompleteBtn');
+
+  const genAgainBtn = document.getElementById('genAgainBtn');
+  const genCloseBtn = document.getElementById('genCloseBtn');
+
+  // challenge content
+  const challengeTitle = document.getElementById('genChallengeTitle');
+  const challengeText = document.getElementById('genChallengeText');
+  const completedDetails = document.getElementById('completedChallengeDetails');
+  const completedMeta = document.getElementById('completedMeta');
+
+  let chosenType = null;
+  let chosenLevel = null;
+
+  // helpers
+  function showOverlay(ov){ ov.classList.add('show'); ov.style.display='flex'; document.body.classList.add('gen-active'); }
+  function hideOverlay(ov){ ov.classList.remove('show'); ov.style.display='none'; document.body.classList.remove('gen-active'); }
+
+  // Start flow
+  featureCali.addEventListener('click', e=>{
+    e.preventDefault();
+    menuOverlay.classList.remove('show');
+    setTimeout(()=>menuOverlay.style.display='none',300);
+    showOverlay(genIntro);
+  });
+
+  // Intro
+  genIntroProceed.addEventListener('click', ()=>{
+    hideOverlay(genIntro);
+    showOverlay(genType);
+  });
+  genIntroBack.addEventListener('click', ()=>{ hideOverlay(genIntro); });
+
+  // Type selection
+  document.querySelectorAll('#genTypeGrid .option-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      chosenType = btn.dataset.type;
+      hideOverlay(genType);
+      showOverlay(genLevel);
+    });
+  });
+  genTypeBack.addEventListener('click', ()=>{
+    hideOverlay(genType);
+    showOverlay(genIntro);
+  });
+
+  // Level selection
+  document.querySelectorAll('#genLevelGrid .option-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      chosenLevel = btn.dataset.level;
+      hideOverlay(genLevel);
+      showOverlay(genLoading);
+
+      // simulate loading
+      setTimeout(()=>{
+        hideOverlay(genLoading);
+        // generate dummy challenge
+        challengeTitle.innerText = chosenType.toUpperCase()+" Challenge";
+        challengeText.innerText = `Do 20 reps (${chosenLevel}).`;
+        showOverlay(genChallenge);
+      }, 1500);
+    });
+  });
+  genLevelBack.addEventListener('click', ()=>{
+    hideOverlay(genLevel);
+    showOverlay(genType);
+  });
+
+  // Challenge
+  genChallengeBack.addEventListener('click', ()=>{
+    hideOverlay(genChallenge);
+    showOverlay(genLevel);
+  });
+  genCompleteBtn.addEventListener('click', ()=>{
+    hideOverlay(genChallenge);
+    completedDetails.innerText = `You finished: ${chosenType} (${chosenLevel})`;
+    completedMeta.innerText = `Completed on ${new Date().toLocaleTimeString()}`;
+    showOverlay(genComplete);
+  });
+
+  // Complete
+  genAgainBtn.addEventListener('click', ()=>{
+    hideOverlay(genComplete);
+    showOverlay(genType);
+  });
+  genCloseBtn.addEventListener('click', ()=>{
+    hideOverlay(genComplete);
+  });
+
+})();
+</script>
 
 </body>
 </html>
