@@ -170,6 +170,53 @@
   /* small helper for focus outlines */
   .theme-card:focus { outline: 3px solid rgba(255,255,255,0.08); outline-offset:2px; }
 </style>
+<style>
+/* ==== STHALOS Generator UI (append-only) ==== */
+.gen-overlay { position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.72); z-index:2000; }
+.gen-overlay.show { display:flex; }
+.gen-box { width:94%; max-width:520px; background: linear-gradient(180deg,#0b0b0b,#0f0f0f); color:#fff; padding:20px; border-radius:12px; box-shadow:0 24px 80px rgba(0,0,0,.7); transform:scale(.96); opacity:0; transition:all .28s ease; text-align:center; }
+.gen-overlay.show .gen-box { transform:scale(1); opacity:1; }
+
+.gen-header { font-size:18px; font-weight:800; color:var(--accent,#ff1a1a); margin-bottom:10px; letter-spacing:0.6px; }
+.gen-sub { color:#ddd; font-size:14px; margin-bottom:12px; }
+
+.option-grid { display:grid; gap:10px; margin-top:12px; grid-template-columns: repeat(3,1fr); }
+@media (max-width:640px){ .option-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width:420px){ .option-grid { grid-template-columns: 1fr; } }
+
+.option-btn { background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.02); padding:10px 8px; border-radius:8px; cursor:pointer; color:#fff; font-weight:800; }
+.option-btn:hover { transform: translateY(-3px); }
+.option-btn.selected { outline: 2px solid rgba(255,255,255,0.06); background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); }
+
+.gen-actions { display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+.back-small { background:#222; color:#fff; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; }
+.next-primary { background:var(--accent,#ff1a1a); color:#000; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; font-weight:900; }
+
+.gen-loading { display:flex; flex-direction:column; align-items:center; gap:12px; padding:14px; }
+.spinner { width:56px; height:56px; border-radius:50%; border:6px solid rgba(255,255,255,0.08); border-top-color:var(--accent,#ff1a1a); animation:gen-spin 1s linear infinite; }
+@keyframes gen-spin { to { transform: rotate(360deg); } }
+
+.gen-challenge { margin-top:12px; padding:14px; border-radius:10px; background: linear-gradient(180deg,#111,#161616); color:#fff; }
+.gen-challenge h3 { margin:6px 0 8px; font-size:18px; }
+.gen-challenge p { margin:0; color:#ddd; font-size:14px; }
+
+.gen-complete-card { width:94%; max-width:520px; background: linear-gradient(180deg,#061022,#071028); padding:18px; border-radius:12px; color:#fff; text-align:center; box-shadow:0 28px 80px rgba(0,0,0,0.7); position:relative; }
+.card-title { font-family: 'Brevia', Arial, sans-serif; font-size:22px; font-weight:900; color:var(--accent,#ff1a1a); letter-spacing:2px; margin-bottom:8px; }
+.card-image { height:140px; border-radius:8px; background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.12); margin-bottom:12px; }
+.card-details { color:#ddd; font-size:15px; line-height:1.4; }
+.card-meta { margin-top:10px; color:#c7d2e8; font-size:13px; opacity:.9; }
+
+.gen-watermark { position:absolute; right:12px; bottom:10px; color:rgba(255,255,255,0.18); font-weight:700; font-size:12px; }
+
+.gen-complete-actions { display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+.gen-btn { padding:10px 14px; border-radius:8px; border:none; cursor:pointer; font-weight:800; }
+.gen-btn.primary { background:var(--accent,#ff1a1a); color:#000; }
+.gen-btn.light { background:#1b1b1b; color:#fff; border:1px solid rgba(255,255,255,0.04); }
+
+/* tiny spacing fix when generator is open so panels don't peek */
+body.gen-active { overflow: hidden; }
+</style>
+
 </head>
 <body class="theme-01">
 
@@ -455,5 +502,364 @@ document.getElementById('featureCali').addEventListener('click', function(e){
 /* initial render not required until user opens themes, but render once for speed */
 renderThemes();
 </script>
+<!-- ===== STHALOS Challenge Generator (append-only) ===== -->
+<!-- Intro / confirm -->
+<div id="genIntroOverlay" class="gen-overlay" aria-hidden="true">
+  <div class="gen-box" role="dialog" aria-modal="true">
+    <div class="gen-header">We need to ask a few things before you generate</div>
+    <div class="gen-sub">Answer two short questions and we'll drop one challenge for you.</div>
+    <div class="gen-actions">
+      <button id="genIntroBack" class="back-small">Back</button>
+      <button id="genIntroProceed" class="next-primary">Proceed</button>
+    </div>
+  </div>
+</div>
+
+<!-- Type selection -->
+<div id="genTypeOverlay" class="gen-overlay" aria-hidden="true">
+  <div class="gen-box" role="dialog" aria-modal="true">
+    <div class="gen-header">Select Challenge Type</div>
+    <div class="option-grid" id="genTypeGrid">
+      <button class="option-btn" data-type="push">Push</button>
+      <button class="option-btn" data-type="pull">Pull</button>
+      <button class="option-btn" data-type="core">Core</button>
+      <button class="option-btn" data-type="legs">Legs</button>
+      <button class="option-btn" data-type="cardio">Cardio</button>
+      <button class="option-btn" data-type="statics">Statics</button>
+    </div>
+    <div class="gen-actions">
+      <button id="genTypeBack" class="back-small">Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- Level selection -->
+<div id="genLevelOverlay" class="gen-overlay" aria-hidden="true">
+  <div class="gen-box" role="dialog" aria-modal="true">
+    <div class="gen-header">Select Your Level</div>
+    <div class="option-grid" id="genLevelGrid">
+      <button class="option-btn" data-level="beginner">Beginner</button>
+      <button class="option-btn" data-level="above-beginner">Above Beginner</button>
+      <button class="option-btn" data-level="intermediate">Intermediate</button>
+      <button class="option-btn" data-level="above-intermediate">Above Intermediate</button>
+      <button class="option-btn" data-level="advanced">Advanced</button>
+    </div>
+    <div class="gen-actions">
+      <button id="genLevelBack" class="back-small">Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading (generator animation) -->
+<div id="genLoadingOverlay" class="gen-overlay" aria-hidden="true">
+  <div class="gen-box">
+    <div class="gen-loading">
+      <div class="spinner" aria-hidden="true"></div>
+      <div class="gen-sub">⚡ Generating your challenge...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Challenge display (shows the single challenge, user does it, then presses Complete) -->
+<div id="genChallengeOverlay" class="gen-overlay" aria-hidden="true">
+  <div class="gen-box" role="dialog" aria-modal="true">
+    <div class="gen-header">Your Challenge</div>
+    <div class="gen-challenge" id="genChallengeBox">
+      <h3 id="genChallengeTitle">Challenge</h3>
+      <p id="genChallengeText">Do the thing...</p>
+    </div>
+    <div class="gen-actions">
+      <button id="genChallengeBack" class="back-small">Back</button>
+      <button id="genCompleteBtn" class="next-primary">Complete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Completed card (appears AFTER user clicks Complete) -->
+<div id="genCompleteOverlay" class="gen-overlay" aria-hidden="true">
+  <div class="gen-complete-card" role="dialog" aria-modal="true">
+    <div class="card-title">STHALOS</div>
+    <div class="card-image">[IMAGE]</div>
+    <div class="card-details" id="completedChallengeDetails">You finished: ...</div>
+    <div class="card-meta" id="completedMeta">Time / Reps info</div>
+    <div class="gen-watermark">@harsh.not.found</div>
+
+    <div class="gen-complete-actions">
+      <button id="genAgainBtn" class="gen-btn primary">Generate Again</button>
+      <button id="genCloseBtn" class="gen-btn light">Close</button>
+    </div>
+  </div>
+</div>
+<!-- ===== end generator UI ===== -->
+<script>
+(function(){
+  // avoid colliding with existing names; use gen-prefixed IDs
+  const goCali = document.getElementById('goCali'); // already in your markup
+  const menuOverlay = window.menuOverlay || document.getElementById('menuOverlay'); // fallback
+  const menuClose = window.menuClose || document.getElementById('menuClose');
+
+  // Overlays
+  const genIntro = document.getElementById('genIntroOverlay');
+  const genType = document.getElementById('genTypeOverlay');
+  const genLevel = document.getElementById('genLevelOverlay');
+  const genLoading = document.getElementById('genLoadingOverlay');
+  const genChallenge = document.getElementById('genChallengeOverlay');
+  const genComplete = document.getElementById('genCompleteOverlay');
+
+  // controls
+  const genIntroProceed = document.getElementById('genIntroProceed');
+  const genIntroBack = document.getElementById('genIntroBack');
+  const genTypeBack = document.getElementById('genTypeBack');
+  const genLevelBack = document.getElementById('genLevelBack');
+  const genTypeGrid = document.getElementById('genTypeGrid');
+  const genLevelGrid = document.getElementById('genLevelGrid');
+  const genChallengeTitle = document.getElementById('genChallengeTitle');
+  const genChallengeText = document.getElementById('genChallengeText');
+  const genChallengeBack = document.getElementById('genChallengeBack');
+  const genCompleteBtn = document.getElementById('genCompleteBtn');
+  const genAgainBtn = document.getElementById('genAgainBtn');
+  const genCloseBtn = document.getElementById('genCloseBtn');
+  const completedDetails = document.getElementById('completedChallengeDetails');
+  const completedMeta = document.getElementById('completedMeta');
+
+  // state
+  let selectedType = null;
+  let selectedLevel = null;
+  let lastPicked = null;
+
+  // -- only sample: 50 push beginner challenges (array of strings)
+  const pushBeginner = [
+    "Do 10 knee pushups in one go.",
+    "Hold a regular pushup position for 20 seconds.",
+    "Perform 8 incline pushups on a bench.",
+    "Do 12 wall pushups without resting.",
+    "Try 5 regular pushups slow motion (4s down, 4s up).",
+    "Do 15 knee pushups, pause for 5s halfway down.",
+    "Complete 10 incline pushups clapping at the top.",
+    "Hold a plank-to-pushup position for 25 seconds.",
+    "Do 6 negative pushups (slow on the way down).",
+    "Do 10 wall pushups with a single leg lifted.",
+    "Try 5 regular pushups with shoulder taps each rep.",
+    "Do 20 wall pushups nonstop.",
+    "Perform 10 knee pushups with a 3s hold at the bottom.",
+    "Hold an incline pushup halfway down for 15 seconds.",
+    "Do 5 regular pushups on fists.",
+    "Complete 10 incline pushups with wide hand placement.",
+    "Do 8 pushups pausing 1s at top and bottom.",
+    "Perform 12 wall pushups twisting torso each side.",
+    "Hold a downward pushup hold for 10 seconds.",
+    "Do 6 pushups on knees with hands close together.",
+    "Do 15 incline pushups with shoulders over wrists.",
+    "Perform 10 pushups tapping chest with one hand at top.",
+    "Hold a wall pushup halfway for 20 seconds.",
+    "Do 12 pushups lifting one leg alternately.",
+    "Perform 5 slow negatives then push back up on knees.",
+    "Do 10 knee pushups with knees slightly off the floor.",
+    "Do 8 pushups moving hands forward each rep.",
+    "Complete 15 wall pushups at a fast pace.",
+    "Hold a pushup top position for 30 seconds.",
+    "Do 5 pushups, pausing 3 times on the way down.",
+    "Try 10 incline pushups, protracting shoulders at the top.",
+    "Do 12 wall pushups leaning extra forward.",
+    "Perform 8 pushups with a 2s pause on elbows bent.",
+    "Do 5 knee pushups then 5 regular pushups.",
+    "Do 10 pushups with hands rotated outward.",
+    "Hold an incline pushup bottom for 12 seconds.",
+    "Perform 6 pushups slow eccentric (6s lowering).",
+    "Do 15 wall pushups with eyes closed.",
+    "Try 10 pushups tapping shoulders at the top each time.",
+    "Do 5 incline pushups, clap hands each rep.",
+    "Hold a pushup at 90° arms for 15 seconds.",
+    "Perform 12 knee pushups with a narrow (diamond-ish) hand position.",
+    "Do 10 wall pushups explosive (push away from the wall).",
+    "Do 8 incline pushups feet together, strict form.",
+    "Hold a pushup at the top while shifting shoulders forward-back for 20 seconds.",
+    "Perform 6 pushups lifting one hand at the bottom each rep.",
+    "Do 10 pushups with a 3s hold halfway through each rep.",
+    "Complete 15 incline pushups with elbows tucked.",
+    "Do 8 knee pushups plus a 10s plank hold.",
+    "Hold pushup bottom position for 20 seconds without collapsing."
+  ];
+
+  // utilities: show/hide overlay
+  function showOverlay(el) {
+    if (!el) return;
+    el.style.display = 'flex';
+    setTimeout(()=> el.classList.add('show'), 20);
+    document.body.classList.add('gen-active');
+  }
+  function hideOverlay(el) {
+    if (!el) return;
+    el.classList.remove('show');
+    setTimeout(()=> { el.style.display = 'none'; }, 260);
+    if (!document.querySelector('.gen-overlay.show')) document.body.classList.remove('gen-active');
+  }
+
+  // open generator entry from menu
+  if (goCali) goCali.addEventListener('click', (ev) => {
+    try {
+      // close menu first (use your existing closeMenu() to be safe)
+      if (typeof closeMenu === 'function') closeMenu();
+      else {
+        if (menuOverlay) { menuOverlay.style.display = 'none'; menuOverlay.classList.remove('show'); }
+        if (menuClose) menuClose.style.display = 'none';
+      }
+    } catch(e){}
+    selectedType = null; selectedLevel = null; lastPicked = null;
+    // reset selection visuals
+    resetOptionSelection(genTypeGrid);
+    resetOptionSelection(genLevelGrid);
+    showOverlay(genIntro);
+  });
+
+  // Intro controls
+  genIntroProceed.addEventListener('click', ()=> {
+    hideOverlay(genIntro);
+    showOverlay(genType);
+  });
+  genIntroBack.addEventListener('click', ()=> {
+    hideOverlay(genIntro);
+    // reopen menu (simple open same as enter button)
+    if (menuOverlay) { menuOverlay.style.display = 'flex'; setTimeout(()=> menuOverlay.classList.add('show'), 30); if (menuClose) menuClose.style.display = 'block'; }
+  });
+
+  // type selection (click any to go to level)
+  genTypeGrid.querySelectorAll('.option-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      // visual select
+      resetOptionSelection(genTypeGrid);
+      btn.classList.add('selected');
+      selectedType = btn.dataset.type || 'push';
+      hideOverlay(genType);
+      // small delay so animation is clean
+      setTimeout(()=> showOverlay(genLevel), 160);
+    });
+  });
+
+  genTypeBack.addEventListener('click', ()=> {
+    hideOverlay(genType);
+    showOverlay(genIntro);
+  });
+
+  // level grid
+  genLevelGrid.querySelectorAll('.option-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      resetOptionSelection(genLevelGrid);
+      btn.classList.add('selected');
+      selectedLevel = btn.dataset.level || 'beginner';
+      hideOverlay(genLevel);
+      // now generate
+      startGeneration();
+    });
+  });
+
+  genLevelBack.addEventListener('click', ()=> {
+    hideOverlay(genLevel);
+    showOverlay(genType);
+  });
+
+  // challenge back (go back to level to change)
+  genChallengeBack.addEventListener('click', ()=> {
+    hideOverlay(genChallenge);
+    showOverlay(genLevel);
+  });
+
+  // complete -> show finished card
+  genCompleteBtn.addEventListener('click', ()=> {
+    // save lastPicked for card
+    if (!lastPicked) return;
+    // populate finished card
+    completedDetails.innerText = lastPicked;
+    // rough meta: if string contains seconds or 'sec' try to show time; else show 'reps' guess
+    let meta = '';
+    if (/(\d+)\s*s(ec|econds?)/i.test(lastPicked) || /seconds|sec/i.test(lastPicked)) {
+      meta = 'Time-based challenge';
+    } else if (/\d+\s*(push|rep|reps|incline|knee)/i.test(lastPicked)) {
+      meta = 'Rep-based challenge';
+    } else {
+      meta = 'Challenge completed';
+    }
+    completedMeta.innerText = meta;
+
+    hideOverlay(genChallenge);
+    showOverlay(genComplete);
+  });
+
+  // generate again button (re-roll same settings)
+  genAgainBtn.addEventListener('click', ()=> {
+    hideOverlay(genComplete);
+    // small delay for smoothness
+    setTimeout(()=> startGeneration(), 200);
+  });
+
+  // close completed card -> return to menu
+  genCloseBtn.addEventListener('click', ()=> {
+    hideOverlay(genComplete);
+    // reopen menuOverlay (we started from menu)
+    if (menuOverlay) { menuOverlay.style.display = 'flex'; setTimeout(()=> menuOverlay.classList.add('show'), 30); if (menuClose) menuClose.style.display = 'block'; }
+  });
+
+  // helper: reset selection visuals in a container
+  function resetOptionSelection(container) {
+    if (!container) return;
+    container.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  }
+
+  // main generation flow (loading animation -> show single challenge)
+  function startGeneration() {
+    // show loading
+    showOverlay(genLoading);
+    // small timeout to feel generated
+    setTimeout(()=> {
+      hideOverlay(genLoading);
+
+      // select challenge based on type/level
+      let picked = "Coming soon: this type or level isn't added yet.";
+      if (selectedType === 'push' && selectedLevel === 'beginner') {
+        picked = pushBeginner[Math.floor(Math.random()*pushBeginner.length)];
+      } else {
+        // fallback message
+        picked = "This type/level isn't implemented yet. Try Push → Beginner for now.";
+      }
+
+      lastPicked = picked;
+      // populate and show challenge overlay
+      genChallengeTitle.innerText = (selectedType ? selectedType.toUpperCase() : "CHALLENGE") + " — " + (selectedLevel ? selectedLevel.replace('-', ' ') : "");
+      genChallengeText.innerText = picked;
+      showOverlay(genChallenge);
+    }, 1200);
+  }
+
+  // ESC closes generator overlays first
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (genComplete.classList.contains('show') || genComplete.style.display === 'flex') { hideOverlay(genComplete); return; }
+      if (genChallenge.classList.contains('show') || genChallenge.style.display === 'flex') { hideOverlay(genChallenge); showOverlay(genLevel); return; }
+      if (genLevel.classList.contains('show') || genLevel.style.display === 'flex') { hideOverlay(genLevel); showOverlay(genType); return; }
+      if (genType.classList.contains('show') || genType.style.display === 'flex') { hideOverlay(genType); showOverlay(genIntro); return; }
+      if (genIntro.classList.contains('show') || genIntro.style.display === 'flex') { hideOverlay(genIntro); /* reopen menu */ if (menuOverlay) { menuOverlay.style.display = 'flex'; setTimeout(()=> menuOverlay.classList.add('show'), 30); if (menuClose) menuClose.style.display = 'block'; } return; }
+    }
+  });
+
+  // optional: clicking outside a gen-box closes its overlay (click on overlay)
+  [genIntro, genType, genLevel, genLoading, genChallenge, genComplete].forEach(overlay => {
+    overlay && overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        // emulate Back behavior: if in middle, go back one step; if in intro, reopen menu
+        if (overlay === genChallenge) { hideOverlay(genChallenge); showOverlay(genLevel); return; }
+        if (overlay === genLevel) { hideOverlay(genLevel); showOverlay(genType); return; }
+        if (overlay === genType) { hideOverlay(genType); showOverlay(genIntro); return; }
+        if (overlay === genIntro) { hideOverlay(genIntro); if (menuOverlay) { menuOverlay.style.display = 'flex'; setTimeout(()=> menuOverlay.classList.add('show'), 30); if (menuClose) menuClose.style.display = 'block'; } return; }
+        // close others simply
+        hideOverlay(overlay);
+      }
+    });
+  });
+
+  // done
+  // (no globals added)
+})();
+</script>
+
 </body>
 </html>
