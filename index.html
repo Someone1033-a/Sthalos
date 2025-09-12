@@ -10,7 +10,39 @@
 
 <style>
   /* local font - make sure brevis.ttf is in same folder */
-  @font-face {
+.card-title {
+  font-size: 32px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-family: 'Brevia', sans-serif; /* force same font */
+}
+
+.card-details {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.card-meta {
+  font-size: 16px;
+  color: #aaa;
+  margin-bottom: 25px;
+}
+
+.share-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.share-btn:hover {
+  transform: scale(1.2);
+  color: #ff4d4d;
+}
+  
+@font-face {
     font-family: 'Brevis';
     src: url('brevis.ttf') format('truetype');
     font-weight: normal;
@@ -340,6 +372,39 @@ body.gen-active { overflow: hidden; }
 
 <script>
 /* ---------------- QUOTES ---------------- */
+// Show completion card (fixes #3 and #4)
+function showCompleteCard(challengeText, timeTaken) {
+  document.getElementById('completedChallengeDetails').innerText =
+    "You completed: " + challengeText;
+
+  document.getElementById('completedMeta').innerText =
+    "Time taken: " + timeTaken;
+
+  document.getElementById('genCompleteOverlay').setAttribute('aria-hidden', 'false');
+}
+
+// Share button (functional)
+document.getElementById('shareBtn').addEventListener('click', async () => {
+  const challenge = document.getElementById('completedChallengeDetails').innerText;
+  const meta = document.getElementById('completedMeta').innerText;
+
+  const shareData = {
+    title: "Sthalos Challenge",
+    text: `${challenge}\n${meta}`,
+    url: window.location.href
+  };
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData);
+    } catch (err) {
+      console.warn("Share canceled/failed:", err);
+    }
+  } else {
+    alert("Sharing not supported on this browser.");
+  }
+});
+
 const quotes = [
   "\"Strength does not come from winning.\"",
   "\"Fall seven times and stand up eight.\"",
@@ -637,28 +702,22 @@ renderThemes();
     </div>
   </div>
 </div>
-
-<!-- Completed card (appears AFTER user clicks Complete) -->
 <!-- Completed card (appears AFTER user clicks Complete) -->
 <div id="genCompleteOverlay" class="gen-overlay" aria-hidden="true">
   <div class="gen-complete-card" role="dialog" aria-modal="true">
-    <!-- Title in Brevia font -->
+    <!-- Title -->
     <div class="card-title">Sthalos</div>
 
-    <!-- Appreciation message instead of [IMAGE] -->
-    <div class="card-message" id="cardMessage">
-      🔥 Well done! Keep pushing your limits.
-    </div>
+    <!-- Appreciation message (already in your code) -->
+    <div class="card-message" id="cardMessage"></div>
 
-    <!-- Completed challenge details -->
+    <!-- Challenge details -->
     <div class="card-details" id="completedChallengeDetails">
       You completed: ...
     </div>
 
-    <!-- Meta info: time taken / reps -->
-    <div class="card-meta" id="completedMeta">
-      Time taken: --
-    </div>
+    <!-- Meta: reps/time -->
+    <div class="card-meta" id="completedMeta">Time taken: --</div>
 
     <!-- Watermark -->
     <div class="gen-watermark">@harsh.not.found</div>
@@ -669,7 +728,6 @@ renderThemes();
     </div>
   </div>
 </div>
-
 <!-- ===== end generator UI ===== -->
 <script>
 (function(){
