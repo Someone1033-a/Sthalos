@@ -959,8 +959,7 @@ challengeText.innerText = challenge;
   });
   genCompleteBtn.addEventListener('click', ()=>{
     hideOverlay(genChallenge);
-    completedDetails.innerText = `you finished: ${challengeText.innerText}';
-
+    completedDetails.innerText = `You finished: ${chosenType} (${chosenLevel})`;
     completedMeta.innerText = `Completed on ${new Date().toLocaleTimeString()}`;
     showOverlay(genComplete);
   });
