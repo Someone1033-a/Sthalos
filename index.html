@@ -169,6 +169,65 @@
 
   /* small helper for focus outlines */
   .theme-card:focus { outline: 3px solid rgba(255,255,255,0.08); outline-offset:2px; }
+.gen-complete-card {
+  background: rgba(20,20,20,0.95);
+  border-radius: 15px;
+  padding: 25px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  color: white;
+  font-family: 'Brevia', sans-serif; /* ✅ force Brevia */
+  position: relative;
+}
+
+.card-title {
+  font-size: 32px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-family: 'Brevia', sans-serif; /* ✅ ensure Brevia */
+}
+
+.card-message {
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-style: italic;
+  color: #ff4d4d;
+}
+
+.card-details {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.card-meta {
+  font-size: 16px;
+  color: #aaa;
+  margin-bottom: 25px;
+}
+
+.gen-watermark {
+  font-size: 12px;
+  opacity: 0.5;
+  margin-top: 10px;
+}
+
+/* Share button */
+.share-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.share-btn:hover {
+  transform: scale(1.2);
+  color: #ff4d4d;
+}
+
 </style>
 <style>
 /* ==== STHALOS Generator UI (append-only) ==== */
@@ -580,20 +639,37 @@ renderThemes();
 </div>
 
 <!-- Completed card (appears AFTER user clicks Complete) -->
+<!-- Completed card (appears AFTER user clicks Complete) -->
 <div id="genCompleteOverlay" class="gen-overlay" aria-hidden="true">
   <div class="gen-complete-card" role="dialog" aria-modal="true">
-    <div class="card-title">STHALOS</div>
-    <div class="card-image">[IMAGE]</div>
-    <div class="card-details" id="completedChallengeDetails">You finished: ...</div>
-    <div class="card-meta" id="completedMeta">Time / Reps info</div>
+    <!-- Title in Brevia font -->
+    <div class="card-title">Sthalos</div>
+
+    <!-- Appreciation message instead of [IMAGE] -->
+    <div class="card-message" id="cardMessage">
+      🔥 Well done! Keep pushing your limits.
+    </div>
+
+    <!-- Completed challenge details -->
+    <div class="card-details" id="completedChallengeDetails">
+      You completed: ...
+    </div>
+
+    <!-- Meta info: time taken / reps -->
+    <div class="card-meta" id="completedMeta">
+      Time taken: --
+    </div>
+
+    <!-- Watermark -->
     <div class="gen-watermark">@harsh.not.found</div>
 
-    <div class="gen-complete-actions">
-      <button id="genAgainBtn" class="gen-btn primary">Generate Again</button>
-      <button id="genCloseBtn" class="gen-btn light">Close</button>
+    <!-- Share button -->
+    <div class="share-btn" id="shareBtn" title="Share">
+      <i class="fas fa-share-alt"></i>
     </div>
   </div>
 </div>
+
 <!-- ===== end generator UI ===== -->
 <script>
 (function(){
@@ -978,6 +1054,40 @@ challengeText.innerText = challenge;
   });
 
 })();
+// Appreciation messages pool
+const messages = [
+  "🔥 Well done! Keep pushing your limits.",
+  "⚡ You crushed it!",
+  "🏆 Another victory in the bag.",
+  "💪 Power level rising!",
+  "🚀 That’s how legends train.",
+  "🔥 Stay strong, stay consistent.",
+  "🌟 Every rep makes you stronger.",
+  "⚡ Keep the momentum alive!"
+];
+
+// When showing the complete card, pick random message
+function showCompleteCard(challengeText, metaText) {
+  document.getElementById('completedChallengeDetails').innerText = "You completed: " + challengeText;
+  document.getElementById('completedMeta').innerText = metaText;
+  document.getElementById('cardMessage').innerText = messages[Math.floor(Math.random()*messages.length)];
+  document.getElementById('genCompleteOverlay').setAttribute('aria-hidden', 'false');
+}
+
+// Share button
+document.getElementById('shareBtn').addEventListener('click', async ()=>{
+  const shareData = {
+    title: "Sthalos Challenge",
+    text: document.getElementById('completedChallengeDetails').innerText + " - " + document.getElementById('completedMeta').innerText,
+    url: window.location.href
+  };
+  try {
+    await navigator.share(shareData);
+  } catch(err) {
+    alert("Sharing failed: " + err);
+  }
+});
+
 </script>
 
 </body>
