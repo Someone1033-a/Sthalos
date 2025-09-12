@@ -940,7 +940,9 @@ renderThemes();
         hideOverlay(genLoading);
         // generate dummy challenge
         challengeTitle.innerText = chosenType.toUpperCase()+" Challenge";
-        challengeText.innerText = `Do 20 reps (${chosenLevel}).`;
+       const challenge = generateChallenge(chosenType, chosenLevel);
+challengeText.innerText = challenge;
+
         showOverlay(genChallenge);
       }, 1500);
     });
