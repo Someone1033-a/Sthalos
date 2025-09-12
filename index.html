@@ -3,62 +3,26 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Sthalos</title>
-
-<!-- Font Awesome for icons -->
+<title>Sthalos — Full</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
   /* local font - make sure brevis.ttf is in same folder */
-.card-title {
-  font-size: 32px;
-  margin-bottom: 15px;
-  font-weight: bold;
-  font-family: 'Brevia', sans-serif; /* force same font */
-}
-
-.card-details {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.card-meta {
-  font-size: 16px;
-  color: #aaa;
-  margin-bottom: 25px;
-}
-
-.share-btn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  font-size: 20px;
-  color: white;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-.share-btn:hover {
-  transform: scale(1.2);
-  color: #ff4d4d;
-}
-  
-@font-face {
-    font-family: 'Brevis';
+  @font-face {
+    font-family: 'Brevia';
     src: url('brevis.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
   }
 
-  :root {
-    --accent: #ff1a1a;
-  }
+  :root { --accent: #ff1a1a; --accent-dark: #000; }
 
   /* Base */
   * { box-sizing: border-box; }
   html,body { height:100%; margin:0; }
   body {
-    font-family: Brevis, Arial, Helvetica, sans-serif;
+    font-family: Brevia, Arial, Helvetica, sans-serif;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -81,7 +45,7 @@
     right: 18px;
     display:flex;
     gap:12px;
-    z-index:1100; /* lower than settings panel which will be 1200+ */
+    z-index:1100;
   }
   .circle-btn {
     width:44px; height:44px; border-radius:50%;
@@ -96,12 +60,12 @@
   .settings { background:#555; }
 
   /* Header / CTA */
-  h1 { font-size:64px; margin:8px 0; color:var(--accent); line-height:1; }
+  h1 { font-size:64px; margin:8px 0; color:var(--accent); line-height:1; font-family: 'Brevia', sans-serif; }
   .lead { font-size:20px; margin:6px 0 20px; color:var(--accent); }
 
   .btn-enter {
     background: var(--accent);
-    color: black;
+    color: var(--accent-dark);
     padding:14px 38px;
     border-radius:10px;
     font-size:20px;
@@ -155,7 +119,7 @@
     height:100%;
     background: #000;
     color:#fff;
-    z-index: 1200; /* above top-right icons */
+    z-index: 1200;
     transition: right .36s cubic-bezier(.2,.9,.2,1);
     display:flex;
     flex-direction:column;
@@ -199,138 +163,70 @@
   @media (max-width:900px) { #themesGrid { grid-template-columns: repeat(2,1fr); } }
   @media (max-width:520px) { #themesGrid { grid-template-columns: 1fr; } h1{font-size:36px} .btn-enter{padding:12px 26px;font-size:18px} }
 
+  /* Generator UI */
+  .gen-overlay { position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.72); z-index:2000; }
+  .gen-overlay.show { display:flex; }
+  .gen-box { width:94%; max-width:520px; background: linear-gradient(180deg,#0b0b0b,#0f0f0f); color:#fff; padding:20px; border-radius:12px; box-shadow:0 24px 80px rgba(0,0,0,.7); transform:scale(.96); opacity:0; transition:all .28s ease; text-align:center; }
+  .gen-overlay.show .gen-box { transform:scale(1); opacity:1; }
+
+  .gen-header { font-size:18px; font-weight:800; color:var(--accent,#ff1a1a); margin-bottom:10px; letter-spacing:0.6px; }
+  .gen-sub { color:#ddd; font-size:14px; margin-bottom:12px; }
+
+  .option-grid { display:grid; gap:10px; margin-top:12px; grid-template-columns: repeat(3,1fr); }
+  @media (max-width:640px){ .option-grid { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width:420px){ .option-grid { grid-template-columns: 1fr; } }
+
+  .option-btn { background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.02); padding:10px 8px; border-radius:8px; cursor:pointer; color:#fff; font-weight:800; }
+  .option-btn:hover { transform: translateY(-3px); }
+  .option-btn.selected { outline: 2px solid rgba(255,255,255,0.06); background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); }
+
+  .gen-actions { display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+  .back-small { background:#222; color:#fff; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; }
+  .next-primary { background:var(--accent,#ff1a1a); color:#000; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; font-weight:900; }
+
+  .gen-loading { display:flex; flex-direction:column; align-items:center; gap:12px; padding:14px; }
+  .spinner { width:56px; height:56px; border-radius:50%; border:6px solid rgba(255,255,255,0.08); border-top-color:var(--accent,#ff1a1a); animation:gen-spin 1s linear infinite; }
+  @keyframes gen-spin { to { transform: rotate(360deg); } }
+
+  .gen-challenge { margin-top:12px; padding:14px; border-radius:10px; background: linear-gradient(180deg,#111,#161616); color:#fff; }
+  .gen-challenge h3 { margin:6px 0 8px; font-size:18px; }
+  .gen-challenge p { margin:0; color:#ddd; font-size:14px; }
+
+  .gen-complete-card { width:94%; max-width:520px; background: linear-gradient(180deg,#061022,#071028); padding:18px; border-radius:12px; color:#fff; text-align:center; box-shadow:0 28px 80px rgba(0,0,0,0.7); position:relative; }
+  .card-title { font-family: 'Brevia', Arial, sans-serif; font-size:22px; font-weight:900; color:var(--accent,#ff1a1a); letter-spacing:2px; margin-bottom:8px; }
+  .card-image { height:140px; border-radius:8px; background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.12); margin-bottom:12px; }
+  .card-details { color:#ddd; font-size:15px; line-height:1.4; }
+  .card-meta { margin-top:10px; color:#c7d2e8; font-size:13px; opacity:.9; }
+
+  .gen-watermark { position:absolute; right:12px; bottom:10px; color:rgba(255,255,255,0.18); font-weight:700; font-size:12px; }
+
+  .gen-complete-actions { display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+  .gen-btn { padding:10px 14px; border-radius:8px; border:none; cursor:pointer; font-weight:800; }
+  .gen-btn.primary { background:var(--accent,#ff1a1a); color:#000; }
+  .gen-btn.light { background:#1b1b1b; color:#fff; border:1px solid rgba(255,255,255,0.04); }
+
+  .share-btn { position:absolute; top:15px; right:15px; font-size:20px; color:white; cursor:pointer; transition:transform 0.2s ease; }
+  .share-btn:hover { transform:scale(1.2); color:#ff4d4d; }
+
   /* small helper for focus outlines */
   .theme-card:focus { outline: 3px solid rgba(255,255,255,0.08); outline-offset:2px; }
-.gen-complete-card {
-  background: rgba(20,20,20,0.95);
-  border-radius: 15px;
-  padding: 25px;
-  width: 90%;
-  max-width: 420px;
-  text-align: center;
-  color: white;
-  font-family: 'Brevia', sans-serif; /* ✅ force Brevia */
-  position: relative;
-}
 
-.card-title {
-  font-size: 32px;
-  margin-bottom: 15px;
-  font-weight: bold;
-  font-family: 'Brevia', sans-serif; /* ✅ ensure Brevia */
-}
-
-.card-message {
-  font-size: 18px;
-  margin-bottom: 20px;
-  font-style: italic;
-  color: #ff4d4d;
-}
-
-.card-details {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.card-meta {
-  font-size: 16px;
-  color: #aaa;
-  margin-bottom: 25px;
-}
-
-.gen-watermark {
-  font-size: 12px;
-  opacity: 0.5;
-  margin-top: 10px;
-}
-
-/* Share button */
-.share-btn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  font-size: 20px;
-  color: white;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.share-btn:hover {
-  transform: scale(1.2);
-  color: #ff4d4d;
-}
-
+  /* make sure generator open prevents body scroll */
+  body.gen-active { overflow:hidden; }
 </style>
-<style>
-/* ==== STHALOS Generator UI (append-only) ==== */
-.gen-overlay { position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.72); z-index:2000; }
-.gen-overlay.show { display:flex; }
-.gen-box { width:94%; max-width:520px; background: linear-gradient(180deg,#0b0b0b,#0f0f0f); color:#fff; padding:20px; border-radius:12px; box-shadow:0 24px 80px rgba(0,0,0,.7); transform:scale(.96); opacity:0; transition:all .28s ease; text-align:center; }
-.gen-overlay.show .gen-box { transform:scale(1); opacity:1; }
-
-.gen-header { font-size:18px; font-weight:800; color:var(--accent,#ff1a1a); margin-bottom:10px; letter-spacing:0.6px; }
-.gen-sub { color:#ddd; font-size:14px; margin-bottom:12px; }
-
-.option-grid { display:grid; gap:10px; margin-top:12px; grid-template-columns: repeat(3,1fr); }
-@media (max-width:640px){ .option-grid { grid-template-columns: repeat(2,1fr); } }
-@media (max-width:420px){ .option-grid { grid-template-columns: 1fr; } }
-
-.option-btn { background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.02); padding:10px 8px; border-radius:8px; cursor:pointer; color:#fff; font-weight:800; }
-.option-btn:hover { transform: translateY(-3px); }
-.option-btn.selected { outline: 2px solid rgba(255,255,255,0.06); background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); }
-
-.gen-actions { display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
-.back-small { background:#222; color:#fff; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; }
-.next-primary { background:var(--accent,#ff1a1a); color:#000; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; font-weight:900; }
-
-.gen-loading { display:flex; flex-direction:column; align-items:center; gap:12px; padding:14px; }
-.spinner { width:56px; height:56px; border-radius:50%; border:6px solid rgba(255,255,255,0.08); border-top-color:var(--accent,#ff1a1a); animation:gen-spin 1s linear infinite; }
-@keyframes gen-spin { to { transform: rotate(360deg); } }
-
-.gen-challenge { margin-top:12px; padding:14px; border-radius:10px; background: linear-gradient(180deg,#111,#161616); color:#fff; }
-.gen-challenge h3 { margin:6px 0 8px; font-size:18px; }
-.gen-challenge p { margin:0; color:#ddd; font-size:14px; }
-
-.gen-complete-card { width:94%; max-width:520px; background: linear-gradient(180deg,#061022,#071028); padding:18px; border-radius:12px; color:#fff; text-align:center; box-shadow:0 28px 80px rgba(0,0,0,0.7); position:relative; }
-.card-title {
-  font-family: 'YourExistingFont'; /* same as other headers */
-  font-size: 1.8rem;
-  text-align: center;
-}
-.card-image { height:140px; border-radius:8px; background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.12); margin-bottom:12px; }
-.card-details { color:#ddd; font-size:15px; line-height:1.4; }
-.card-meta { margin-top:10px; color:#c7d2e8; font-size:13px; opacity:.9; }
-
-.gen-watermark { position:absolute; right:12px; bottom:10px; color:rgba(255,255,255,0.18); font-weight:700; font-size:12px; }
-
-.gen-complete-actions { display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
-.gen-btn { padding:10px 14px; border-radius:8px; border:none; cursor:pointer; font-weight:800; }
-.gen-btn.primary { background:var(--accent,#ff1a1a); color:#000; }
-.gen-btn.light { background:#1b1b1b; color:#fff; border:1px solid rgba(255,255,255,0.04); }
-
-/* tiny spacing fix when generator is open so panels don't peek */
-body.gen-active { overflow: hidden; }
-</style>
-
 </head>
-<body class="theme-01">
+<body class="theme-default">
 
   <!-- top icons -->
-  <div class="top-right" id="topIcons">
-    <a class="circle-btn insta" href="https://instagram.com/train.with.harsh" target="_blank" title="Instagram">
-      <i class="fab fa-instagram"></i>
-    </a>
-    <a class="circle-btn google" href="#" title="Google">
-      <i class="fab fa-google"></i>
-    </a>
-    <div id="settingsBtn" class="circle-btn settings" title="Settings">
-      <i class="fas fa-cog"></i>
-    </div>
+  <div class="top-right">
+    <a class="circle-btn insta" href="https://instagram.com/train.with.harsh" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a class="circle-btn google" href="#"><i class="fab fa-google"></i></a>
+    <div id="settingsBtn" class="circle-btn settings"><i class="fas fa-cog"></i></div>
   </div>
 
-  <!-- main -->
-  <main style="padding:20px;">
-    <h1>Sthalos</h1>
+  <!-- landing -->
+  <main style="padding:20px; text-align:center;">
+    <h1 id="brand">Sthalos</h1>
     <div class="lead">Strength meets challenge. Coming soon.</div>
     <div style="height:8px;"></div>
     <button id="enterBtn" class="btn-enter" aria-label="Enter">ENTER</button>
@@ -338,14 +234,15 @@ body.gen-active { overflow: hidden; }
 
   <div id="quote" aria-live="polite"></div>
 
-  <!-- menu overlay -->
+  <!-- menu -->
   <div id="menuOverlay" aria-hidden="true">
     <div id="menuBox" role="dialog" aria-modal="true">
       <h2>PICK YOUR DESTINATION</h2>
-      <a class="menu-feature" href="#" id="featureCali">CALI-CHALLENGE GENERATOR</a>
+      <a class="menu-feature" href="#" id="goCali">CALI-CHALLENGE GENERATOR</a>
       <button id="menuClose" class="menu-close">Close / Esc</button>
     </div>
   </div>
+  <div id="menuCloseMini" style="display:none;position:fixed;left:18px;bottom:18px;color:#fff;cursor:pointer;z-index:110">CLOSE / ESC</div>
 
   <!-- settings side panel -->
   <aside id="settingsPanel" aria-hidden="true">
@@ -362,81 +259,114 @@ body.gen-active { overflow: hidden; }
         <h3 id="themesTitle">Themes</h3>
       </div>
 
-      <div id="themesGrid">
-        <!-- theme cards will be generated by JS -->
-      </div>
+      <div id="themesGrid"></div>
 
       <button id="themesCloseBtn">Close / Esc</button>
     </div>
   </div>
 
+  <!-- settings / themes side panels (old style stack) -->
+  <aside id="settingsPanelStack" class="panel" style="display:none;"></aside>
+  <aside id="themesPanel" style="display:none;"></aside>
+  <aside id="createPanel" style="display:none;"></aside>
+
+  <!-- Generator UI Overlays -->
+  <!-- Intro -->
+  <div id="genIntroOverlay" class="gen-overlay" aria-hidden="true">
+    <div class="gen-box" role="dialog" aria-modal="true">
+      <div class="gen-header">We need to ask a few things before you generate</div>
+      <div class="gen-sub">Answer two short questions and we'll drop one challenge for you.</div>
+      <div class="gen-actions">
+        <button id="genIntroBack" class="back-small">Back</button>
+        <button id="genIntroProceed" class="next-primary">Proceed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Type -->
+  <div id="genTypeOverlay" class="gen-overlay" aria-hidden="true">
+    <div class="gen-box" role="dialog" aria-modal="true">
+      <div class="gen-header">Select Challenge Type</div>
+      <div class="option-grid" id="genTypeGrid">
+        <button class="option-btn" data-type="push">Push</button>
+        <button class="option-btn" data-type="pull">Pull</button>
+        <button class="option-btn" data-type="core">Core</button>
+        <button class="option-btn" data-type="legs">Legs</button>
+        <button class="option-btn" data-type="cardio">Cardio</button>
+        <button class="option-btn" data-type="statics">Statics</button>
+      </div>
+      <div class="gen-actions">
+        <button id="genTypeBack" class="back-small">Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Level -->
+  <div id="genLevelOverlay" class="gen-overlay" aria-hidden="true">
+    <div class="gen-box" role="dialog" aria-modal="true">
+      <div class="gen-header">Select Your Level</div>
+      <div class="option-grid" id="genLevelGrid">
+        <button class="option-btn" data-level="beginner">Beginner</button>
+        <button class="option-btn" data-level="above-beginner">Above Beginner</button>
+        <button class="option-btn" data-level="intermediate">Intermediate</button>
+        <button class="option-btn" data-level="above-intermediate">Above Intermediate</button>
+        <button class="option-btn" data-level="advanced">Advanced</button>
+      </div>
+      <div class="gen-actions">
+        <button id="genLevelBack" class="back-small">Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div id="genLoadingOverlay" class="gen-overlay" aria-hidden="true">
+    <div class="gen-box">
+      <div class="gen-loading">
+        <div class="spinner" aria-hidden="true"></div>
+        <div class="gen-sub">⚡ Generating your challenge...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Challenge -->
+  <div id="genChallengeOverlay" class="gen-overlay" aria-hidden="true">
+    <div class="gen-box" role="dialog" aria-modal="true">
+      <div class="gen-header">Your Challenge</div>
+      <div class="gen-challenge" id="genChallengeBox">
+        <h3 id="genChallengeTitle">Challenge</h3>
+        <p id="genChallengeText">Do the thing...</p>
+      </div>
+      <div class="gen-actions">
+        <button id="genChallengeBack" class="back-small">Back</button>
+        <button id="genCompleteBtn" class="next-primary">Complete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Completed card -->
+  <div id="genCompleteOverlay" class="gen-overlay" aria-hidden="true">
+    <div class="gen-complete-card" role="dialog" aria-modal="true">
+      <div class="card-title">STHALOS</div>
+      <div class="card-image" id="cardImageArea">Great job!</div>
+      <div class="card-details" id="completedChallengeDetails">You finished: ...</div>
+      <div class="card-meta" id="completedMeta">Time taken: --</div>
+      <div class="gen-watermark">@harsh.not.found</div>
+
+      <div class="gen-complete-actions">
+        <button id="genAgainBtn" class="gen-btn primary">Generate Again</button>
+        <button id="genCloseBtn" class="gen-btn light">Close</button>
+      </div>
+
+      <div class="share-btn" id="shareBtn" title="Share"><i class="fas fa-share-alt"></i></div>
+    </div>
+  </div>
+
 <script>
-/* ---------------- QUOTES ---------------- */
-// Show completion card (fixes #3 and #4)
-function showCompleteCard(challengeText, timeTaken) {
-  document.getElementById('completedChallengeDetails').innerText =
-    "You completed: " + challengeText;
+/* ==========================
+   Themes / Settings / UI
+   ========================== */
 
-  document.getElementById('completedMeta').innerText =
-    "Time taken: " + timeTaken;
-
-  document.getElementById('genCompleteOverlay').setAttribute('aria-hidden', 'false');
-}
-
-// Share button (functional)
-document.getElementById('shareBtn').addEventListener('click', async () => {
-  const challenge = document.getElementById('completedChallengeDetails').innerText;
-  const meta = document.getElementById('completedMeta').innerText;
-
-  const shareData = {
-    title: "Sthalos Challenge",
-    text: `${challenge}\n${meta}`,
-    url: window.location.href
-  };
-
-  if (navigator.share) {
-    try {
-      await navigator.share(shareData);
-    } catch (err) {
-      console.warn("Share canceled/failed:", err);
-    }
-  } else {
-    alert("Sharing not supported on this browser.");
-  }
-});
-
-const quotes = [
-  "\"Strength does not come from winning.\"",
-  "\"Fall seven times and stand up eight.\"",
-  "\"The body achieves what the mind believes.\"",
-  "\"Push yourself, because no one else will.\"",
-  "\"Discipline beats motivation.\"",
-  "\"Suffer the pain of discipline or regret.\"",
-  "\"No pain, no gain.\"",
-  "\"You are stronger than you think.\"",
-  "\"Consistency is key.\"",
-  "\"Calisthenics builds warriors.\""
-];
-const quoteEl = document.getElementById('quote');
-if (quoteEl) quoteEl.innerText = quotes[Math.floor(Math.random()*quotes.length)];
-
-/* ---------------- UI nodes ---------------- */
-const enterBtn = document.getElementById('enterBtn');
-const menuOverlay = document.getElementById('menuOverlay');
-const menuClose = document.getElementById('menuClose');
-
-const settingsBtn = document.getElementById('settingsBtn');
-const settingsPanel = document.getElementById('settingsPanel');
-const openThemes = document.getElementById('openThemes');
-const closeSettings = document.getElementById('closeSettings');
-
-const themesModalOverlay = document.getElementById('themesModalOverlay');
-const themesGrid = document.getElementById('themesGrid');
-const themesCloseBtn = document.getElementById('themesCloseBtn');
-
-/* ---------------- THEME LIST (25) ----------------
-   Each item: name, colors array (3-4 stops), desc
-*/
+/* Built-in themes (25) — same as you had */
 const themeList = [
   { id:'theme-01', name:'Dark Crimson', colors:['#1a0033','#000033','#330000','#220033'], desc:'Deep red and midnight', accent:'#ff1a1a' },
   { id:'theme-02', name:'Blueberry Blues', colors:['#0d1b2a','#1b263b','#415a77','#1b1f4f'], desc:'Cold indigos and deep sea', accent:'#ffd9e0' },
@@ -465,278 +395,136 @@ const themeList = [
   { id:'theme-25', name:'Lunar Grey', colors:['#3a3a3a','#6b6b6b','#a3a3a3','#dddddd'], desc:'Monochrome steel & moon', accent:'#041430' }
 ];
 
-/* Utility: create linear-gradient CSS from colors */
-function gradientFrom(colors) {
-  return 'linear-gradient(135deg,' + colors.join(',') + ')';
-}
+const paletteColors = [
+  '#0b3d20','#1f8a70','#3ad59f','#ffd166','#ff6b6b','#ffbf69','#ff9a8b','#c34a36',
+  '#6a4c93','#2b2d42','#1b998b','#8ecae6','#ffb4a2','#ff7b7b','#f72585','#7209b7',
+  '#0ea5a4','#06b6d4','#e0aaff','#8ec5ff'
+];
 
-/* Render theme cards */
-function renderThemes() {
+const STORAGE_CUSTOM_LIST = 'sthalos_custom_list';
+let themes = [];
+
+// load and merge themes
+function loadThemesFromStorage(){
+  themes = [...themeList];
+  try {
+    const stored = localStorage.getItem(STORAGE_CUSTOM_LIST);
+    if (stored) {
+      const arr = JSON.parse(stored);
+      if (Array.isArray(arr)) {
+        arr.forEach((t,i) => {
+          if (!t.id) t.id = 'custom-'+i+'-'+Date.now();
+          themes.push(t);
+        });
+      }
+    }
+  } catch(e){ console.warn('bad custom themes',e); }
+}
+loadThemesFromStorage();
+
+// helper
+function gradientFrom(colors){
+  return 'linear-gradient(135deg, ' + colors.join(',') + ')';
+}
+function applyTheme(theme){
+  if(!theme || !theme.colors) return;
+  document.body.style.background = gradientFrom(theme.colors);
+  document.body.style.backgroundSize = '400% 400%';
+  document.body.style.animation = 'gradientShift 12s ease infinite';
+  if(theme.accent) document.documentElement.style.setProperty('--accent', theme.accent);
+  // store
+  try { localStorage.setItem('sthalos_theme', theme.id); } catch(e){}
+}
+(function restore(){
+  try {
+    const id = localStorage.getItem('sthalos_theme');
+    if (id) {
+      const t = themeList.find(x => x.id === id);
+      if (t) applyTheme(t);
+    }
+  } catch(e){}
+})();
+
+/* Themes modal rendering */
+const themesModalOverlay = document.getElementById('themesModalOverlay');
+const themesGrid = document.getElementById('themesGrid');
+const themesCloseBtn = document.getElementById('themesCloseBtn');
+
+function renderThemesGrid(){
   themesGrid.innerHTML = '';
-  for (let i=0;i<themeList.length;i++){
-    const t = themeList[i];
+  themes.forEach(t => {
     const card = document.createElement('div');
     card.className = 'theme-card';
-    card.setAttribute('tabindex','0');
-    card.setAttribute('role','button');
-    card.setAttribute('aria-label','Apply '+t.name);
-
+    card.tabIndex = 0;
     const dot = document.createElement('div');
     dot.className = 'theme-dot';
     dot.style.background = gradientFrom(t.colors);
-
     const info = document.createElement('div');
-    const name = document.createElement('div');
-    name.className = 'theme-name';
-    name.innerText = t.name;
-    const desc = document.createElement('div');
-    desc.className = 'theme-desc';
-    desc.innerText = t.desc;
-
-    info.appendChild(name);
-    info.appendChild(desc);
-
-    card.appendChild(dot);
-    card.appendChild(info);
-
-    // click handler - apply theme
-    (function(theme){
-      card.addEventListener('click', function(){
-        applyTheme(theme.id, theme.colors, theme.accent);
-      });
-      card.addEventListener('keydown', function(e){
-        if(e.key === 'Enter') applyTheme(theme.id, theme.colors, theme.accent);
-      });
-    })(t);
-
+    const name = document.createElement('div'); name.className = 'theme-name'; name.innerText = t.name;
+    const desc = document.createElement('div'); desc.className = 'theme-desc'; desc.innerText = t.desc || '';
+    info.appendChild(name); info.appendChild(desc);
+    card.appendChild(dot); card.appendChild(info);
+    card.addEventListener('click', ()=> applyTheme(t));
+    card.addEventListener('keydown', (e)=> { if(e.key==='Enter') applyTheme(t); });
     themesGrid.appendChild(card);
-  }
+  });
 }
 
-/* Apply theme: sets class for optional CSS (not required), but we'll set inline background + accent var */
-function applyTheme(id, colors, accent){
-  // set body background gradient directly for instant visual result
-  document.body.style.background = gradientFrom(colors);
-  document.body.style.backgroundSize = '400% 400%';
-  // ensure animation remains
-  document.body.style.animation = 'gradientShift 12s ease infinite';
-  // set accent color variable
-  if (accent) document.documentElement.style.setProperty('--accent', accent);
-  // persist chosen theme id (so user preference can be restored)
-  try { localStorage.setItem('sthalos_theme', id); } catch(e){}
-}
-
-/* restore theme from storage if present */
-(function restoreTheme(){
-  try {
-    const saved = localStorage.getItem('sthalos_theme');
-    if (saved) {
-      const found = themeList.find(t => t.id === saved);
-      if (found) applyTheme(found.id, found.colors, found.accent);
-    }
-  } catch(e){ /* ignore */ }
-})();
-
-/* ---------------- open/close logic ---------------- */
-/* Enter button -> menu */
-enterBtn.addEventListener('click', function(){
-  enterBtn.style.transform = 'scale(1.06)';
-  setTimeout(function(){
-    enterBtn.style.transform = '';
-    menuOverlay.style.display = 'flex';
-    setTimeout(()=>menuOverlay.classList.add('show'), 40);
-  }, 120);
-});
-menuClose.addEventListener('click', function(){
-  menuOverlay.classList.remove('show');
-  setTimeout(()=>menuOverlay.style.display='none', 350);
-});
-
-/* Settings toggle (gear rotates) */
-settingsBtn.addEventListener('click', function(){
-  settingsBtn.classList.toggle('rotate');
-  settingsPanel.classList.toggle('open');
-});
-
-/* Settings close button */
-closeSettings.addEventListener('click', function(){
-  settingsBtn.classList.remove('rotate');
-  settingsPanel.classList.remove('open');
-});
-
-/* Open themes modal from settings */
-openThemes.addEventListener('click', function(){
+/* UI wiring for themes/settings */
+document.getElementById('openThemes').addEventListener('click', ()=>{
+  loadThemesFromStorage(); renderThemesGrid();
   themesModalOverlay.style.display = 'flex';
-  themesModalOverlay.setAttribute('aria-hidden','false');
-  // render cards fresh (only once is enough but re-rendering is fine)
-  renderThemes();
-  // scroll top
-  const modal = document.getElementById('themesModal');
-  if(modal) modal.scrollTop = 0;
+});
+themesCloseBtn.addEventListener('click', ()=> { themesModalOverlay.style.display = 'none'; });
+themesModalOverlay.addEventListener('click', (e)=> { if(e.target===themesModalOverlay) themesModalOverlay.style.display='none'; });
+
+document.getElementById('settingsBtn').addEventListener('click', ()=>{
+  document.getElementById('settingsPanel').classList.toggle('open');
+  document.getElementById('settingsBtn').classList.toggle('rotate');
+});
+document.getElementById('closeSettings').addEventListener('click', ()=>{
+  document.getElementById('settingsPanel').classList.remove('open');
+  document.getElementById('settingsBtn').classList.remove('rotate');
 });
 
-/* Close themes */
-themesCloseBtn.addEventListener('click', function(){
-  themesModalOverlay.style.display = 'none';
-  themesModalOverlay.setAttribute('aria-hidden','true');
-});
-themesModalOverlay.addEventListener('click', function(e){
-  if (e.target === themesModalOverlay) {
-    themesModalOverlay.style.display = 'none';
-    themesModalOverlay.setAttribute('aria-hidden','true');
-  }
-});
+/* Basic menu open/close */
+const enterBtn = document.getElementById('enterBtn');
+const menuOverlay = document.getElementById('menuOverlay');
+const menuCloseBtn = document.getElementById('menuClose');
 
-/* close on Escape key - handles menu, settings, themes */
-document.addEventListener('keydown', function(e){
-  if (e.key === 'Escape' || e.key === 'Esc'){
-    // settings
-    if (settingsPanel.classList.contains('open')){
-      settingsBtn.classList.remove('rotate');
-      settingsPanel.classList.remove('open');
-    }
-    // menu
-    if (menuOverlay.classList.contains('show')){
-      menuOverlay.classList.remove('show');
-      setTimeout(()=>menuOverlay.style.display='none',350);
-    }
-    // themes
-    if (themesModalOverlay.style.display === 'flex'){
-      themesModalOverlay.style.display = 'none';
-      themesModalOverlay.setAttribute('aria-hidden','true');
-    }
-  }
+enterBtn.addEventListener('click', ()=>{
+  menuOverlay.style.display = 'flex';
+  setTimeout(()=> menuOverlay.classList.add('show'), 30);
 });
-
-/* Accessibility: focus trap naive handling when opening themes */
-themesModalOverlay.addEventListener('keydown', function(e){
-  // prevent TAB leaving the modal in a simple way only if modal open
-  if (themesModalOverlay.style.display === 'flex' && e.key === 'Tab'){
-    // allow default but keep things within modal by checking activeElement
-    // (Advanced trapping is overkill here; this is a minimal safe behavior)
-  }
-});
-
-/* Feature Cali (placeholder) - clicking closes modal/menu and could navigate later */
-document.getElementById('featureCali').addEventListener('click', function(e){
-  e.preventDefault();
-  // close menu and optionally open feature (we'll just close menu for now)
+menuCloseBtn.addEventListener('click', ()=>{
   menuOverlay.classList.remove('show');
-  setTimeout(()=>menuOverlay.style.display='none', 300);
-  // you can wire this to open a new screen or navigate
-
+  setTimeout(()=> menuOverlay.style.display='none', 320);
 });
 
-/* initial render not required until user opens themes, but render once for speed */
-renderThemes();
-</script>
-<!-- ===== STHALOS Challenge Generator (append-only) ===== -->
-<!-- Intro / confirm -->
-<div id="genIntroOverlay" class="gen-overlay" aria-hidden="true">
-  <div class="gen-box" role="dialog" aria-modal="true">
-    <div class="gen-header">We need to ask a few things before you generate</div>
-    <div class="gen-sub">Answer two short questions and we'll drop one challenge for you.</div>
-    <div class="gen-actions">
-      <button id="genIntroBack" class="back-small">Back</button>
-      <button id="genIntroProceed" class="next-primary">Proceed</button>
-    </div>
-  </div>
-</div>
+/* Quote */
+const quotes = [
+  "\"Strength does not come from winning.\"",
+  "\"Fall seven times and stand up eight.\"",
+  "\"The body achieves what the mind believes.\"",
+  "\"Push yourself, because no one else will.\"",
+  "\"Discipline beats motivation.\"",
+  "\"Suffer the pain of discipline or regret.\"",
+  "\"No pain, no gain.\"",
+  "\"You are stronger than you think.\"",
+  "\"Consistency is key.\"",
+  "\"Calisthenics builds warriors.\""
+];
+document.getElementById('quote').innerText = quotes[Math.floor(Math.random()*quotes.length)];
 
-<!-- Type selection -->
-<div id="genTypeOverlay" class="gen-overlay" aria-hidden="true">
-  <div class="gen-box" role="dialog" aria-modal="true">
-    <div class="gen-header">Select Challenge Type</div>
-    <div class="option-grid" id="genTypeGrid">
-      <button class="option-btn" data-type="push">Push</button>
-      <button class="option-btn" data-type="pull">Pull</button>
-      <button class="option-btn" data-type="core">Core</button>
-      <button class="option-btn" data-type="legs">Legs</button>
-      <button class="option-btn" data-type="cardio">Cardio</button>
-      <button class="option-btn" data-type="statics">Statics</button>
-    </div>
-    <div class="gen-actions">
-      <button id="genTypeBack" class="back-small">Back</button>
-    </div>
-  </div>
-</div>
-
-<!-- Level selection -->
-<div id="genLevelOverlay" class="gen-overlay" aria-hidden="true">
-  <div class="gen-box" role="dialog" aria-modal="true">
-    <div class="gen-header">Select Your Level</div>
-    <div class="option-grid" id="genLevelGrid">
-      <button class="option-btn" data-level="beginner">Beginner</button>
-      <button class="option-btn" data-level="above-beginner">Above Beginner</button>
-      <button class="option-btn" data-level="intermediate">Intermediate</button>
-      <button class="option-btn" data-level="above-intermediate">Above Intermediate</button>
-      <button class="option-btn" data-level="advanced">Advanced</button>
-    </div>
-    <div class="gen-actions">
-      <button id="genLevelBack" class="back-small">Back</button>
-    </div>
-  </div>
-</div>
-
-<!-- Loading (generator animation) -->
-<div id="genLoadingOverlay" class="gen-overlay" aria-hidden="true">
-  <div class="gen-box">
-    <div class="gen-loading">
-      <div class="spinner" aria-hidden="true"></div>
-      <div class="gen-sub">⚡ Generating your challenge...</div>
-    </div>
-  </div>
-</div>
-
-<!-- Challenge display (shows the single challenge, user does it, then presses Complete) -->
-<div id="genChallengeOverlay" class="gen-overlay" aria-hidden="true">
-  <div class="gen-box" role="dialog" aria-modal="true">
-    <div class="gen-header">Your Challenge</div>
-    <div class="gen-challenge" id="genChallengeBox">
-      <h3 id="genChallengeTitle">Challenge</h3>
-      <p id="genChallengeText">Do the thing...</p>
-    </div>
-    <div class="gen-actions">
-      <button id="genChallengeBack" class="back-small">Back</button>
-      <button id="genCompleteBtn" class="next-primary">Complete</button>
-    </div>
-  </div>
-</div>
-<!-- Completed card (appears AFTER user clicks Complete) -->
-<div id="genCompleteOverlay" class="gen-overlay" aria-hidden="true">
-  <div class="gen-complete-card" role="dialog" aria-modal="true">
-    <!-- Title -->
-    <div class="card-title">Sthalos</div>
-
-    <!-- Appreciation message (already in your code) -->
-    <div class="card-message" id="cardMessage"></div>
-
-    <!-- Challenge details -->
-    <div class="card-details" id="completedChallengeDetails">
-      You completed: ...
-    </div>
-
-    <!-- Meta: reps/time -->
-    <div class="card-meta" id="completedMeta">Time taken: --</div>
-
-    <!-- Watermark -->
-    <div class="gen-watermark">@harsh.not.found</div>
-
-    <!-- Share button -->
-    <div class="share-btn" id="shareBtn" title="Share">
-      <i class="fas fa-share-alt"></i>
-    </div>
-  </div>
-</div>
-<!-- ===== end generator UI ===== -->
-<script>
+/* ==========================
+   Generator module (single, consolidated)
+   ========================== */
 (function(){
-  // avoid colliding with existing names; use gen-prefixed IDs
-  const goCali = document.getElementById('goCali'); // already in your markup
-  const menuOverlay = window.menuOverlay || document.getElementById('menuOverlay'); // fallback
-  const menuClose = window.menuClose || document.getElementById('menuClose');
+  // Elements
+  const goCali = document.getElementById('goCali') || document.getElementById('featureCali') || null;
+  const menuOverlayEl = document.getElementById('menuOverlay');
+  const menuCloseMini = document.getElementById('menuCloseMini');
 
-  // Overlays
   const genIntro = document.getElementById('genIntroOverlay');
   const genType = document.getElementById('genTypeOverlay');
   const genLevel = document.getElementById('genLevelOverlay');
@@ -744,28 +532,28 @@ renderThemes();
   const genChallenge = document.getElementById('genChallengeOverlay');
   const genComplete = document.getElementById('genCompleteOverlay');
 
-  // controls
   const genIntroProceed = document.getElementById('genIntroProceed');
   const genIntroBack = document.getElementById('genIntroBack');
   const genTypeBack = document.getElementById('genTypeBack');
   const genLevelBack = document.getElementById('genLevelBack');
+
   const genTypeGrid = document.getElementById('genTypeGrid');
   const genLevelGrid = document.getElementById('genLevelGrid');
+
   const genChallengeTitle = document.getElementById('genChallengeTitle');
   const genChallengeText = document.getElementById('genChallengeText');
   const genChallengeBack = document.getElementById('genChallengeBack');
   const genCompleteBtn = document.getElementById('genCompleteBtn');
+
   const genAgainBtn = document.getElementById('genAgainBtn');
   const genCloseBtn = document.getElementById('genCloseBtn');
+
   const completedDetails = document.getElementById('completedChallengeDetails');
   const completedMeta = document.getElementById('completedMeta');
+  const cardImageArea = document.getElementById('cardImageArea');
+  const shareBtn = document.getElementById('shareBtn');
 
-  // state
-  let selectedType = null;
-  let selectedLevel = null;
-  let lastPicked = null;
-
-  // -- only sample: 50 push beginner challenges (array of strings)
+  // Sample dataset: 50 push beginner challenges (kept as-is)
   const pushBeginner = [
     "Do 10 knee pushups in one go.",
     "Hold a regular pushup position for 20 seconds.",
@@ -819,246 +607,67 @@ renderThemes();
     "Hold pushup bottom position for 20 seconds without collapsing."
   ];
 
-  // utilities: show/hide overlay
-  function showOverlay(el) {
-    if (!el) return;
+  // state
+  let selectedType = null;
+  let selectedLevel = null;
+  let lastPicked = null;
+  let generationStartMs = null;
+
+  // overlay helpers (centralized)
+  function showOverlay(el){
+    if(!el) return;
     el.style.display = 'flex';
+    // ensure animations can run
     setTimeout(()=> el.classList.add('show'), 20);
     document.body.classList.add('gen-active');
   }
-  function hideOverlay(el) {
-    if (!el) return;
+  function hideOverlay(el){
+    if(!el) return;
     el.classList.remove('show');
     setTimeout(()=> { el.style.display = 'none'; }, 260);
-    if (!document.querySelector('.gen-overlay.show')) document.body.classList.remove('gen-active');
+    // if no other overlay is visible, clear gen-active:
+    setTimeout(()=> {
+      const any = document.querySelectorAll('.gen-overlay.show');
+      if(!any.length) document.body.classList.remove('gen-active');
+    }, 300);
   }
 
-  // open generator entry from menu
-  if (goCali) goCali.addEventListener('click', (ev) => {
-    try {
-      // close menu first (use your existing closeMenu() to be safe)
-      if (typeof closeMenu === 'function') closeMenu();
-      else {
-        if (menuOverlay) { menuOverlay.style.display = 'none'; menuOverlay.classList.remove('show'); }
-        if (menuClose) menuClose.style.display = 'none';
-      }
-    } catch(e){}
-    selectedType = null; selectedLevel = null; lastPicked = null;
-    // reset selection visuals
-    resetOptionSelection(genTypeGrid);
-    resetOptionSelection(genLevelGrid);
-    showOverlay(genIntro);
-  });
+  // Flow: open generator from menu
+  if (goCali) {
+    goCali.addEventListener('click', (ev)=>{
+      ev.preventDefault();
+      // close menu
+      menuOverlayEl.classList.remove('show');
+      setTimeout(()=> { menuOverlayEl.style.display='none'; }, 300);
+      // reset state
+      selectedType = null; selectedLevel = null; lastPicked = null; generationStartMs = null;
+      // clear UI selections
+      genTypeGrid.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+      genLevelGrid.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+      showOverlay(genIntro);
+    });
+  }
 
   // Intro controls
-  genIntroProceed.addEventListener('click', ()=> {
-    hideOverlay(genIntro);
-    showOverlay(genType);
-  });
-  genIntroBack.addEventListener('click', ()=> {
-    hideOverlay(genIntro);
-    // reopen menu (simple open same as enter button)
-    if (menuOverlay) { menuOverlay.style.display = 'flex'; setTimeout(()=> menuOverlay.classList.add('show'), 30); if (menuClose) menuClose.style.display = 'block'; }
-  });
-
-  // type selection (click any to go to level)
-  genTypeGrid.querySelectorAll('.option-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      // visual select
-      resetOptionSelection(genTypeGrid);
-      btn.classList.add('selected');
-      selectedType = btn.dataset.type || 'push';
-      hideOverlay(genType);
-      // small delay so animation is clean
-      setTimeout(()=> showOverlay(genLevel), 160);
-    });
-  });
-
-  genTypeBack.addEventListener('click', ()=> {
-    hideOverlay(genType);
-    showOverlay(genIntro);
-  });
-
-  // level grid
-  genLevelGrid.querySelectorAll('.option-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      resetOptionSelection(genLevelGrid);
-      btn.classList.add('selected');
-      selectedLevel = btn.dataset.level || 'beginner';
-      hideOverlay(genLevel);
-      // now generate
-      startGeneration();
-    });
-  });
-
-  genLevelBack.addEventListener('click', ()=> {
-    hideOverlay(genLevel);
-    showOverlay(genType);
-  });
-
-  // challenge back (go back to level to change)
-  genChallengeBack.addEventListener('click', ()=> {
-    hideOverlay(genChallenge);
-    showOverlay(genLevel);
-  });
-
-  // complete -> show finished card
-  genCompleteBtn.addEventListener('click', ()=> {
-    // save lastPicked for card
-    if (!lastPicked) return;
-    // populate finished card
-    completedDetails.innerText = lastPicked;
-    // rough meta: if string contains seconds or 'sec' try to show time; else show 'reps' guess
-    let meta = '';
-    if (/(\d+)\s*s(ec|econds?)/i.test(lastPicked) || /seconds|sec/i.test(lastPicked)) {
-      meta = 'Time-based challenge';
-    } else if (/\d+\s*(push|rep|reps|incline|knee)/i.test(lastPicked)) {
-      meta = 'Rep-based challenge';
-    } else {
-      meta = 'Challenge completed';
-    }
-    completedMeta.innerText = meta;
-
-    hideOverlay(genChallenge);
-    showOverlay(genComplete);
-  });
-
-  // generate again button (re-roll same settings)
-  genAgainBtn.addEventListener('click', ()=> {
-    hideOverlay(genComplete);
-    // small delay for smoothness
-    setTimeout(()=> startGeneration(), 200);
-  });
-
-  // close completed card -> return to menu
-  genCloseBtn.addEventListener('click', ()=> {
-    hideOverlay(genComplete);
-    // reopen menuOverlay (we started from menu)
-    if (menuOverlay) { menuOverlay.style.display = 'flex'; setTimeout(()=> menuOverlay.classList.add('show'), 30); if (menuClose) menuClose.style.display = 'block'; }
-  });
-
-  // helper: reset selection visuals in a container
-  function resetOptionSelection(container) {
-    if (!container) return;
-    container.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-  }
-
-  // main generation flow (loading animation -> show single challenge)
-  function startGeneration() {
-    // show loading
-    showOverlay(genLoading);
-    // small timeout to feel generated
-    setTimeout(()=> {
-      hideOverlay(genLoading);
-
-      // select challenge based on type/level
-      let picked = "Coming soon: this type or level isn't added yet.";
-      if (selectedType === 'push' && selectedLevel === 'beginner') {
-        picked = pushBeginner[Math.floor(Math.random()*pushBeginner.length)];
-      } else {
-        // fallback message
-        picked = "This type/level isn't implemented yet. Try Push → Beginner for now.";
-      }
-
-      lastPicked = picked;
-      // populate and show challenge overlay
-      genChallengeTitle.innerText = (selectedType ? selectedType.toUpperCase() : "CHALLENGE") + " — " + (selectedLevel ? selectedLevel.replace('-', ' ') : "");
-      genChallengeText.innerText = picked;
-      showOverlay(genChallenge);
-    }, 1200);
-  }
-
-  // ESC closes generator overlays first
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      if (genComplete.classList.contains('show') || genComplete.style.display === 'flex') { hideOverlay(genComplete); return; }
-      if (genChallenge.classList.contains('show') || genChallenge.style.display === 'flex') { hideOverlay(genChallenge); showOverlay(genLevel); return; }
-      if (genLevel.classList.contains('show') || genLevel.style.display === 'flex') { hideOverlay(genLevel); showOverlay(genType); return; }
-      if (genType.classList.contains('show') || genType.style.display === 'flex') { hideOverlay(genType); showOverlay(genIntro); return; }
-      if (genIntro.classList.contains('show') || genIntro.style.display === 'flex') { hideOverlay(genIntro); /* reopen menu */ if (menuOverlay) { menuOverlay.style.display = 'flex'; setTimeout(()=> menuOverlay.classList.add('show'), 30); if (menuClose) menuClose.style.display = 'block'; } return; }
-    }
-  });
-
-  // optional: clicking outside a gen-box closes its overlay (click on overlay)
-  [genIntro, genType, genLevel, genLoading, genChallenge, genComplete].forEach(overlay => {
-    overlay && overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        // emulate Back behavior: if in middle, go back one step; if in intro, reopen menu
-        if (overlay === genChallenge) { hideOverlay(genChallenge); showOverlay(genLevel); return; }
-        if (overlay === genLevel) { hideOverlay(genLevel); showOverlay(genType); return; }
-        if (overlay === genType) { hideOverlay(genType); showOverlay(genIntro); return; }
-        if (overlay === genIntro) { hideOverlay(genIntro); if (menuOverlay) { menuOverlay.style.display = 'flex'; setTimeout(()=> menuOverlay.classList.add('show'), 30); if (menuClose) menuClose.style.display = 'block'; } return; }
-        // close others simply
-        hideOverlay(overlay);
-      }
-    });
-  });
-
-  // done
-  // (no globals added)
-})();
-</script>
-<script>
-(function(){
-  // menu item that triggers generator
-  const featureCali = document.getElementById('featureCali');
-  const menuOverlay = document.getElementById('menuOverlay');
-
-  // overlays
-  const genIntro = document.getElementById('genIntroOverlay');
-  const genType = document.getElementById('genTypeOverlay');
-  const genLevel = document.getElementById('genLevelOverlay');
-  const genLoading = document.getElementById('genLoadingOverlay');
-  const genChallenge = document.getElementById('genChallengeOverlay');
-  const genComplete = document.getElementById('genCompleteOverlay');
-
-  // buttons
-  const genIntroBack = document.getElementById('genIntroBack');
-  const genIntroProceed = document.getElementById('genIntroProceed');
-
-  const genTypeBack = document.getElementById('genTypeBack');
-  const genLevelBack = document.getElementById('genLevelBack');
-
-  const genChallengeBack = document.getElementById('genChallengeBack');
-  const genCompleteBtn = document.getElementById('genCompleteBtn');
-
-  const genAgainBtn = document.getElementById('genAgainBtn');
-  const genCloseBtn = document.getElementById('genCloseBtn');
-
-  // challenge content
-  const challengeTitle = document.getElementById('genChallengeTitle');
-  const challengeText = document.getElementById('genChallengeText');
-  const completedDetails = document.getElementById('completedChallengeDetails');
-  const completedMeta = document.getElementById('completedMeta');
-
-  let chosenType = null;
-  let chosenLevel = null;
-
-  // helpers
-  function showOverlay(ov){ ov.classList.add('show'); ov.style.display='flex'; document.body.classList.add('gen-active'); }
-  function hideOverlay(ov){ ov.classList.remove('show'); ov.style.display='none'; document.body.classList.remove('gen-active'); }
-
-  // Start flow
-  featureCali.addEventListener('click', e=>{
-    e.preventDefault();
-    menuOverlay.classList.remove('show');
-    setTimeout(()=>menuOverlay.style.display='none',300);
-    showOverlay(genIntro);
-  });
-
-  // Intro
   genIntroProceed.addEventListener('click', ()=>{
     hideOverlay(genIntro);
     showOverlay(genType);
   });
-  genIntroBack.addEventListener('click', ()=>{ hideOverlay(genIntro); });
+  genIntroBack.addEventListener('click', ()=>{
+    hideOverlay(genIntro);
+    // reopen menu
+    menuOverlayEl.style.display='flex';
+    setTimeout(()=> menuOverlayEl.classList.add('show'), 30);
+  });
 
   // Type selection
-  document.querySelectorAll('#genTypeGrid .option-btn').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      chosenType = btn.dataset.type;
+  genTypeGrid.querySelectorAll('.option-btn').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      genTypeGrid.querySelectorAll('.option-btn').forEach(x=>x.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedType = btn.dataset.type;
       hideOverlay(genType);
-      showOverlay(genLevel);
+      setTimeout(()=> showOverlay(genLevel), 140);
     });
   });
   genTypeBack.addEventListener('click', ()=>{
@@ -1067,22 +676,14 @@ renderThemes();
   });
 
   // Level selection
-  document.querySelectorAll('#genLevelGrid .option-btn').forEach(btn=>{
+  genLevelGrid.querySelectorAll('.option-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
-      chosenLevel = btn.dataset.level;
+      genLevelGrid.querySelectorAll('.option-btn').forEach(x=>x.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedLevel = btn.dataset.level;
       hideOverlay(genLevel);
-      showOverlay(genLoading);
-
-      // simulate loading
-      setTimeout(()=>{
-        hideOverlay(genLoading);
-        // generate dummy challenge
-        challengeTitle.innerText = chosenType.toUpperCase()+" Challenge";
-       const challenge = generateChallenge(chosenType, chosenLevel);
-challengeText.innerText = challenge;
-
-        showOverlay(genChallenge);
-      }, 1500);
+      // start generation
+      startGeneration();
     });
   });
   genLevelBack.addEventListener('click', ()=>{
@@ -1090,62 +691,147 @@ challengeText.innerText = challenge;
     showOverlay(genType);
   });
 
-  // Challenge
+  // Challenge back
   genChallengeBack.addEventListener('click', ()=>{
     hideOverlay(genChallenge);
     showOverlay(genLevel);
   });
+
+  // Complete flow: user indicates they finished challenge (stop timer)
   genCompleteBtn.addEventListener('click', ()=>{
+    if(!lastPicked) return;
+    // stop timer
+    let timeTakenText = '--';
+    if (generationStartMs) {
+      const elapsed = Date.now() - generationStartMs;
+      timeTakenText = formatMs(elapsed);
+    }
     hideOverlay(genChallenge);
-    completedDetails.innerText = `You finished: ${chosenType} (${chosenLevel})`;
-    completedMeta.innerText = `Completed on ${new Date().toLocaleTimeString()}`;
-    showOverlay(genComplete);
+    showCompleteCard(lastPicked, timeTakenText);
   });
 
-  // Complete
+  // Generate again (re-roll same settings)
   genAgainBtn.addEventListener('click', ()=>{
     hideOverlay(genComplete);
-    showOverlay(genType);
+    // re-run generation with same type/level
+    startGeneration();
   });
+
+  // Close complete -> return to menu
   genCloseBtn.addEventListener('click', ()=>{
     hideOverlay(genComplete);
+    // reopen main menu
+    menuOverlayEl.style.display='flex';
+    setTimeout(()=> menuOverlayEl.classList.add('show'), 30);
   });
 
-})();
-// Appreciation messages pool
-const messages = [
-  "🔥 Well done! Keep pushing your limits.",
-  "⚡ You crushed it!",
-  "🏆 Another victory in the bag.",
-  "💪 Power level rising!",
-  "🚀 That’s how legends train.",
-  "🔥 Stay strong, stay consistent.",
-  "🌟 Every rep makes you stronger.",
-  "⚡ Keep the momentum alive!"
-];
+  // share button on complete card
+  shareBtn && shareBtn.addEventListener('click', async ()=>{
+    const challengeText = completedDetails.innerText || '';
+    const meta = completedMeta.innerText || '';
+    const shareData = { title: 'Sthalos Challenge', text: challengeText + '\\n' + meta, url: window.location.href };
+    if (navigator.share) {
+      try { await navigator.share(shareData); } catch(e) { console.warn('share failed',e); }
+    } else {
+      // fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(shareData.text + '\\n' + shareData.url);
+        alert('Challenge details copied to clipboard.');
+      } catch(e) {
+        prompt('Copy this challenge text:', shareData.text + '\\n' + shareData.url);
+      }
+    }
+  });
 
-// When showing the complete card, pick random message
-function showCompleteCard(challengeText, metaText) {
-  document.getElementById('completedChallengeDetails').innerText = "You completed: " + challengeText;
-  document.getElementById('completedMeta').innerText = metaText;
-  document.getElementById('cardMessage').innerText = messages[Math.floor(Math.random()*messages.length)];
-  document.getElementById('genCompleteOverlay').setAttribute('aria-hidden', 'false');
-}
-
-// Share button
-document.getElementById('shareBtn').addEventListener('click', async ()=>{
-  const shareData = {
-    title: "Sthalos Challenge",
-    text: document.getElementById('completedChallengeDetails').innerText + " - " + document.getElementById('completedMeta').innerText,
-    url: window.location.href
-  };
-  try {
-    await navigator.share(shareData);
-  } catch(err) {
-    alert("Sharing failed: " + err);
+  // utility: format ms => mm:ss or s
+  function formatMs(ms){
+    if (!ms && ms !== 0) return '--';
+    const s = Math.round(ms/1000);
+    if (s < 60) return s + 's';
+    const m = Math.floor(s/60);
+    const rem = s % 60;
+    return m + 'm ' + rem + 's';
   }
-});
 
+  // showCompleteCard: populate and display completion overlay
+  function showCompleteCard(challengeText, timeTaken){
+    // random appreciation message in the image area
+    const appreciation = [
+      'Nice work. Keep pushing.',
+      'Solid grind. Respect.',
+      'One step closer.',
+      'You just leveled up.',
+      'That\'s how champions are made.'
+    ];
+    const msg = appreciation[Math.floor(Math.random()*appreciation.length)];
+    if (cardImageArea) cardImageArea.innerText = msg;
+
+    completedDetails.innerText = 'You finished: ' + challengeText;
+    completedMeta.innerText = 'Time taken: ' + timeTaken;
+    showOverlay(genComplete);
+
+    // store last result in localStorage history? (future)
+  }
+
+  // main generator: selects a challenge string
+  function generateChallenge(type, level){
+    // only implemented: push + beginner (for now)
+    if (type === 'push' && level === 'beginner') {
+      return pushBeginner[Math.floor(Math.random()*pushBeginner.length)];
+    }
+    // otherwise fallback placeholder
+    return `This ${type} / ${level} combo not implemented yet — try Push → Beginner.`;
+  }
+
+  // startGeneration controls loading + showing challenge + start timer
+  function startGeneration(){
+    showOverlay(genLoading);
+    // small artificial delay to feel real
+    setTimeout(()=>{
+      hideOverlay(genLoading);
+      // pick
+      const picked = generateChallenge(selectedType, selectedLevel);
+      lastPicked = picked;
+      // populate
+      genChallengeTitle.innerText = (selectedType ? selectedType.toUpperCase() : 'CHALLENGE') + ' — ' + (selectedLevel ? selectedLevel.replace('-', ' ') : '');
+      genChallengeText.innerText = picked;
+      // start timer
+      generationStartMs = Date.now();
+      showOverlay(genChallenge);
+    }, 800);
+  }
+
+  // ESC keyboard handling: close topmost overlay or go back
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      // priority: complete -> challenge -> level -> type -> intro -> menu
+      if (genComplete.classList.contains('show')) { hideOverlay(genComplete); return; }
+      if (genChallenge.classList.contains('show')) { hideOverlay(genChallenge); showOverlay(genLevel); return; }
+      if (genLevel.classList.contains('show')) { hideOverlay(genLevel); showOverlay(genType); return; }
+      if (genType.classList.contains('show')) { hideOverlay(genType); showOverlay(genIntro); return; }
+      if (genIntro.classList.contains('show')) { hideOverlay(genIntro); menuOverlayEl.style.display='flex'; setTimeout(()=> menuOverlayEl.classList.add('show'),30); return; }
+      // otherwise close menu if open
+      if (menuOverlayEl.classList.contains('show')) { menuOverlayEl.classList.remove('show'); setTimeout(()=> menuOverlayEl.style.display='none',320); return; }
+    }
+  });
+
+  // clicking outside of the gen-box steps back instead of closing outright
+  [genIntro, genType, genLevel, genLoading, genChallenge, genComplete].forEach(overlay => {
+    if (!overlay) return;
+    overlay.addEventListener('click', (e)=>{
+      if (e.target !== overlay) return;
+      // overlay clicked
+      if (overlay === genChallenge) { hideOverlay(genChallenge); showOverlay(genLevel); return; }
+      if (overlay === genLevel) { hideOverlay(genLevel); showOverlay(genType); return; }
+      if (overlay === genType) { hideOverlay(genType); showOverlay(genIntro); return; }
+      if (overlay === genIntro) { hideOverlay(genIntro); menuOverlayEl.style.display='flex'; setTimeout(()=>menuOverlayEl.classList.add('show'),30); return; }
+      hideOverlay(overlay);
+    });
+  });
+
+})(); // end generator module
+
+/* End of file */
 </script>
 
 </body>
